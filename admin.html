@@ -335,6 +335,18 @@ button{
   border-radius:15px;
 }
 
+
+/* CAMBRIDGE PDF IMPORT */
+.import-card{background:linear-gradient(135deg,#eef2ff,#f8f7ff);border:1px solid #dce3ff;padding:25px;border-radius:16px;margin-bottom:25px;}
+.import-card h2{margin-bottom:8px;}
+.import-card p{color:#667085;font-size:14px;margin-bottom:18px;}
+.file-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.file-input{background:white;border:1px dashed #b8c4e8;padding:12px;border-radius:10px;flex:1;min-width:240px;}
+.import-progress{display:none;margin-top:18px;background:white;border-radius:10px;overflow:hidden;height:10px;}
+.import-progress-bar{height:100%;width:0;background:linear-gradient(90deg,#3157d5,#6c63ff);transition:.2s;}
+.import-result{margin-top:15px;display:none;padding:15px;background:white;border-radius:10px;font-size:13px;}
+.import-result strong{color:#3157d5;}
+
 /* MOBILE */
 .mobile-menu{
   display:none;
@@ -395,6 +407,7 @@ button{
   }
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
 </head>
 
 <body>
@@ -438,6 +451,12 @@ button{
 
   <button class="menu-btn" onclick="openModule('vocabulary')">
     📚 Vocabulary
+  </button>
+
+  <div class="menu-title">Cambridge Import</div>
+
+  <button class="menu-btn" onclick="showPage('pdfImport',this)">
+    📕 Upload Cambridge PDF
   </button>
 
   <div class="menu-title">Content</div>
@@ -605,6 +624,36 @@ button{
   </section>
 
 
+  <!-- CAMBRIDGE PDF IMPORT -->
+  <section id="pdfImport" class="page">
+
+    <div class="import-card">
+      <h2>📕 Cambridge IELTS PDF Import</h2>
+      <p>Upload one complete Cambridge IELTS PDF. The importer will extract the text and automatically create four published module lessons: Listening, Reading, Writing and Speaking.</p>
+
+      <div class="file-row">
+        <input class="file-input" type="file" id="cambridgePdf" accept="application/pdf">
+        <button class="btn btn-primary" id="importPdfBtn" onclick="importCambridgePDF()">
+          Upload & Auto-Split
+        </button>
+      </div>
+
+      <div class="import-progress" id="importProgress">
+        <div class="import-progress-bar" id="importProgressBar"></div>
+      </div>
+
+      <div class="import-result" id="importResult"></div>
+    </div>
+
+    <div class="form-card">
+      <h3 style="margin-bottom:10px;">How it works</h3>
+      <p style="color:#667085;font-size:14px;line-height:1.7;">The system reads the PDF page text, detects IELTS skill headings, groups pages into the four modules, and saves each module as a published lesson. You do not need to upload four separate files.</p>
+      <p style="color:#92400e;background:#fff7ed;padding:12px;border-radius:10px;font-size:13px;margin-top:12px;">For scanned/image-only PDFs, automatic text detection may not work. A text-based PDF works best.</p>
+    </div>
+
+  </section>
+
+
   <!-- ALL LESSONS -->
   <section id="lessons" class="page">
 
@@ -701,7 +750,8 @@ function showPage(pageId, button){
     dashboard:"Dashboard",
     addLesson:"Add New Lesson",
     lessons:"All Lessons",
-    modulePage:"Learning Module"
+    modulePage:"Learning Module",
+    pdfImport:"Cambridge PDF Import"
   };
 
   document.getElementById("pageTitle").textContent =
@@ -1167,6 +1217,129 @@ async function loadStats(){
   }
 }
 
+
+/* =====================================
+   CAMBRIDGE PDF AUTO IMPORT
+===================================== */
+
+async function importCambridgePDF(){
+  const input = document.getElementById("cambridgePdf");
+  const btn = document.getElementById("importPdfBtn");
+  const result = document.getElementById("importResult");
+  const progress = document.getElementById("importProgress");
+  const bar = document.getElementById("importProgressBar");
+
+  if(!input.files || !input.files[0]){
+    alert("Please choose a Cambridge IELTS PDF first.");
+    return;
+  }
+
+  const file = input.files[0];
+  if(file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")){
+    alert("Please select a PDF file.");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Processing PDF...";
+  progress.style.display = "block";
+  result.style.display = "block";
+  result.innerHTML = "Reading PDF pages...";
+  bar.style.width = "5%";
+
+  try{
+    const pdfjs = await import("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs");
+    pdfjs.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
+    const buffer = await file.arrayBuffer();
+    const pdf = await pdfjs.getDocument({data:buffer}).promise;
+    const pages = [];
+
+    for(let i=1;i<=pdf.numPages;i++){
+      const page = await pdf.getPage(i);
+      const textContent = await page.getTextContent();
+      const text = textContent.items.map(x => x.str).join(" ").replace(/\s+/g," ").trim();
+      pages.push({page:i,text});
+      bar.style.width = Math.max(5, Math.round((i/pdf.numPages)*70)) + "%";
+      result.innerHTML = `Reading page <strong>${i}</strong> of <strong>${pdf.numPages}</strong>...`;
+    }
+
+    const groups = splitCambridgePages(pages);
+    const nonEmpty = Object.entries(groups).filter(([m,v]) => v.trim());
+
+    if(nonEmpty.length < 4){
+      throw new Error("The PDF could not be confidently split into all four IELTS modules. Try a text-based Cambridge PDF with visible section headings.");
+    }
+
+    result.innerHTML = "Saving four modules to Supabase...";
+    bar.style.width = "80%";
+
+    const bookName = file.name.replace(/\.pdf$/i,"");
+    const saved = [];
+
+    for(const [module, content] of nonEmpty){
+      const payload = {
+        title: `${bookName} — ${capitalize(module)}`,
+        module,
+        description: `Imported automatically from ${bookName}.`,
+        content,
+        published: true
+      };
+
+      await supabaseFetch("/rest/v1/lessons",{
+        method:"POST",
+        headers:{"Prefer":"return=minimal"},
+        body:JSON.stringify(payload)
+      });
+      saved.push(module);
+    }
+
+    bar.style.width = "100%";
+    result.innerHTML = `✅ Successfully imported: <strong>${saved.map(capitalize).join(", ")}</strong><br><span style="color:#667085">The four lessons are published and can now be shown on the main website.</span>`;
+    loadStats();
+    loadAllLessons();
+
+  }catch(error){
+    console.error(error);
+    result.innerHTML = `❌ <strong>Import failed</strong><br><span style="color:#dc3545">${escapeHTML(error.message)}</span>`;
+    bar.style.width = "0%";
+  }finally{
+    btn.disabled = false;
+    btn.textContent = "Upload & Auto-Split";
+  }
+}
+
+function splitCambridgePages(pages){
+  const groups = {listening:"",reading:"",writing:"",speaking:""};
+  let current = null;
+
+  for(const p of pages){
+    const t = p.text;
+    const lower = t.toLowerCase();
+
+    // Strong headings/labels used by common IELTS preparation books.
+    if(/\b(listening\s+test|listening\s+section|listening\s+practice)\b/i.test(t) && !/reading/i.test(t.slice(0,120))) current="listening";
+    else if(/\b(reading\s+test|reading\s+passage|reading\s+section|academic\s+reading)\b/i.test(t)) current="reading";
+    else if(/\b(writing\s+test|writing\s+task\s*1|writing\s+task\s*2|academic\s+writing)\b/i.test(t)) current="writing";
+    else if(/\b(speaking\s+test|speaking\s+part\s*[123]|speaking\s+questions)\b/i.test(t)) current="speaking";
+
+    // Also recognize table-of-contents style pages.
+    if(!current){
+      if(/^\s*listening\b/i.test(t)) current="listening";
+      else if(/^\s*reading\b/i.test(t)) current="reading";
+      else if(/^\s*writing\b/i.test(t)) current="writing";
+      else if(/^\s*speaking\b/i.test(t)) current="speaking";
+    }
+
+    if(current) groups[current] += `\n\n[PDF Page ${p.page}]\n${t}`;
+  }
+
+  return groups;
+}
+
+function capitalize(value){
+  return value.charAt(0).toUpperCase()+value.slice(1);
+}
 
 /* =====================================
    MOBILE SIDEBAR

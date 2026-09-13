@@ -4,956 +4,636 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>IELTS ZONE | Admin Dashboard</title>
+<title>IELTSZONE Admin Panel</title>
 
 <style>
-:root{
-    --primary:#4f46e5;
-    --primary-dark:#3730a3;
-    --dark:#111827;
-    --text:#1f2937;
-    --muted:#6b7280;
-    --bg:#f4f7fb;
-    --white:#ffffff;
-    --border:#e5e7eb;
-    --success:#16a34a;
-    --danger:#dc2626;
-    --warning:#d97706;
-    --shadow:0 15px 40px rgba(15,23,42,.08);
-}
-
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
 body{
-    font-family:Inter,Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f7fb;
+  color:#172033;
 }
 
-button,input,textarea{
-    font:inherit;
+button,input,textarea,select{
+  font:inherit;
 }
 
-/* =========================
-   LOGIN
-========================= */
-
-.login-page{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:25px;
-    background:
-        radial-gradient(circle at top left,#6366f1 0%,transparent 35%),
-        radial-gradient(circle at bottom right,#818cf8 0%,transparent 30%),
-        #111827;
+button{
+  cursor:pointer;
 }
 
-.login-card{
-    width:100%;
-    max-width:430px;
-    background:white;
-    padding:42px;
-    border-radius:24px;
-    box-shadow:0 30px 80px rgba(0,0,0,.25);
+.layout{
+  display:flex;
+  min-height:100vh;
 }
 
-.brand{
-    text-align:center;
-    margin-bottom:32px;
-}
-
-.brand-logo{
-    width:65px;
-    height:65px;
-    margin:0 auto 15px;
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,#4f46e5,#7c3aed);
-    color:white;
-    font-size:30px;
-    font-weight:800;
-    box-shadow:0 12px 25px rgba(79,70,229,.3);
-}
-
-.brand h1{
-    font-size:25px;
-    color:#111827;
-}
-
-.brand h1 span{
-    color:var(--primary);
-}
-
-.brand p{
-    margin-top:7px;
-    color:var(--muted);
-    font-size:14px;
-}
-
-.form-group{
-    margin-bottom:18px;
-}
-
-.form-group label{
-    display:block;
-    margin-bottom:8px;
-    font-size:13px;
-    font-weight:700;
-    color:#374151;
-}
-
-input,textarea{
-    width:100%;
-    border:1px solid var(--border);
-    background:#fafafa;
-    border-radius:11px;
-    padding:13px 14px;
-    outline:none;
-    transition:.2s;
-}
-
-input:focus,textarea:focus{
-    border-color:var(--primary);
-    background:white;
-    box-shadow:0 0 0 4px rgba(79,70,229,.08);
-}
-
-textarea{
-    min-height:105px;
-    resize:vertical;
-}
-
-.btn{
-    border:none;
-    border-radius:11px;
-    padding:13px 18px;
-    cursor:pointer;
-    font-weight:700;
-    transition:.2s;
-}
-
-.btn-primary{
-    width:100%;
-    background:linear-gradient(135deg,#4f46e5,#6366f1);
-    color:white;
-    box-shadow:0 8px 20px rgba(79,70,229,.25);
-}
-
-.btn-primary:hover{
-    transform:translateY(-1px);
-    box-shadow:0 12px 25px rgba(79,70,229,.3);
-}
-
-.message{
-    margin-top:15px;
-    text-align:center;
-    font-size:14px;
-}
-
-/* =========================
-   DASHBOARD
-========================= */
-
-.dashboard{
-    display:none;
-    min-height:100vh;
-}
-
+/* SIDEBAR */
 .sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    bottom:0;
-    width:245px;
-    background:#111827;
-    color:white;
-    padding:25px 16px;
-    z-index:10;
+  width:250px;
+  background:#172033;
+  color:white;
+  padding:25px 18px;
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  overflow-y:auto;
 }
 
-.sidebar-brand{
-    display:flex;
-    align-items:center;
-    gap:11px;
-    padding:0 10px 30px;
+.logo{
+  font-size:25px;
+  font-weight:800;
+  text-align:center;
+  margin-bottom:35px;
 }
 
-.sidebar-logo{
-    width:42px;
-    height:42px;
-    border-radius:12px;
-    background:linear-gradient(135deg,#4f46e5,#7c3aed);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:800;
-}
-
-.sidebar-brand strong{
-    font-size:17px;
-}
-
-.sidebar-brand span{
-    color:#818cf8;
+.logo span{
+  color:#6c63ff;
 }
 
 .menu-title{
-    font-size:10px;
-    color:#6b7280;
-    text-transform:uppercase;
-    letter-spacing:1.5px;
-    padding:10px;
-    margin-top:10px;
+  font-size:12px;
+  color:#8d96aa;
+  margin:20px 12px 10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
 }
 
-.menu-item{
-    width:100%;
-    border:none;
-    background:transparent;
-    color:#cbd5e1;
-    padding:13px 12px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    cursor:pointer;
-    text-align:left;
-    margin:4px 0;
+.menu-btn{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#dbe1ef;
+  padding:13px 14px;
+  margin-bottom:5px;
+  border-radius:10px;
+  text-align:left;
+  transition:.2s;
 }
 
-.menu-item:hover,
-.menu-item.active{
-    background:#1f2937;
-    color:white;
+.menu-btn:hover,
+.menu-btn.active{
+  background:#3157d5;
+  color:white;
 }
 
-.logout-btn{
-    position:absolute;
-    left:16px;
-    right:16px;
-    bottom:20px;
-    background:#1f2937;
+.logout{
+  margin-top:30px;
+  background:#dc3545;
+  color:white;
 }
 
-/* =========================
-   MAIN
-========================= */
-
+/* MAIN */
 .main{
-    margin-left:245px;
-    padding:30px;
+  margin-left:250px;
+  width:calc(100% - 250px);
+  padding:30px;
 }
 
 .topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:28px;
+  background:white;
+  border-radius:16px;
+  padding:20px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+  box-shadow:0 8px 30px rgba(33,48,90,.07);
 }
 
-.topbar h2{
-    font-size:27px;
-}
-
-.topbar p{
-    color:var(--muted);
-    margin-top:5px;
-    font-size:14px;
-}
-
-.admin-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:white;
-    padding:8px 14px;
-    border-radius:12px;
-    box-shadow:var(--shadow);
-}
-
-.avatar{
-    width:35px;
-    height:35px;
-    border-radius:50%;
-    background:#e0e7ff;
-    color:#4338ca;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:800;
-}
-
-/* =========================
-   STATISTICS
-========================= */
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:18px;
-    margin-bottom:25px;
-}
-
-.stat-card{
-    background:white;
-    padding:22px;
-    border-radius:17px;
-    box-shadow:var(--shadow);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.stat-info small{
-    color:var(--muted);
-    font-size:13px;
-}
-
-.stat-info h3{
-    font-size:28px;
-    margin-top:7px;
-}
-
-.stat-icon{
-    width:48px;
-    height:48px;
-    border-radius:13px;
-    background:#eef2ff;
-    color:#4f46e5;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:22px;
-}
-
-/* =========================
-   CONTENT GRID
-========================= */
-
-.content-grid{
-    display:grid;
-    grid-template-columns:380px 1fr;
-    gap:22px;
-}
-
-.card{
-    background:white;
-    border-radius:18px;
-    box-shadow:var(--shadow);
-    padding:24px;
-}
-
-.card-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-}
-
-.card-header h3{
-    font-size:18px;
-}
-
-.card-header p{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:4px;
-}
-
-.add-btn{
-    background:var(--primary);
-    color:white;
-}
-
-.cancel-btn{
-    background:#f3f4f6;
-    color:#374151;
-    margin-left:7px;
-}
-
-/* =========================
-   VOCABULARY
-========================= */
-
-.search-box{
-    margin-bottom:18px;
-}
-
-.vocabulary-list{
-    max-height:650px;
-    overflow-y:auto;
-    padding-right:5px;
-}
-
-.word-card{
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:18px;
-    margin-bottom:12px;
-    transition:.2s;
-}
-
-.word-card:hover{
-    border-color:#c7d2fe;
-    box-shadow:0 7px 20px rgba(79,70,229,.07);
-}
-
-.word-top{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    align-items:flex-start;
-}
-
-.word-top h4{
-    font-size:18px;
+.topbar h1{
+  font-size:25px;
 }
 
 .status{
-    font-size:10px;
-    font-weight:800;
-    padding:5px 8px;
-    border-radius:20px;
+  font-size:14px;
+  color:#16a34a;
+  font-weight:600;
 }
 
-.status.published{
-    background:#dcfce7;
-    color:#15803d;
+/* SECTIONS */
+.page{
+  display:none;
 }
 
-.status.draft{
-    background:#fef3c7;
-    color:#b45309;
+.page.active{
+  display:block;
 }
 
-.word-meaning{
-    margin-top:9px;
-    font-size:14px;
+/* DASHBOARD CARDS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-bottom:25px;
 }
 
-.word-example{
-    margin-top:8px;
-    font-size:13px;
-    color:var(--muted);
-    line-height:1.5;
+.stat-card{
+  background:white;
+  padding:23px;
+  border-radius:16px;
+  box-shadow:0 8px 30px rgba(33,48,90,.07);
 }
 
-.word-synonyms{
-    margin-top:8px;
-    font-size:12px;
-    color:#4f46e5;
+.stat-card h3{
+  font-size:30px;
+  margin-bottom:8px;
+  color:#3157d5;
 }
 
-.actions{
-    display:flex;
-    gap:7px;
-    margin-top:14px;
+.stat-card p{
+  color:#6b7280;
 }
 
-.action-btn{
-    padding:7px 10px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:12px;
-    font-weight:700;
+/* MODULES */
+.module-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
 }
 
-.publish{
-    background:#ecfdf5;
-    color:#15803d;
+.module-card{
+  background:white;
+  padding:25px;
+  border-radius:16px;
+  border:1px solid #e6eaf2;
+  transition:.2s;
+  cursor:pointer;
 }
 
-.unpublish{
-    background:#fff7ed;
-    color:#c2410c;
+.module-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 15px 40px rgba(33,48,90,.12);
+  border-color:#3157d5;
 }
 
-.delete{
-    background:#fef2f2;
-    color:#dc2626;
+.module-icon{
+  font-size:35px;
+  margin-bottom:15px;
 }
 
-/* =========================
-   TOAST
-========================= */
-
-.toast{
-    position:fixed;
-    right:25px;
-    bottom:25px;
-    background:#111827;
-    color:white;
-    padding:14px 18px;
-    border-radius:11px;
-    box-shadow:0 15px 35px rgba(0,0,0,.2);
-    transform:translateY(100px);
-    opacity:0;
-    transition:.3s;
-    z-index:100;
+.module-card h3{
+  margin-bottom:7px;
 }
 
-.toast.show{
-    transform:translateY(0);
-    opacity:1;
+.module-card p{
+  color:#6b7280;
+  font-size:14px;
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* FORM */
+.form-card{
+  background:white;
+  padding:28px;
+  border-radius:16px;
+  box-shadow:0 8px 30px rgba(33,48,90,.07);
+}
+
+.form-group{
+  margin-bottom:20px;
+}
+
+.form-group label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:700;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  padding:13px 14px;
+  border:1px solid #dfe4ed;
+  border-radius:10px;
+  outline:none;
+  transition:.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+  border-color:#3157d5;
+  box-shadow:0 0 0 3px rgba(49,87,213,.1);
+}
+
+.form-group textarea{
+  min-height:220px;
+  resize:vertical;
+}
+
+.btn{
+  border:0;
+  padding:12px 20px;
+  border-radius:10px;
+  font-weight:700;
+}
+
+.btn-primary{
+  background:#3157d5;
+  color:white;
+}
+
+.btn-success{
+  background:#16a34a;
+  color:white;
+}
+
+.btn-danger{
+  background:#dc3545;
+  color:white;
+}
+
+.btn-secondary{
+  background:#eef1f7;
+  color:#172033;
+}
+
+.btn + .btn{
+  margin-left:7px;
+}
+
+/* LESSON LIST */
+.lesson-list{
+  display:grid;
+  gap:15px;
+}
+
+.lesson-card{
+  background:white;
+  padding:22px;
+  border-radius:15px;
+  border:1px solid #e6eaf2;
+}
+
+.lesson-head{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:flex-start;
+}
+
+.lesson-card h3{
+  margin-bottom:7px;
+}
+
+.lesson-module{
+  display:inline-block;
+  padding:5px 9px;
+  background:#eef2ff;
+  color:#3157d5;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+  text-transform:capitalize;
+}
+
+.badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.badge-published{
+  background:#dcfce7;
+  color:#15803d;
+}
+
+.badge-draft{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.lesson-description{
+  color:#667085;
+  margin:12px 0;
+}
+
+.lesson-actions{
+  margin-top:15px;
+}
+
+.empty{
+  background:white;
+  padding:40px;
+  text-align:center;
+  border-radius:15px;
+  color:#667085;
+}
+
+.loading{
+  background:white;
+  padding:35px;
+  text-align:center;
+  border-radius:15px;
+}
+
+/* MOBILE */
+.mobile-menu{
+  display:none;
+}
 
 @media(max-width:900px){
 
-    .sidebar{
-        width:70px;
-        padding:20px 10px;
-    }
+  .sidebar{
+    transform:translateX(-100%);
+    transition:.3s;
+    z-index:20;
+  }
 
-    .sidebar-brand strong,
-    .menu-title,
-    .menu-item span{
-        display:none;
-    }
+  .sidebar.open{
+    transform:translateX(0);
+  }
 
-    .sidebar-brand{
-        justify-content:center;
-        padding-bottom:25px;
-    }
+  .main{
+    margin-left:0;
+    width:100%;
+    padding:18px;
+  }
 
-    .menu-item{
-        justify-content:center;
-    }
+  .mobile-menu{
+    display:block;
+    border:0;
+    background:#3157d5;
+    color:white;
+    padding:9px 12px;
+    border-radius:8px;
+  }
 
-    .logout-btn{
-        font-size:0;
-    }
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
 
-    .logout-btn:first-letter{
-        font-size:16px;
-    }
-
-    .main{
-        margin-left:70px;
-        padding:20px;
-    }
-
-    .content-grid{
-        grid-template-columns:1fr;
-    }
-
-    .stats{
-        grid-template-columns:1fr;
-    }
+  .module-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
 
 @media(max-width:600px){
 
-    .main{
-        padding:14px;
-    }
+  .stats{
+    grid-template-columns:1fr;
+  }
 
-    .topbar{
-        align-items:flex-start;
-    }
+  .module-grid{
+    grid-template-columns:1fr;
+  }
 
-    .topbar h2{
-        font-size:22px;
-    }
+  .topbar h1{
+    font-size:19px;
+  }
 
-    .admin-user{
-        display:none;
-    }
-
-    .card{
-        padding:17px;
-    }
+  .lesson-head{
+    flex-direction:column;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     LOGIN PAGE
-========================= -->
+<div class="layout">
 
-<div class="login-page" id="loginPage">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
-    <div class="login-card">
+  <div class="logo">
+    IELTS<span>ZONE</span>
+  </div>
 
-        <div class="brand">
+  <div class="menu-title">Main</div>
 
-            <div class="brand-logo">
-                I
-            </div>
+  <button class="menu-btn active" onclick="showPage('dashboard',this)">
+    🏠 Dashboard
+  </button>
 
-            <h1>IELTS <span>ZONE</span></h1>
+  <div class="menu-title">Learning</div>
 
-            <p>Administrator Portal</p>
+  <button class="menu-btn" onclick="openModule('listening')">
+    🎧 Listening
+  </button>
 
-        </div>
+  <button class="menu-btn" onclick="openModule('reading')">
+    📖 Reading
+  </button>
 
-        <div class="form-group">
+  <button class="menu-btn" onclick="openModule('writing')">
+    ✍️ Writing
+  </button>
 
-            <label>Email Address</label>
+  <button class="menu-btn" onclick="openModule('speaking')">
+    🎤 Speaking
+  </button>
 
-            <input
-                type="email"
-                id="loginEmail"
-                placeholder="Enter admin email"
-            >
+  <button class="menu-btn" onclick="openModule('grammar')">
+    📝 Grammar
+  </button>
 
-        </div>
+  <button class="menu-btn" onclick="openModule('vocabulary')">
+    📚 Vocabulary
+  </button>
 
-        <div class="form-group">
+  <div class="menu-title">Content</div>
 
-            <label>Password</label>
+  <button class="menu-btn" onclick="showPage('lessons',this)">
+    📋 All Lessons
+  </button>
 
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="Enter password"
-            >
+  <button class="menu-btn" onclick="showPage('addLesson',this)">
+    ➕ Add Lesson
+  </button>
 
-        </div>
+  <button class="menu-btn logout" onclick="logout()">
+    🚪 Logout
+  </button>
 
-        <button
-            class="btn btn-primary"
-            onclick="login()"
-        >
-            Sign In to Dashboard
-        </button>
+</aside>
 
-        <div
-            class="message"
-            id="loginMessage"
-        ></div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <div class="topbar">
+    <div>
+      <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+      <h1 id="pageTitle">Dashboard</h1>
+    </div>
+
+    <div class="status">
+      ● Supabase Connected
+    </div>
+  </div>
+
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="page active">
+
+    <div class="stats">
+
+      <div class="stat-card">
+        <h3 id="totalLessons">0</h3>
+        <p>Total Lessons</p>
+      </div>
+
+      <div class="stat-card">
+        <h3 id="publishedLessons">0</h3>
+        <p>Published</p>
+      </div>
+
+      <div class="stat-card">
+        <h3 id="draftLessons">0</h3>
+        <p>Drafts</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>6</h3>
+        <p>Learning Modules</p>
+      </div>
 
     </div>
 
-</div>
 
+    <h2 style="margin-bottom:18px;">Learning Modules</h2>
 
-<!-- =========================
-     DASHBOARD
-========================= -->
+    <div class="module-grid">
 
-<div class="dashboard" id="dashboard">
+      <div class="module-card" onclick="openModule('listening')">
+        <div class="module-icon">🎧</div>
+        <h3>Listening</h3>
+        <p>Add and publish Listening lessons.</p>
+      </div>
 
-    <aside class="sidebar">
+      <div class="module-card" onclick="openModule('reading')">
+        <div class="module-icon">📖</div>
+        <h3>Reading</h3>
+        <p>Add and publish Reading lessons.</p>
+      </div>
 
-        <div class="sidebar-brand">
+      <div class="module-card" onclick="openModule('writing')">
+        <div class="module-icon">✍️</div>
+        <h3>Writing</h3>
+        <p>Add and publish Writing lessons.</p>
+      </div>
 
-            <div class="sidebar-logo">
-                I
-            </div>
+      <div class="module-card" onclick="openModule('speaking')">
+        <div class="module-icon">🎤</div>
+        <h3>Speaking</h3>
+        <p>Add and publish Speaking lessons.</p>
+      </div>
 
-            <strong>
-                IELTS <span>ZONE</span>
-            </strong>
+      <div class="module-card" onclick="openModule('grammar')">
+        <div class="module-icon">📝</div>
+        <h3>Grammar</h3>
+        <p>Add and publish Grammar lessons.</p>
+      </div>
 
-        </div>
+      <div class="module-card" onclick="openModule('vocabulary')">
+        <div class="module-icon">📚</div>
+        <h3>Vocabulary</h3>
+        <p>Add and publish Vocabulary lessons.</p>
+      </div>
 
-        <div class="menu-title">
-            Management
-        </div>
+    </div>
 
-        <button class="menu-item active">
-            <span>📊</span>
-            <span>Dashboard</span>
-        </button>
+  </section>
 
-        <button class="menu-item">
-            <span>📚</span>
-            <span>Vocabulary</span>
-        </button>
 
-        <button class="menu-item">
-            <span>📝</span>
-            <span>Mock Tests</span>
-        </button>
+  <!-- ADD LESSON -->
+  <section id="addLesson" class="page">
 
-        <div class="menu-title">
-            Coming Soon
-        </div>
+    <div class="form-card">
 
-        <button class="menu-item">
-            <span>🎧</span>
-            <span>Listening</span>
-        </button>
+      <div class="form-group">
+        <label>Lesson Title</label>
+        <input
+          type="text"
+          id="lessonTitle"
+          placeholder="Example: IELTS Listening Practice 01">
+      </div>
 
-        <button class="menu-item">
-            <span>📖</span>
-            <span>Reading</span>
-        </button>
+      <div class="form-group">
+        <label>Module</label>
 
-        <button class="menu-item">
-            <span>✍️</span>
-            <span>Writing</span>
-        </button>
+        <select id="lessonModule">
 
-        <button class="menu-item">
-            <span>🎤</span>
-            <span>Speaking</span>
-        </button>
+          <option value="listening">Listening</option>
+          <option value="reading">Reading</option>
+          <option value="writing">Writing</option>
+          <option value="speaking">Speaking</option>
+          <option value="grammar">Grammar</option>
+          <option value="vocabulary">Vocabulary</option>
 
-        <button
-            class="menu-item logout-btn"
-            onclick="logout()"
-        >
-            <span>🚪</span>
-            <span>Logout</span>
-        </button>
+        </select>
 
-    </aside>
+      </div>
 
+      <div class="form-group">
+        <label>Description</label>
 
-    <main class="main">
+        <input
+          type="text"
+          id="lessonDescription"
+          placeholder="Short description of this lesson">
+      </div>
 
-        <div class="topbar">
+      <div class="form-group">
+        <label>Lesson Content</label>
 
-            <div>
-                <h2>Dashboard</h2>
+        <textarea
+          id="lessonContent"
+          placeholder="Write your lesson here..."></textarea>
 
-                <p>
-                    Manage your IELTS learning content
-                </p>
-            </div>
+      </div>
 
-            <div class="admin-user">
+      <button class="btn btn-secondary" onclick="saveLesson(false)">
+        Save Draft
+      </button>
 
-                <div class="avatar">
-                    A
-                </div>
+      <button class="btn btn-success" onclick="saveLesson(true)">
+        Publish Lesson
+      </button>
 
-                <span id="adminEmail">
-                    Admin
-                </span>
+    </div>
 
-            </div>
+  </section>
 
-        </div>
 
+  <!-- ALL LESSONS -->
+  <section id="lessons" class="page">
 
-        <!-- STATISTICS -->
+    <div id="lessonList" class="lesson-list">
+      <div class="loading">Loading lessons...</div>
+    </div>
 
-        <div class="stats">
+  </section>
 
-            <div class="stat-card">
 
-                <div class="stat-info">
+  <!-- MODULE -->
+  <section id="modulePage" class="page">
 
-                    <small>Total Vocabulary</small>
+    <div id="moduleContent">
+      <div class="loading">Loading...</div>
+    </div>
 
-                    <h3 id="totalWords">
-                        0
-                    </h3>
+  </section>
 
-                </div>
-
-                <div class="stat-icon">
-                    📚
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-info">
-
-                    <small>Published</small>
-
-                    <h3 id="publishedWords">
-                        0
-                    </h3>
-
-                </div>
-
-                <div class="stat-icon">
-                    ✓
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-info">
-
-                    <small>Drafts</small>
-
-                    <h3 id="draftWords">
-                        0
-                    </h3>
-
-                </div>
-
-                <div class="stat-icon">
-                    📝
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- CONTENT -->
-
-        <div class="content-grid">
-
-
-            <!-- ADD FORM -->
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <h3>Add Vocabulary</h3>
-
-                        <p>
-                            Create a new IELTS word
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>Word *</label>
-
-                    <input
-                        id="word"
-                        type="text"
-                        placeholder="e.g. Abundant"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>Meaning *</label>
-
-                    <textarea
-                        id="meaning"
-                        placeholder="Enter English meaning"
-                    ></textarea>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>Example Sentence</label>
-
-                    <textarea
-                        id="example"
-                        placeholder="Enter an example sentence"
-                    ></textarea>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>Synonyms</label>
-
-                    <input
-                        id="synonyms"
-                        type="text"
-                        placeholder="e.g. Plentiful, Ample"
-                    >
-
-                </div>
-
-
-                <button
-                    class="btn btn-primary"
-                    onclick="addVocabulary()"
-                >
-                    + Add Vocabulary
-                </button>
-
-            </div>
-
-
-            <!-- LIST -->
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <h3>Vocabulary Library</h3>
-
-                        <p>
-                            Manage your vocabulary content
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="search-box">
-
-                    <input
-                        type="search"
-                        id="search"
-                        placeholder="🔎 Search vocabulary..."
-                        oninput="filterVocabulary()"
-                    >
-
-                </div>
-
-
-                <div
-                    class="vocabulary-list"
-                    id="vocabularyList"
-                >
-
-                    <p style="color:#6b7280;">
-                        Loading vocabulary...
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </main>
+</main>
 
 </div>
-
-
-<div class="toast" id="toast"></div>
 
 
 <script>
 
-/* =====================================================
-   SUPABASE CONFIGURATION
-
-   IMPORTANT:
-   Replace ONLY these two values.
-
-   Do NOT use the Supabase Secret Key.
-===================================================== */
+/* =====================================
+   SUPABASE CONFIG
+===================================== */
 
 const SUPABASE_URL =
 "https://emdhibdfjtgygtuffzkc.supabase.co";
@@ -962,681 +642,579 @@ const SUPABASE_KEY =
 "sb_publishable_wjDEfOiEPB7Asyn2bOLNgQ_xx-Ohwpf";
 
 
-let accessToken = "";
-let vocabularyData = [];
+/* =====================================
+   SUPABASE REQUEST
+===================================== */
 
+async function supabaseFetch(endpoint, options = {}) {
 
-/* =====================================================
-   LOGIN
-===================================================== */
+  const response = await fetch(
+    SUPABASE_URL + endpoint,
+    {
+      ...options,
 
-async function login(){
-
-    const email =
-        document.getElementById("loginEmail")
-        .value.trim();
-
-    const password =
-        document.getElementById("loginPassword")
-        .value;
-
-    const message =
-        document.getElementById("loginMessage");
-
-
-    if(!email || !password){
-
-        message.textContent =
-            "Please enter your email and password.";
-
-        message.style.color =
-            "#dc2626";
-
-        return;
+      headers:{
+        "apikey":SUPABASE_KEY,
+        "Authorization":"Bearer " + SUPABASE_KEY,
+        "Content-Type":"application/json",
+        ...(options.headers || {})
+      }
     }
+  );
 
+  if(!response.ok){
 
-    try{
+    const errorText = await response.text();
 
-        const response =
-            await fetch(
-                SUPABASE_URL +
-                "/auth/v1/token?grant_type=password",
-                {
-                    method:"POST",
+    throw new Error(errorText || "Supabase request failed");
+  }
 
-                    headers:{
-                        "apikey":SUPABASE_KEY,
-                        "Content-Type":
-                            "application/json"
-                    },
+  if(response.status === 204){
+    return null;
+  }
 
-                    body:JSON.stringify({
-                        email:email,
-                        password:password
-                    })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if(!response.ok){
-
-            message.textContent =
-                data.error_description ||
-                data.msg ||
-                "Login failed.";
-
-            message.style.color =
-                "#dc2626";
-
-            return;
-        }
-
-
-        accessToken =
-            data.access_token;
-
-
-        document
-            .getElementById("loginPage")
-            .style.display="none";
-
-
-        document
-            .getElementById("dashboard")
-            .style.display="block";
-
-
-        document
-            .getElementById("adminEmail")
-            .textContent=email;
-
-
-        await loadVocabulary();
-
-
-    }catch(error){
-
-        message.textContent =
-            "Connection error. Please check your Supabase settings.";
-
-        message.style.color =
-            "#dc2626";
-    }
+  return await response.json();
 }
 
 
-/* =====================================================
+/* =====================================
+   PAGE NAVIGATION
+===================================== */
+
+function showPage(pageId, button){
+
+  document.querySelectorAll(".page")
+    .forEach(page => page.classList.remove("active"));
+
+  document.getElementById(pageId)
+    .classList.add("active");
+
+  if(button){
+
+    document.querySelectorAll(".menu-btn")
+      .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+  }
+
+  const titles = {
+    dashboard:"Dashboard",
+    addLesson:"Add New Lesson",
+    lessons:"All Lessons",
+    modulePage:"Learning Module"
+  };
+
+  document.getElementById("pageTitle").textContent =
+    titles[pageId] || "IELTSZONE";
+
+  loadStats();
+
+  document.getElementById("sidebar")
+    .classList.remove("open");
+}
+
+
+/* =====================================
+   OPEN MODULE
+===================================== */
+
+function openModule(module){
+
+  document.querySelectorAll(".page")
+    .forEach(page => page.classList.remove("active"));
+
+  document.getElementById("modulePage")
+    .classList.add("active");
+
+  document.getElementById("pageTitle").textContent =
+    module.charAt(0).toUpperCase() + module.slice(1);
+
+  document.querySelectorAll(".menu-btn")
+    .forEach(btn => btn.classList.remove("active"));
+
+  document.getElementById("sidebar")
+    .classList.remove("open");
+
+  loadModuleLessons(module);
+}
+
+
+/* =====================================
+   LOAD MODULE LESSONS
+===================================== */
+
+async function loadModuleLessons(module){
+
+  const container =
+    document.getElementById("moduleContent");
+
+  container.innerHTML =
+    '<div class="loading">Loading ' + module + ' lessons...</div>';
+
+  try{
+
+    const data = await supabaseFetch(
+      "/rest/v1/lessons?select=*&module=eq." +
+      encodeURIComponent(module) +
+      "&order=created_at.desc"
+    );
+
+    if(!data || data.length === 0){
+
+      container.innerHTML = `
+        <div class="empty">
+          <h2>No ${module} lessons yet</h2>
+          <p style="margin:10px 0 20px;">
+            Add your first lesson for this module.
+          </p>
+
+          <button
+            class="btn btn-primary"
+            onclick="prepareAddLesson('${module}')">
+            ➕ Add Lesson
+          </button>
+        </div>
+      `;
+
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="lesson-list">
+        ${data.map(createLessonHTML).join("")}
+      </div>
+    `;
+
+  }catch(error){
+
+    console.error(error);
+
+    container.innerHTML = `
+      <div class="empty">
+        <h2>Unable to load lessons</h2>
+        <p style="margin-top:10px;">
+          ${escapeHTML(error.message)}
+        </p>
+      </div>
+    `;
+  }
+}
+
+
+/* =====================================
+   LESSON HTML
+===================================== */
+
+function createLessonHTML(lesson){
+
+  const status =
+    lesson.published
+      ? `<span class="badge badge-published">Published</span>`
+      : `<span class="badge badge-draft">Draft</span>`;
+
+  return `
+
+    <div class="lesson-card">
+
+      <div class="lesson-head">
+
+        <div>
+          <span class="lesson-module">
+            ${escapeHTML(lesson.module)}
+          </span>
+
+          <h3 style="margin-top:10px;">
+            ${escapeHTML(lesson.title)}
+          </h3>
+        </div>
+
+        <div>
+          ${status}
+        </div>
+
+      </div>
+
+      <div class="lesson-description">
+        ${escapeHTML(lesson.description || "")}
+      </div>
+
+      <div
+        style="
+          margin-top:15px;
+          padding:15px;
+          background:#f7f9fc;
+          border-radius:10px;
+          white-space:pre-wrap;
+        "
+      >
+        ${escapeHTML(lesson.content)}
+      </div>
+
+      <div class="lesson-actions">
+
+        ${
+          lesson.published
+          ?
+          `<button
+             class="btn btn-secondary"
+             onclick="togglePublish(${lesson.id},false)">
+             Unpublish
+           </button>`
+          :
+          `<button
+             class="btn btn-success"
+             onclick="togglePublish(${lesson.id},true)">
+             Publish
+           </button>`
+        }
+
+        <button
+          class="btn btn-danger"
+          onclick="deleteLesson(${lesson.id})">
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* =====================================
+   ADD LESSON
+===================================== */
+
+function prepareAddLesson(module){
+
+  showPage("addLesson");
+
+  document.getElementById("lessonModule").value =
+    module;
+}
+
+
+/* =====================================
+   SAVE LESSON
+===================================== */
+
+async function saveLesson(publish){
+
+  const title =
+    document.getElementById("lessonTitle")
+      .value.trim();
+
+  const module =
+    document.getElementById("lessonModule")
+      .value;
+
+  const description =
+    document.getElementById("lessonDescription")
+      .value.trim();
+
+  const content =
+    document.getElementById("lessonContent")
+      .value.trim();
+
+
+  if(!title){
+
+    alert("Please enter a lesson title.");
+    return;
+  }
+
+  if(!content){
+
+    alert("Please enter lesson content.");
+    return;
+  }
+
+
+  try{
+
+    const data = {
+
+      title:title,
+
+      module:module,
+
+      description:description,
+
+      content:content,
+
+      published:publish
+
+    };
+
+
+    await supabaseFetch(
+      "/rest/v1/lessons",
+      {
+        method:"POST",
+
+        headers:{
+          "Prefer":"return=minimal"
+        },
+
+        body:JSON.stringify(data)
+      }
+    );
+
+
+    alert(
+      publish
+      ? "Lesson published successfully!"
+      : "Lesson saved as draft!"
+    );
+
+
+    document.getElementById("lessonTitle").value="";
+    document.getElementById("lessonDescription").value="";
+    document.getElementById("lessonContent").value="";
+
+
+    showPage("lessons");
+
+    loadAllLessons();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Could not save lesson.\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* =====================================
+   LOAD ALL LESSONS
+===================================== */
+
+async function loadAllLessons(){
+
+  const container =
+    document.getElementById("lessonList");
+
+  container.innerHTML =
+    '<div class="loading">Loading lessons...</div>';
+
+  try{
+
+    const data = await supabaseFetch(
+      "/rest/v1/lessons?select=*&order=created_at.desc"
+    );
+
+
+    if(!data || data.length === 0){
+
+      container.innerHTML = `
+        <div class="empty">
+          <h2>No lessons found</h2>
+          <p style="margin-top:10px;">
+            Start by adding your first lesson.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML =
+      data.map(createLessonHTML).join("");
+
+
+  }catch(error){
+
+    container.innerHTML = `
+      <div class="empty">
+        <h2>Error loading lessons</h2>
+        <p>${escapeHTML(error.message)}</p>
+      </div>
+    `;
+  }
+}
+
+
+/* =====================================
+   PUBLISH / UNPUBLISH
+===================================== */
+
+async function togglePublish(id,status){
+
+  try{
+
+    await supabaseFetch(
+      "/rest/v1/lessons?id=eq." + id,
+      {
+        method:"PATCH",
+
+        headers:{
+          "Prefer":"return=minimal"
+        },
+
+        body:JSON.stringify({
+          published:status,
+          updated_at:new Date().toISOString()
+        })
+      }
+    );
+
+
+    alert(
+      status
+      ? "Lesson published!"
+      : "Lesson unpublished!"
+    );
+
+
+    loadAllLessons();
+
+    loadStats();
+
+
+  }catch(error){
+
+    alert(
+      "Could not update lesson.\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* =====================================
+   DELETE LESSON
+===================================== */
+
+async function deleteLesson(id){
+
+  const confirmDelete =
+    confirm(
+      "Are you sure you want to delete this lesson?"
+    );
+
+  if(!confirmDelete){
+    return;
+  }
+
+
+  try{
+
+    await supabaseFetch(
+      "/rest/v1/lessons?id=eq." + id,
+      {
+        method:"DELETE"
+      }
+    );
+
+
+    alert("Lesson deleted successfully!");
+
+    loadAllLessons();
+
+    loadStats();
+
+
+  }catch(error){
+
+    alert(
+      "Could not delete lesson.\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* =====================================
+   DASHBOARD STATS
+===================================== */
+
+async function loadStats(){
+
+  try{
+
+    const data = await supabaseFetch(
+      "/rest/v1/lessons?select=id,published"
+    );
+
+
+    const total = data.length;
+
+    const published =
+      data.filter(item => item.published).length;
+
+    const drafts =
+      total - published;
+
+
+    document.getElementById("totalLessons")
+      .textContent = total;
+
+    document.getElementById("publishedLessons")
+      .textContent = published;
+
+    document.getElementById("draftLessons")
+      .textContent = drafts;
+
+
+  }catch(error){
+
+    console.error(error);
+  }
+}
+
+
+/* =====================================
+   MOBILE SIDEBAR
+===================================== */
+
+function toggleSidebar(){
+
+  document.getElementById("sidebar")
+    .classList.toggle("open");
+}
+
+
+/* =====================================
+   ESCAPE HTML
+===================================== */
+
+function escapeHTML(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+/* =====================================
    LOGOUT
-===================================================== */
+===================================== */
 
 function logout(){
 
-    accessToken="";
+  localStorage.removeItem("adminLoggedIn");
 
-    document
-        .getElementById("dashboard")
-        .style.display="none";
+  alert("Logged out.");
 
-    document
-        .getElementById("loginPage")
-        .style.display="flex";
-
-    document
-        .getElementById("loginPassword")
-        .value="";
+  location.reload();
 }
 
 
-/* =====================================================
-   ADD VOCABULARY
-===================================================== */
+/* =====================================
+   START
+===================================== */
 
-async function addVocabulary(){
+loadStats();
 
-    const word =
-        document.getElementById("word")
-        .value.trim();
-
-    const meaning =
-        document.getElementById("meaning")
-        .value.trim();
-
-    const example =
-        document.getElementById("example")
-        .value.trim();
-
-    const synonyms =
-        document.getElementById("synonyms")
-        .value.trim();
-
-
-    if(!word || !meaning){
-
-        showToast(
-            "Word and meaning are required."
-        );
-
-        return;
-    }
-
-
-    try{
-
-        const response =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/vocabulary",
-                {
-                    method:"POST",
-
-                    headers:{
-                        "apikey":SUPABASE_KEY,
-                        "Authorization":
-                            "Bearer " + accessToken,
-                        "Content-Type":
-                            "application/json",
-                        "Prefer":
-                            "return=representation"
-                    },
-
-                    body:JSON.stringify({
-                        word:word,
-                        meaning:meaning,
-                        example:example,
-                        synonyms:synonyms,
-                        published:false
-                    })
-                }
-            );
-
-
-        if(!response.ok){
-
-            const error =
-                await response.json();
-
-            showToast(
-                error.message ||
-                "Could not add vocabulary."
-            );
-
-            return;
-        }
-
-
-        document
-            .getElementById("word")
-            .value="";
-
-        document
-            .getElementById("meaning")
-            .value="";
-
-        document
-            .getElementById("example")
-            .value="";
-
-        document
-            .getElementById("synonyms")
-            .value="";
-
-
-        showToast(
-            "Vocabulary added successfully!"
-        );
-
-
-        await loadVocabulary();
-
-
-    }catch(error){
-
-        showToast(
-            "Connection error."
-        );
-    }
-}
-
-
-/* =====================================================
-   LOAD VOCABULARY
-===================================================== */
-
-async function loadVocabulary(){
-
-    const list =
-        document.getElementById("vocabularyList");
-
-
-    try{
-
-        const response =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/vocabulary?select=*&order=created_at.desc",
-                {
-                    headers:{
-                        "apikey":SUPABASE_KEY,
-                        "Authorization":
-                            "Bearer " + accessToken
-                    }
-                }
-            );
-
-
-        if(!response.ok){
-
-            list.innerHTML =
-                "<p>Could not load vocabulary.</p>";
-
-            return;
-        }
-
-
-        vocabularyData =
-            await response.json();
-
-
-        updateStats();
-
-        renderVocabulary(
-            vocabularyData
-        );
-
-
-    }catch(error){
-
-        list.innerHTML =
-            "<p>Connection error.</p>";
-    }
-}
-
-
-/* =====================================================
-   RENDER VOCABULARY
-===================================================== */
-
-function renderVocabulary(words){
-
-    const list =
-        document.getElementById("vocabularyList");
-
-
-    if(!words.length){
-
-        list.innerHTML=`
-            <div style="
-                text-align:center;
-                padding:45px 10px;
-                color:#6b7280;
-            ">
-                <div style="font-size:35px;">
-                    📚
-                </div>
-
-                <p style="margin-top:10px;">
-                    No vocabulary found.
-                </p>
-            </div>
-        `;
-
-        return;
-    }
-
-
-    list.innerHTML="";
-
-
-    words.forEach(function(item){
-
-        const card =
-            document.createElement("div");
-
-        card.className="word-card";
-
-
-        card.innerHTML=`
-
-            <div class="word-top">
-
-                <h4>
-                    ${escapeHtml(item.word)}
-                </h4>
-
-                <span class="status ${
-                    item.published
-                    ? "published"
-                    : "draft"
-                }">
-
-                    ${
-                        item.published
-                        ? "PUBLISHED"
-                        : "DRAFT"
-                    }
-
-                </span>
-
-            </div>
-
-
-            <div class="word-meaning">
-
-                <strong>Meaning:</strong>
-                ${escapeHtml(item.meaning)}
-
-            </div>
-
-
-            ${
-                item.example
-                ? `
-                <div class="word-example">
-                    <strong>Example:</strong>
-                    ${escapeHtml(item.example)}
-                </div>
-                `
-                : ""
-            }
-
-
-            ${
-                item.synonyms
-                ? `
-                <div class="word-synonyms">
-                    <strong>Synonyms:</strong>
-                    ${escapeHtml(item.synonyms)}
-                </div>
-                `
-                : ""
-            }
-
-
-            <div class="actions">
-
-                <button
-                    class="action-btn ${
-                        item.published
-                        ? "unpublish"
-                        : "publish"
-                    }"
-                    onclick="
-                        togglePublish(
-                            '${item.id}',
-                            ${item.published}
-                        )
-                    "
-                >
-
-                    ${
-                        item.published
-                        ? "Unpublish"
-                        : "Publish"
-                    }
-
-                </button>
-
-
-                <button
-                    class="action-btn delete"
-                    onclick="
-                        deleteVocabulary(
-                            '${item.id}'
-                        )
-                    "
-                >
-                    Delete
-                </button>
-
-            </div>
-
-        `;
-
-
-        list.appendChild(card);
-
-    });
-}
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-function filterVocabulary(){
-
-    const search =
-        document
-            .getElementById("search")
-            .value
-            .toLowerCase()
-            .trim();
-
-
-    const filtered =
-        vocabularyData.filter(function(item){
-
-            return (
-                (item.word || "")
-                    .toLowerCase()
-                    .includes(search)
-
-                ||
-
-                (item.meaning || "")
-                    .toLowerCase()
-                    .includes(search)
-
-                ||
-
-                (item.synonyms || "")
-                    .toLowerCase()
-                    .includes(search)
-            );
-        });
-
-
-    renderVocabulary(filtered);
-}
-
-
-/* =====================================================
-   PUBLISH / UNPUBLISH
-===================================================== */
-
-async function togglePublish(
-    id,
-    currentStatus
-){
-
-    try{
-
-        const response =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/vocabulary?id=eq." +
-                encodeURIComponent(id),
-                {
-                    method:"PATCH",
-
-                    headers:{
-                        "apikey":SUPABASE_KEY,
-                        "Authorization":
-                            "Bearer " + accessToken,
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:JSON.stringify({
-                        published:!currentStatus
-                    })
-                }
-            );
-
-
-        if(!response.ok){
-
-            showToast(
-                "Could not update status."
-            );
-
-            return;
-        }
-
-
-        showToast(
-            currentStatus
-            ? "Vocabulary unpublished."
-            : "Vocabulary published!"
-        );
-
-
-        await loadVocabulary();
-
-
-    }catch(error){
-
-        showToast(
-            "Connection error."
-        );
-    }
-}
-
-
-/* =====================================================
-   DELETE
-===================================================== */
-
-async function deleteVocabulary(id){
-
-    const confirmed =
-        confirm(
-            "Are you sure you want to delete this vocabulary?"
-        );
-
-
-    if(!confirmed) return;
-
-
-    try{
-
-        const response =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/vocabulary?id=eq." +
-                encodeURIComponent(id),
-                {
-                    method:"DELETE",
-
-                    headers:{
-                        "apikey":SUPABASE_KEY,
-                        "Authorization":
-                            "Bearer " + accessToken
-                    }
-                }
-            );
-
-
-        if(!response.ok){
-
-            showToast(
-                "Could not delete vocabulary."
-            );
-
-            return;
-        }
-
-
-        showToast(
-            "Vocabulary deleted."
-        );
-
-
-        await loadVocabulary();
-
-
-    }catch(error){
-
-        showToast(
-            "Connection error."
-        );
-    }
-}
-
-
-/* =====================================================
-   STATISTICS
-===================================================== */
-
-function updateStats(){
-
-    const total =
-        vocabularyData.length;
-
-    const published =
-        vocabularyData.filter(
-            item => item.published
-        ).length;
-
-    const drafts =
-        total - published;
-
-
-    document
-        .getElementById("totalWords")
-        .textContent=total;
-
-    document
-        .getElementById("publishedWords")
-        .textContent=published;
-
-    document
-        .getElementById("draftWords")
-        .textContent=drafts;
-}
-
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-function showToast(message){
-
-    const toast =
-        document.getElementById("toast");
-
-
-    toast.textContent=message;
-
-    toast.classList.add("show");
-
-
-    setTimeout(function(){
-
-        toast.classList.remove("show");
-
-    },3000);
-}
-
-
-/* =====================================================
-   SECURITY
-===================================================== */
-
-function escapeHtml(value){
-
-    return String(value || "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-}
+loadAllLessons();
 
 </script>
 

@@ -2,676 +2,843 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>IELTS Portal Admin</title>
 
-<title>IELTSZONE Admin Panel</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f5f7fb;
-  color:#172033;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f7fb;
+    color:#172033;
 }
 
-button,input,textarea,select{
-  font:inherit;
+button,input,select,textarea{
+    font-family:inherit;
 }
 
-button{
-  cursor:pointer;
-}
-
-.layout{
-  display:flex;
-  min-height:100vh;
-}
-
-/* SIDEBAR */
-.sidebar{
-  width:250px;
-  background:#172033;
-  color:white;
-  padding:25px 18px;
-  position:fixed;
-  top:0;
-  bottom:0;
-  left:0;
-  overflow-y:auto;
+.header{
+    background:#fff;
+    border-bottom:1px solid #e7eaf0;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
 .logo{
-  font-size:25px;
-  font-weight:800;
-  text-align:center;
-  margin-bottom:35px;
+    font-size:21px;
+    font-weight:800;
 }
 
 .logo span{
-  color:#6c63ff;
+    color:#3157d5;
 }
 
-.menu-title{
-  font-size:12px;
-  color:#8d96aa;
-  margin:20px 12px 10px;
-  text-transform:uppercase;
-  letter-spacing:1px;
+.admin-badge{
+    background:#eef2ff;
+    color:#3157d5;
+    padding:8px 13px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
 }
 
-.menu-btn{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:#dbe1ef;
-  padding:13px 14px;
-  margin-bottom:5px;
-  border-radius:10px;
-  text-align:left;
-  transition:.2s;
+.layout{
+    display:flex;
+    min-height:calc(100vh - 72px);
 }
 
-.menu-btn:hover,
-.menu-btn.active{
-  background:#3157d5;
-  color:white;
+.sidebar{
+    width:245px;
+    background:#11192b;
+    color:#fff;
+    padding:25px 15px;
 }
 
-.logout{
-  margin-top:30px;
-  background:#dc3545;
-  color:white;
+.sidebar h4{
+    color:#8893aa;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:10px 12px;
 }
 
-/* MAIN */
+.side-btn{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:#cbd2df;
+    text-align:left;
+    padding:13px 14px;
+    border-radius:9px;
+    margin:3px 0;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.side-btn:hover,
+.side-btn.active{
+    background:#26345a;
+    color:#fff;
+}
+
 .main{
-  margin-left:250px;
-  width:calc(100% - 250px);
-  padding:30px;
+    flex:1;
+    padding:30px;
+    max-width:1400px;
 }
 
-.topbar{
-  background:white;
-  border-radius:16px;
-  padding:20px 25px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:25px;
-  box-shadow:0 8px 30px rgba(33,48,90,.07);
-}
-
-.topbar h1{
-  font-size:25px;
-}
-
-.status{
-  font-size:14px;
-  color:#16a34a;
-  font-weight:600;
-}
-
-/* SECTIONS */
 .page{
-  display:none;
+    display:none;
 }
 
 .page.active{
-  display:block;
+    display:block;
 }
 
-/* DASHBOARD CARDS */
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-  margin-bottom:25px;
+.title{
+    margin-bottom:7px;
+    font-size:28px;
 }
 
-.stat-card{
-  background:white;
-  padding:23px;
-  border-radius:16px;
-  box-shadow:0 8px 30px rgba(33,48,90,.07);
+.subtitle{
+    color:#6d7586;
+    font-size:14px;
+    margin-bottom:25px;
 }
 
-.stat-card h3{
-  font-size:30px;
-  margin-bottom:8px;
-  color:#3157d5;
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
 }
 
-.stat-card p{
-  color:#6b7280;
+.card{
+    background:#fff;
+    border:1px solid #e5e9f0;
+    border-radius:15px;
+    padding:22px;
 }
 
-/* MODULES */
-.module-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
+.card small{
+    color:#778094;
 }
 
-.module-card{
-  background:white;
-  padding:25px;
-  border-radius:16px;
-  border:1px solid #e6eaf2;
-  transition:.2s;
-  cursor:pointer;
+.card h2{
+    margin-top:8px;
 }
 
-.module-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 15px 40px rgba(33,48,90,.12);
-  border-color:#3157d5;
+.panel{
+    background:#fff;
+    border:1px solid #e5e9f0;
+    border-radius:16px;
+    padding:25px;
+    margin-bottom:22px;
 }
 
-.module-icon{
-  font-size:35px;
-  margin-bottom:15px;
+.panel h3{
+    margin-bottom:7px;
 }
 
-.module-card h3{
-  margin-bottom:7px;
-}
-
-.module-card p{
-  color:#6b7280;
-  font-size:14px;
-}
-
-/* FORM */
-.form-card{
-  background:white;
-  padding:28px;
-  border-radius:16px;
-  box-shadow:0 8px 30px rgba(33,48,90,.07);
+.panel-desc{
+    color:#70798b;
+    font-size:13px;
+    margin-bottom:20px;
 }
 
 .form-group{
-  margin-bottom:20px;
+    margin-bottom:18px;
 }
 
 .form-group label{
-  display:block;
-  margin-bottom:8px;
-  font-weight:700;
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:7px;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select{
-  width:100%;
-  padding:13px 14px;
-  border:1px solid #dfe4ed;
-  border-radius:10px;
-  outline:none;
-  transition:.2s;
+input,
+select,
+textarea{
+    width:100%;
+    border:1px solid #dfe4ed;
+    border-radius:9px;
+    padding:12px;
+    outline:none;
+    font-size:13px;
+    background:#fff;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus{
-  border-color:#3157d5;
-  box-shadow:0 0 0 3px rgba(49,87,213,.1);
+textarea{
+    min-height:180px;
+    resize:vertical;
 }
 
-.form-group textarea{
-  min-height:220px;
-  resize:vertical;
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#3157d5;
 }
 
 .btn{
-  border:0;
-  padding:12px 20px;
-  border-radius:10px;
-  font-weight:700;
+    border:0;
+    padding:12px 18px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:13px;
 }
 
 .btn-primary{
-  background:#3157d5;
-  color:white;
+    background:#3157d5;
+    color:#fff;
 }
 
-.btn-success{
-  background:#16a34a;
-  color:white;
-}
-
-.btn-danger{
-  background:#dc3545;
-  color:white;
+.btn-primary:hover{
+    background:#2444ad;
 }
 
 .btn-secondary{
-  background:#eef1f7;
-  color:#172033;
+    background:#eef2ff;
+    color:#3157d5;
 }
 
-.btn + .btn{
-  margin-left:7px;
+.btn-danger{
+    background:#feecec;
+    color:#c62828;
 }
 
-/* LESSON LIST */
-.lesson-list{
-  display:grid;
-  gap:15px;
+.btn-success{
+    background:#eaf8ef;
+    color:#16803c;
 }
 
-.lesson-card{
-  background:white;
-  padding:22px;
-  border-radius:15px;
-  border:1px solid #e6eaf2;
+.upload-box{
+    border:2px dashed #cfd6e5;
+    border-radius:15px;
+    padding:45px 25px;
+    text-align:center;
+    background:#fafbfe;
+    cursor:pointer;
+    transition:.2s;
 }
 
-.lesson-head{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  align-items:flex-start;
+.upload-box:hover{
+    border-color:#3157d5;
+    background:#f5f7ff;
 }
 
-.lesson-card h3{
-  margin-bottom:7px;
+.upload-icon{
+    font-size:38px;
+    margin-bottom:12px;
 }
 
-.lesson-module{
-  display:inline-block;
-  padding:5px 9px;
-  background:#eef2ff;
-  color:#3157d5;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:700;
-  text-transform:capitalize;
+.upload-box h3{
+    margin-bottom:7px;
 }
 
-.badge{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:700;
+.upload-box p{
+    color:#788195;
+    font-size:13px;
 }
 
-.badge-published{
-  background:#dcfce7;
-  color:#15803d;
+#pdfFile{
+    display:none;
 }
 
-.badge-draft{
-  background:#fef3c7;
-  color:#92400e;
+.progress-wrap{
+    margin-top:20px;
+    display:none;
 }
 
-.lesson-description{
-  color:#667085;
-  margin:12px 0;
+.progress{
+    height:10px;
+    background:#e9edf4;
+    border-radius:20px;
+    overflow:hidden;
 }
 
-.lesson-actions{
-  margin-top:15px;
+.progress-bar{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#3157d5,#6c63ff);
+    transition:.2s;
 }
 
-.empty{
-  background:white;
-  padding:40px;
-  text-align:center;
-  border-radius:15px;
-  color:#667085;
+.status{
+    margin-top:9px;
+    font-size:12px;
+    color:#697386;
 }
 
-.loading{
-  background:white;
-  padding:35px;
-  text-align:center;
-  border-radius:15px;
+.module-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-top:20px;
 }
 
-
-/* CAMBRIDGE PDF IMPORT */
-.import-card{background:linear-gradient(135deg,#eef2ff,#f8f7ff);border:1px solid #dce3ff;padding:25px;border-radius:16px;margin-bottom:25px;}
-.import-card h2{margin-bottom:8px;}
-.import-card p{color:#667085;font-size:14px;margin-bottom:18px;}
-.file-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
-.file-input{background:white;border:1px dashed #b8c4e8;padding:12px;border-radius:10px;flex:1;min-width:240px;}
-.import-progress{display:none;margin-top:18px;background:white;border-radius:10px;overflow:hidden;height:10px;}
-.import-progress-bar{height:100%;width:0;background:linear-gradient(90deg,#3157d5,#6c63ff);transition:.2s;}
-.import-result{margin-top:15px;display:none;padding:15px;background:white;border-radius:10px;font-size:13px;}
-.import-result strong{color:#3157d5;}
-
-/* MOBILE */
-.mobile-menu{
-  display:none;
-}
-
-@media(max-width:900px){
-
-  .sidebar{
-    transform:translateX(-100%);
-    transition:.3s;
-    z-index:20;
-  }
-
-  .sidebar.open{
-    transform:translateX(0);
-  }
-
-  .main{
-    margin-left:0;
-    width:100%;
+.module{
+    border:1px solid #e3e7ef;
+    border-radius:13px;
     padding:18px;
-  }
-
-  .mobile-menu{
-    display:block;
-    border:0;
-    background:#3157d5;
-    color:white;
-    padding:9px 12px;
-    border-radius:8px;
-  }
-
-  .stats{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .module-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
+    background:#fafbfe;
 }
 
-@media(max-width:600px){
+.module h4{
+    margin-bottom:6px;
+}
 
-  .stats{
-    grid-template-columns:1fr;
-  }
+.module p{
+    font-size:12px;
+    color:#747d8f;
+}
 
-  .module-grid{
-    grid-template-columns:1fr;
-  }
+.module-count{
+    font-size:25px;
+    font-weight:800;
+    color:#3157d5;
+    margin:10px 0;
+}
 
-  .topbar h1{
-    font-size:19px;
-  }
+.preview{
+    background:#111827;
+    color:#e8edf7;
+    border-radius:12px;
+    padding:18px;
+    max-height:450px;
+    overflow:auto;
+    white-space:pre-wrap;
+    font-size:12px;
+    line-height:1.7;
+}
 
-  .lesson-head{
-    flex-direction:column;
-  }
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.alert{
+    padding:13px 15px;
+    border-radius:9px;
+    margin-bottom:15px;
+    font-size:13px;
+    display:none;
+}
+
+.alert.success{
+    background:#eaf8ef;
+    color:#176c35;
+}
+
+.alert.error{
+    background:#fff0f0;
+    color:#a52222;
+}
+
+.table-wrap{
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+th,td{
+    padding:12px;
+    border-bottom:1px solid #edf0f5;
+    text-align:left;
+    font-size:12px;
+}
+
+th{
+    color:#667085;
+    background:#fafbfc;
+}
+
+.status-published{
+    color:#16803c;
+    font-weight:700;
+}
+
+.status-draft{
+    color:#d98200;
+    font-weight:700;
+}
+
+@media(max-width:1000px){
+    .cards,
+    .module-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .sidebar{
+        width:210px;
+    }
+}
+
+@media(max-width:700px){
+    .layout{
+        display:block;
+    }
+
+    .sidebar{
+        width:100%;
+        display:flex;
+        overflow:auto;
+        gap:5px;
+        padding:10px;
+    }
+
+    .sidebar h4{
+        display:none;
+    }
+
+    .side-btn{
+        white-space:nowrap;
+        width:auto;
+    }
+
+    .main{
+        padding:18px;
+    }
+
+    .cards,
+    .module-grid{
+        grid-template-columns:1fr;
+    }
+
+    .header{
+        padding:0 15px;
+    }
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
 </head>
 
 <body>
 
+<header class="header">
+    <div class="logo">IELTS<span>ZONE</span> Admin</div>
+    <div class="admin-badge">ADMIN PANEL</div>
+</header>
+
 <div class="layout">
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
+<aside class="sidebar">
 
-  <div class="logo">
-    IELTS<span>ZONE</span>
-  </div>
+    <h4>Management</h4>
 
-  <div class="menu-title">Main</div>
+    <button class="side-btn active" onclick="showPage('dashboard',this)">
+        Dashboard
+    </button>
 
-  <button class="menu-btn active" onclick="showPage('dashboard',this)">
-    🏠 Dashboard
-  </button>
+    <button class="side-btn" onclick="showPage('import',this)">
+        📚 Cambridge Import
+    </button>
 
-  <div class="menu-title">Learning</div>
+    <button class="side-btn" onclick="showPage('lessons',this)">
+        📖 Lessons
+    </button>
 
-  <button class="menu-btn" onclick="openModule('listening')">
-    🎧 Listening
-  </button>
+    <button class="side-btn" onclick="showPage('vocabulary',this)">
+        📝 Vocabulary
+    </button>
 
-  <button class="menu-btn" onclick="openModule('reading')">
-    📖 Reading
-  </button>
+    <button class="side-btn" onclick="showPage('tests',this)">
+        🧪 Mock Tests
+    </button>
 
-  <button class="menu-btn" onclick="openModule('writing')">
-    ✍️ Writing
-  </button>
-
-  <button class="menu-btn" onclick="openModule('speaking')">
-    🎤 Speaking
-  </button>
-
-  <button class="menu-btn" onclick="openModule('grammar')">
-    📝 Grammar
-  </button>
-
-  <button class="menu-btn" onclick="openModule('vocabulary')">
-    📚 Vocabulary
-  </button>
-
-  <div class="menu-title">Cambridge Import</div>
-
-  <button class="menu-btn" onclick="showPage('pdfImport',this)">
-    📕 Upload Cambridge PDF
-  </button>
-
-  <div class="menu-title">Content</div>
-
-  <button class="menu-btn" onclick="showPage('lessons',this)">
-    📋 All Lessons
-  </button>
-
-  <button class="menu-btn" onclick="showPage('addLesson',this)">
-    ➕ Add Lesson
-  </button>
-
-  <button class="menu-btn logout" onclick="logout()">
-    🚪 Logout
-  </button>
+    <button class="side-btn" onclick="showPage('settings',this)">
+        ⚙ Settings
+    </button>
 
 </aside>
 
 
-<!-- MAIN -->
 <main class="main">
 
-  <div class="topbar">
-    <div>
-      <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
-      <h1 id="pageTitle">Dashboard</h1>
-    </div>
+<!-- DASHBOARD -->
 
-    <div class="status">
-      ● Supabase Connected
-    </div>
-  </div>
+<section id="dashboard" class="page active">
 
+    <h1 class="title">Dashboard</h1>
 
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="page active">
+    <p class="subtitle">
+        Manage your IELTS learning content from one place.
+    </p>
 
-    <div class="stats">
+    <div class="cards">
 
-      <div class="stat-card">
-        <h3 id="totalLessons">0</h3>
-        <p>Total Lessons</p>
-      </div>
+        <div class="card">
+            <small>Total Lessons</small>
+            <h2 id="totalLessons">0</h2>
+        </div>
 
-      <div class="stat-card">
-        <h3 id="publishedLessons">0</h3>
-        <p>Published</p>
-      </div>
+        <div class="card">
+            <small>Published Lessons</small>
+            <h2 id="publishedLessons">0</h2>
+        </div>
 
-      <div class="stat-card">
-        <h3 id="draftLessons">0</h3>
-        <p>Drafts</p>
-      </div>
+        <div class="card">
+            <small>Vocabulary</small>
+            <h2 id="totalVocabulary">0</h2>
+        </div>
 
-      <div class="stat-card">
-        <h3>6</h3>
-        <p>Learning Modules</p>
-      </div>
+        <div class="card">
+            <small>Imported Books</small>
+            <h2 id="totalBooks">0</h2>
+        </div>
 
     </div>
 
+    <div class="panel">
 
-    <h2 style="margin-bottom:18px;">Learning Modules</h2>
+        <h3>Quick Start</h3>
 
-    <div class="module-grid">
+        <p class="panel-desc">
+            Upload one complete Cambridge PDF. The system will extract the
+            content and organize it into IELTS modules.
+        </p>
 
-      <div class="module-card" onclick="openModule('listening')">
-        <div class="module-icon">🎧</div>
-        <h3>Listening</h3>
-        <p>Add and publish Listening lessons.</p>
-      </div>
-
-      <div class="module-card" onclick="openModule('reading')">
-        <div class="module-icon">📖</div>
-        <h3>Reading</h3>
-        <p>Add and publish Reading lessons.</p>
-      </div>
-
-      <div class="module-card" onclick="openModule('writing')">
-        <div class="module-icon">✍️</div>
-        <h3>Writing</h3>
-        <p>Add and publish Writing lessons.</p>
-      </div>
-
-      <div class="module-card" onclick="openModule('speaking')">
-        <div class="module-icon">🎤</div>
-        <h3>Speaking</h3>
-        <p>Add and publish Speaking lessons.</p>
-      </div>
-
-      <div class="module-card" onclick="openModule('grammar')">
-        <div class="module-icon">📝</div>
-        <h3>Grammar</h3>
-        <p>Add and publish Grammar lessons.</p>
-      </div>
-
-      <div class="module-card" onclick="openModule('vocabulary')">
-        <div class="module-icon">📚</div>
-        <h3>Vocabulary</h3>
-        <p>Add and publish Vocabulary lessons.</p>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ADD LESSON -->
-  <section id="addLesson" class="page">
-
-    <div class="form-card">
-
-      <div class="form-group">
-        <label>Lesson Title</label>
-        <input
-          type="text"
-          id="lessonTitle"
-          placeholder="Example: IELTS Listening Practice 01">
-      </div>
-
-      <div class="form-group">
-        <label>Module</label>
-
-        <select id="lessonModule">
-
-          <option value="listening">Listening</option>
-          <option value="reading">Reading</option>
-          <option value="writing">Writing</option>
-          <option value="speaking">Speaking</option>
-          <option value="grammar">Grammar</option>
-          <option value="vocabulary">Vocabulary</option>
-
-        </select>
-
-      </div>
-
-      <div class="form-group">
-        <label>Description</label>
-
-        <input
-          type="text"
-          id="lessonDescription"
-          placeholder="Short description of this lesson">
-      </div>
-
-      <div class="form-group">
-        <label>Lesson Content</label>
-
-        <textarea
-          id="lessonContent"
-          placeholder="Write your lesson here..."></textarea>
-
-      </div>
-
-      <button class="btn btn-secondary" onclick="saveLesson(false)">
-        Save Draft
-      </button>
-
-      <button class="btn btn-success" onclick="saveLesson(true)">
-        Publish Lesson
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- CAMBRIDGE PDF IMPORT -->
-  <section id="pdfImport" class="page">
-
-    <div class="import-card">
-      <h2>📕 Cambridge IELTS PDF Import</h2>
-      <p>Upload one complete Cambridge IELTS PDF. The importer will extract the text and automatically create four published module lessons: Listening, Reading, Writing and Speaking.</p>
-
-      <div class="file-row">
-        <input class="file-input" type="file" id="cambridgePdf" accept="application/pdf">
-        <button class="btn btn-primary" id="importPdfBtn" onclick="importCambridgePDF()">
-          Upload & Auto-Split
+        <button class="btn btn-primary"
+                onclick="showPage('import',document.querySelectorAll('.side-btn')[1])">
+            Import Cambridge Book
         </button>
-      </div>
 
-      <div class="import-progress" id="importProgress">
-        <div class="import-progress-bar" id="importProgressBar"></div>
-      </div>
-
-      <div class="import-result" id="importResult"></div>
     </div>
 
-    <div class="form-card">
-      <h3 style="margin-bottom:10px;">How it works</h3>
-      <p style="color:#667085;font-size:14px;line-height:1.7;">The system reads the PDF page text, detects IELTS skill headings, groups pages into the four modules, and saves each module as a published lesson. You do not need to upload four separate files.</p>
-      <p style="color:#92400e;background:#fff7ed;padding:12px;border-radius:10px;font-size:13px;margin-top:12px;">For scanned/image-only PDFs, automatic text detection may not work. A text-based PDF works best.</p>
+</section>
+
+
+<!-- IMPORT -->
+
+<section id="import" class="page">
+
+    <h1 class="title">Cambridge Book Import</h1>
+
+    <p class="subtitle">
+        Upload a text PDF or scanned/image PDF. The system will extract the
+        content automatically.
+    </p>
+
+    <div id="alertSuccess" class="alert success"></div>
+    <div id="alertError" class="alert error"></div>
+
+    <div class="panel">
+
+        <div class="upload-box"
+             onclick="document.getElementById('pdfFile').click()">
+
+            <div class="upload-icon">📄</div>
+
+            <h3>Upload Cambridge PDF</h3>
+
+            <p>
+                Click here and select your PDF file
+            </p>
+
+            <p style="margin-top:8px">
+                Text PDF + scanned/image PDF supported
+            </p>
+
+        </div>
+
+        <input
+            type="file"
+            id="pdfFile"
+            accept="application/pdf"
+            onchange="handlePDF(event)"
+        >
+
+        <div class="progress-wrap" id="progressWrap">
+
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="status" id="progressStatus">
+                Preparing...
+            </div>
+
+        </div>
+
     </div>
 
-  </section>
 
+    <div class="panel" id="bookInfoPanel" style="display:none">
 
-  <!-- ALL LESSONS -->
-  <section id="lessons" class="page">
+        <h3>Book Information</h3>
 
-    <div id="lessonList" class="lesson-list">
-      <div class="loading">Loading lessons...</div>
+        <div class="form-group">
+
+            <label>Book Name</label>
+
+            <input
+                id="bookName"
+                placeholder="Example: Cambridge IELTS 22"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Book Number</label>
+
+            <input
+                id="bookNumber"
+                placeholder="Example: 22"
+            >
+
+        </div>
+
     </div>
 
-  </section>
 
+    <div class="panel" id="modulesPanel" style="display:none">
 
-  <!-- MODULE -->
-  <section id="modulePage" class="page">
+        <h3>Detected Modules</h3>
 
-    <div id="moduleContent">
-      <div class="loading">Loading...</div>
+        <p class="panel-desc">
+            The system detected the following content.
+        </p>
+
+        <div class="module-grid">
+
+            <div class="module">
+                <h4>🎧 Listening</h4>
+                <div class="module-count" id="listeningCount">0</div>
+                <p>Detected content</p>
+            </div>
+
+            <div class="module">
+                <h4>📖 Reading</h4>
+                <div class="module-count" id="readingCount">0</div>
+                <p>Detected content</p>
+            </div>
+
+            <div class="module">
+                <h4>✍ Writing</h4>
+                <div class="module-count" id="writingCount">0</div>
+                <p>Detected content</p>
+            </div>
+
+            <div class="module">
+                <h4>🗣 Speaking</h4>
+                <div class="module-count" id="speakingCount">0</div>
+                <p>Detected content</p>
+            </div>
+
+        </div>
+
+        <div class="actions">
+
+            <button class="btn btn-secondary"
+                    onclick="showPreview()">
+                View Extracted Text
+            </button>
+
+            <button class="btn btn-success"
+                    onclick="publishBook()">
+                Publish to Website
+            </button>
+
+        </div>
+
     </div>
 
-  </section>
+
+    <div class="panel" id="previewPanel" style="display:none">
+
+        <h3>Extracted Text Preview</h3>
+
+        <p class="panel-desc">
+            Check the extracted content before publishing.
+        </p>
+
+        <div class="preview" id="textPreview"></div>
+
+    </div>
+
+</section>
+
+
+<!-- LESSONS -->
+
+<section id="lessons" class="page">
+
+    <h1 class="title">Lessons</h1>
+
+    <p class="subtitle">
+        Lessons imported from Cambridge books.
+    </p>
+
+    <div class="panel">
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Module</th>
+                        <th>Book</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="lessonTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- VOCABULARY -->
+
+<section id="vocabulary" class="page">
+
+    <h1 class="title">Vocabulary</h1>
+
+    <p class="subtitle">
+        Add vocabulary directly from the admin panel.
+    </p>
+
+    <div class="panel">
+
+        <div class="form-group">
+
+            <label>Word</label>
+
+            <input id="vocabWord"
+                   placeholder="Example: significant">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Meaning</label>
+
+            <input id="vocabMeaning"
+                   placeholder="Enter meaning">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Example Sentence</label>
+
+            <textarea id="vocabExample"
+                      placeholder="Enter example sentence"></textarea>
+
+        </div>
+
+        <button class="btn btn-primary"
+                onclick="addVocabulary()">
+            Add Vocabulary
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- TESTS -->
+
+<section id="tests" class="page">
+
+    <h1 class="title">Mock Tests</h1>
+
+    <p class="subtitle">
+        Manage IELTS mock test content.
+    </p>
+
+    <div class="panel">
+
+        <h3>Mock Test Management</h3>
+
+        <p class="panel-desc">
+            Your future Listening, Reading, Writing and Speaking test
+            system can be connected here.
+        </p>
+
+        <button class="btn btn-secondary">
+            Test Module
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="page">
+
+    <h1 class="title">Settings</h1>
+
+    <p class="subtitle">
+        Supabase connection settings.
+    </p>
+
+    <div class="panel">
+
+        <h3>Database</h3>
+
+        <p class="panel-desc">
+            The values below are used by this admin panel.
+        </p>
+
+        <div class="form-group">
+
+            <label>Supabase URL</label>
+
+            <input id="supabaseUrl"
+                   value="https://YOUR_PROJECT.supabase.co">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Supabase Publishable Key</label>
+
+            <input id="supabaseKey"
+                   value="YOUR_SUPABASE_PUBLISHABLE_KEY">
+
+        </div>
+
+        <button class="btn btn-primary"
+                onclick="saveSettings()">
+            Save Settings
+        </button>
+
+    </div>
+
+</section>
 
 </main>
 
@@ -680,714 +847,898 @@ button{
 
 <script>
 
-/* =====================================
-   SUPABASE CONFIG
-===================================== */
+let supabaseClient = null;
 
-const SUPABASE_URL =
-"https://emdhibdfjtgygtuffzkc.supabase.co";
+let extractedText = "";
 
-const SUPABASE_KEY =
-"sb_publishable_wjDEfOiEPB7Asyn2bOLNgQ_xx-Ohwpf";
+let importedBook = {
+    name:"",
+    number:"",
+    listening:"",
+    reading:"",
+    writing:"",
+    speaking:""
+};
 
 
-/* =====================================
-   SUPABASE REQUEST
-===================================== */
+/* ============================
+   SETTINGS
+============================ */
 
-async function supabaseFetch(endpoint, options = {}) {
+const savedURL = localStorage.getItem("SUPABASE_URL");
+const savedKEY = localStorage.getItem("SUPABASE_KEY");
 
-  const response = await fetch(
-    SUPABASE_URL + endpoint,
-    {
-      ...options,
+if(savedURL && savedKEY){
 
-      headers:{
-        "apikey":SUPABASE_KEY,
-        "Authorization":"Bearer " + SUPABASE_KEY,
-        "Content-Type":"application/json",
-        ...(options.headers || {})
-      }
+    document.getElementById("supabaseUrl").value = savedURL;
+    document.getElementById("supabaseKey").value = savedKEY;
+
+    initializeSupabase(savedURL,savedKEY);
+}
+
+
+function initializeSupabase(url,key){
+
+    try{
+
+        supabaseClient = window.supabase.createClient(
+            url,
+            key
+        );
+
+        console.log("Supabase connected");
+
+    }catch(error){
+
+        console.error(error);
+
     }
-  );
 
-  if(!response.ok){
-
-    const errorText = await response.text();
-
-    throw new Error(errorText || "Supabase request failed");
-  }
-
-  if(response.status === 204){
-    return null;
-  }
-
-  return await response.json();
 }
 
 
-/* =====================================
-   PAGE NAVIGATION
-===================================== */
+function saveSettings(){
 
-function showPage(pageId, button){
+    const url =
+        document.getElementById("supabaseUrl").value.trim();
 
-  document.querySelectorAll(".page")
-    .forEach(page => page.classList.remove("active"));
+    const key =
+        document.getElementById("supabaseKey").value.trim();
 
-  document.getElementById(pageId)
-    .classList.add("active");
+    if(!url || !key){
 
-  if(button){
+        showError("Please enter Supabase URL and key.");
 
-    document.querySelectorAll(".menu-btn")
-      .forEach(btn => btn.classList.remove("active"));
+        return;
+    }
 
-    button.classList.add("active");
-  }
+    localStorage.setItem("SUPABASE_URL",url);
+    localStorage.setItem("SUPABASE_KEY",key);
 
-  const titles = {
-    dashboard:"Dashboard",
-    addLesson:"Add New Lesson",
-    lessons:"All Lessons",
-    modulePage:"Learning Module",
-    pdfImport:"Cambridge PDF Import"
-  };
+    initializeSupabase(url,key);
 
-  document.getElementById("pageTitle").textContent =
-    titles[pageId] || "IELTSZONE";
+    showSuccess("Supabase connection saved successfully.");
 
-  loadStats();
-
-  document.getElementById("sidebar")
-    .classList.remove("open");
 }
 
 
-/* =====================================
-   OPEN MODULE
-===================================== */
+/* ============================
+   NAVIGATION
+============================ */
 
-function openModule(module){
+function showPage(id,button){
 
-  document.querySelectorAll(".page")
-    .forEach(page => page.classList.remove("active"));
+    document
+        .querySelectorAll(".page")
+        .forEach(page => page.classList.remove("active"));
 
-  document.getElementById("modulePage")
-    .classList.add("active");
+    document.getElementById(id).classList.add("active");
 
-  document.getElementById("pageTitle").textContent =
-    module.charAt(0).toUpperCase() + module.slice(1);
+    document
+        .querySelectorAll(".side-btn")
+        .forEach(btn => btn.classList.remove("active"));
 
-  document.querySelectorAll(".menu-btn")
-    .forEach(btn => btn.classList.remove("active"));
+    if(button){
+        button.classList.add("active");
+    }
 
-  document.getElementById("sidebar")
-    .classList.remove("open");
+    if(id === "dashboard"){
+        loadDashboard();
+    }
 
-  loadModuleLessons(module);
+    if(id === "lessons"){
+        loadLessons();
+    }
+
 }
 
 
-/* =====================================
-   LOAD MODULE LESSONS
-===================================== */
+/* ============================
+   PDF IMPORT
+============================ */
 
-async function loadModuleLessons(module){
+async function handlePDF(event){
 
-  const container =
-    document.getElementById("moduleContent");
+    const file = event.target.files[0];
 
-  container.innerHTML =
-    '<div class="loading">Loading ' + module + ' lessons...</div>';
+    if(!file){
+        return;
+    }
 
-  try{
+    if(file.type !== "application/pdf"){
 
-    const data = await supabaseFetch(
-      "/rest/v1/lessons?select=*&module=eq." +
-      encodeURIComponent(module) +
-      "&order=created_at.desc"
+        showError("Please upload a PDF file.");
+
+        return;
+    }
+
+    document.getElementById("progressWrap").style.display="block";
+
+    setProgress(
+        5,
+        "Opening PDF..."
     );
 
-    if(!data || data.length === 0){
+    try{
 
-      container.innerHTML = `
-        <div class="empty">
-          <h2>No ${module} lessons yet</h2>
-          <p style="margin:10px 0 20px;">
-            Add your first lesson for this module.
-          </p>
+        const arrayBuffer =
+            await file.arrayBuffer();
 
-          <button
-            class="btn btn-primary"
-            onclick="prepareAddLesson('${module}')">
-            ➕ Add Lesson
-          </button>
-        </div>
-      `;
+        const pdf =
+            await pdfjsLib.getDocument({
+                data:arrayBuffer
+            }).promise;
 
-      return;
-    }
+        let fullText = "";
 
-    container.innerHTML = `
-      <div class="lesson-list">
-        ${data.map(createLessonHTML).join("")}
-      </div>
-    `;
+        const maxPages = pdf.numPages;
 
-  }catch(error){
+        for(let pageNumber=1;pageNumber<=maxPages;pageNumber++){
 
-    console.error(error);
+            setProgress(
+                Math.round((pageNumber/maxPages)*60),
+                `Reading page ${pageNumber} of ${maxPages}...`
+            );
 
-    container.innerHTML = `
-      <div class="empty">
-        <h2>Unable to load lessons</h2>
-        <p style="margin-top:10px;">
-          ${escapeHTML(error.message)}
-        </p>
-      </div>
-    `;
-  }
-}
+            const page =
+                await pdf.getPage(pageNumber);
 
+            const content =
+                await page.getTextContent();
 
-/* =====================================
-   LESSON HTML
-===================================== */
+            let pageText =
+                content.items
+                .map(item => item.str)
+                .join(" ");
 
-function createLessonHTML(lesson){
+            /*
+                If almost no text was detected,
+                use OCR for the page.
+            */
 
-  const status =
-    lesson.published
-      ? `<span class="badge badge-published">Published</span>`
-      : `<span class="badge badge-draft">Draft</span>`;
+            if(pageText.trim().length < 30){
 
-  return `
+                setProgress(
+                    Math.round((pageNumber/maxPages)*60),
+                    `OCR scanning page ${pageNumber}...`
+                );
 
-    <div class="lesson-card">
+                pageText =
+                    await OCRPage(page);
 
-      <div class="lesson-head">
+            }
 
-        <div>
-          <span class="lesson-module">
-            ${escapeHTML(lesson.module)}
-          </span>
+            fullText +=
+                "\n\n===== PAGE " +
+                pageNumber +
+                " =====\n\n" +
+                pageText;
 
-          <h3 style="margin-top:10px;">
-            ${escapeHTML(lesson.title)}
-          </h3>
-        </div>
-
-        <div>
-          ${status}
-        </div>
-
-      </div>
-
-      <div class="lesson-description">
-        ${escapeHTML(lesson.description || "")}
-      </div>
-
-      <div
-        style="
-          margin-top:15px;
-          padding:15px;
-          background:#f7f9fc;
-          border-radius:10px;
-          white-space:pre-wrap;
-        "
-      >
-        ${escapeHTML(lesson.content)}
-      </div>
-
-      <div class="lesson-actions">
-
-        ${
-          lesson.published
-          ?
-          `<button
-             class="btn btn-secondary"
-             onclick="togglePublish(${lesson.id},false)">
-             Unpublish
-           </button>`
-          :
-          `<button
-             class="btn btn-success"
-             onclick="togglePublish(${lesson.id},true)">
-             Publish
-           </button>`
         }
 
-        <button
-          class="btn btn-danger"
-          onclick="deleteLesson(${lesson.id})">
-          Delete
-        </button>
+        extractedText = fullText.trim();
 
-      </div>
+        setProgress(
+            75,
+            "Analyzing IELTS modules..."
+        );
 
-    </div>
-  `;
-}
+        analyzeModules(extractedText);
 
+        document.getElementById("bookInfoPanel").style.display="block";
+        document.getElementById("modulesPanel").style.display="block";
 
-/* =====================================
-   ADD LESSON
-===================================== */
+        document.getElementById("bookName").value =
+            detectBookName(extractedText) || "";
 
-function prepareAddLesson(module){
+        document.getElementById("bookNumber").value =
+            detectBookNumber(extractedText) || "";
 
-  showPage("addLesson");
+        setProgress(
+            100,
+            "Import completed. Review before publishing."
+        );
 
-  document.getElementById("lessonModule").value =
-    module;
-}
+        showSuccess(
+            "PDF successfully processed. Check the detected modules before publishing."
+        );
 
+    }catch(error){
 
-/* =====================================
-   SAVE LESSON
-===================================== */
+        console.error(error);
 
-async function saveLesson(publish){
+        showError(
+            "PDF import failed: " + error.message
+        );
 
-  const title =
-    document.getElementById("lessonTitle")
-      .value.trim();
+        setProgress(
+            0,
+            "Import failed."
+        );
 
-  const module =
-    document.getElementById("lessonModule")
-      .value;
-
-  const description =
-    document.getElementById("lessonDescription")
-      .value.trim();
-
-  const content =
-    document.getElementById("lessonContent")
-      .value.trim();
-
-
-  if(!title){
-
-    alert("Please enter a lesson title.");
-    return;
-  }
-
-  if(!content){
-
-    alert("Please enter lesson content.");
-    return;
-  }
-
-
-  try{
-
-    const data = {
-
-      title:title,
-
-      module:module,
-
-      description:description,
-
-      content:content,
-
-      published:publish
-
-    };
-
-
-    await supabaseFetch(
-      "/rest/v1/lessons",
-      {
-        method:"POST",
-
-        headers:{
-          "Prefer":"return=minimal"
-        },
-
-        body:JSON.stringify(data)
-      }
-    );
-
-
-    alert(
-      publish
-      ? "Lesson published successfully!"
-      : "Lesson saved as draft!"
-    );
-
-
-    document.getElementById("lessonTitle").value="";
-    document.getElementById("lessonDescription").value="";
-    document.getElementById("lessonContent").value="";
-
-
-    showPage("lessons");
-
-    loadAllLessons();
-
-  }catch(error){
-
-    console.error(error);
-
-    alert(
-      "Could not save lesson.\n\n" +
-      error.message
-    );
-  }
-}
-
-
-/* =====================================
-   LOAD ALL LESSONS
-===================================== */
-
-async function loadAllLessons(){
-
-  const container =
-    document.getElementById("lessonList");
-
-  container.innerHTML =
-    '<div class="loading">Loading lessons...</div>';
-
-  try{
-
-    const data = await supabaseFetch(
-      "/rest/v1/lessons?select=*&order=created_at.desc"
-    );
-
-
-    if(!data || data.length === 0){
-
-      container.innerHTML = `
-        <div class="empty">
-          <h2>No lessons found</h2>
-          <p style="margin-top:10px;">
-            Start by adding your first lesson.
-          </p>
-        </div>
-      `;
-
-      return;
     }
 
-
-    container.innerHTML =
-      data.map(createLessonHTML).join("");
-
-
-  }catch(error){
-
-    container.innerHTML = `
-      <div class="empty">
-        <h2>Error loading lessons</h2>
-        <p>${escapeHTML(error.message)}</p>
-      </div>
-    `;
-  }
 }
 
 
-/* =====================================
-   PUBLISH / UNPUBLISH
-===================================== */
+/* ============================
+   OCR
+============================ */
 
-async function togglePublish(id,status){
+async function OCRPage(page){
 
-  try{
+    try{
 
-    await supabaseFetch(
-      "/rest/v1/lessons?id=eq." + id,
-      {
-        method:"PATCH",
+        const viewport =
+            page.getViewport({
+                scale:1.5
+            });
 
-        headers:{
-          "Prefer":"return=minimal"
-        },
+        const canvas =
+            document.createElement("canvas");
 
-        body:JSON.stringify({
-          published:status,
-          updated_at:new Date().toISOString()
-        })
-      }
-    );
+        const context =
+            canvas.getContext("2d");
 
+        canvas.width =
+            viewport.width;
 
-    alert(
-      status
-      ? "Lesson published!"
-      : "Lesson unpublished!"
-    );
+        canvas.height =
+            viewport.height;
 
+        await page.render({
+            canvasContext:context,
+            viewport:viewport
+        }).promise;
 
-    loadAllLessons();
+        const result =
+            await Tesseract.recognize(
+                canvas,
+                "eng",
+                {
+                    logger:data => {
 
-    loadStats();
+                        if(data.status === "recognizing text"){
 
+                            console.log(
+                                "OCR:",
+                                Math.round(data.progress*100)+"%"
+                            );
 
-  }catch(error){
+                        }
 
-    alert(
-      "Could not update lesson.\n\n" +
-      error.message
-    );
-  }
-}
+                    }
+                }
+            );
 
+        return result.data.text || "";
 
-/* =====================================
-   DELETE LESSON
-===================================== */
+    }catch(error){
 
-async function deleteLesson(id){
+        console.error(
+            "OCR error:",
+            error
+        );
 
-  const confirmDelete =
-    confirm(
-      "Are you sure you want to delete this lesson?"
-    );
+        return "";
 
-  if(!confirmDelete){
-    return;
-  }
-
-
-  try{
-
-    await supabaseFetch(
-      "/rest/v1/lessons?id=eq." + id,
-      {
-        method:"DELETE"
-      }
-    );
-
-
-    alert("Lesson deleted successfully!");
-
-    loadAllLessons();
-
-    loadStats();
-
-
-  }catch(error){
-
-    alert(
-      "Could not delete lesson.\n\n" +
-      error.message
-    );
-  }
-}
-
-
-/* =====================================
-   DASHBOARD STATS
-===================================== */
-
-async function loadStats(){
-
-  try{
-
-    const data = await supabaseFetch(
-      "/rest/v1/lessons?select=id,published"
-    );
-
-
-    const total = data.length;
-
-    const published =
-      data.filter(item => item.published).length;
-
-    const drafts =
-      total - published;
-
-
-    document.getElementById("totalLessons")
-      .textContent = total;
-
-    document.getElementById("publishedLessons")
-      .textContent = published;
-
-    document.getElementById("draftLessons")
-      .textContent = drafts;
-
-
-  }catch(error){
-
-    console.error(error);
-  }
-}
-
-
-/* =====================================
-   CAMBRIDGE PDF AUTO IMPORT
-===================================== */
-
-async function importCambridgePDF(){
-  const input = document.getElementById("cambridgePdf");
-  const btn = document.getElementById("importPdfBtn");
-  const result = document.getElementById("importResult");
-  const progress = document.getElementById("importProgress");
-  const bar = document.getElementById("importProgressBar");
-
-  if(!input.files || !input.files[0]){
-    alert("Please choose a Cambridge IELTS PDF first.");
-    return;
-  }
-
-  const file = input.files[0];
-  if(file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")){
-    alert("Please select a PDF file.");
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = "Processing PDF...";
-  progress.style.display = "block";
-  result.style.display = "block";
-  result.innerHTML = "Reading PDF pages...";
-  bar.style.width = "5%";
-
-  try{
-    const pdfjs = await import("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs");
-    pdfjs.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
-
-    const buffer = await file.arrayBuffer();
-    const pdf = await pdfjs.getDocument({data:buffer}).promise;
-    const pages = [];
-
-    for(let i=1;i<=pdf.numPages;i++){
-      const page = await pdf.getPage(i);
-      const textContent = await page.getTextContent();
-      const text = textContent.items.map(x => x.str).join(" ").replace(/\s+/g," ").trim();
-      pages.push({page:i,text});
-      bar.style.width = Math.max(5, Math.round((i/pdf.numPages)*70)) + "%";
-      result.innerHTML = `Reading page <strong>${i}</strong> of <strong>${pdf.numPages}</strong>...`;
     }
 
-    const groups = splitCambridgePages(pages);
-    const nonEmpty = Object.entries(groups).filter(([m,v]) => v.trim());
+}
 
-    if(nonEmpty.length < 4){
-      throw new Error("The PDF could not be confidently split into all four IELTS modules. Try a text-based Cambridge PDF with visible section headings.");
+
+/* ============================
+   MODULE DETECTION
+============================ */
+
+function analyzeModules(text){
+
+    const normalized =
+        text.toLowerCase();
+
+    const listening =
+        extractModule(
+            text,
+            [
+                "listening test",
+                "listening",
+                "section 1",
+                "section 2",
+                "section 3",
+                "section 4"
+            ]
+        );
+
+    const reading =
+        extractModule(
+            text,
+            [
+                "reading test",
+                "reading passage",
+                "reading"
+            ]
+        );
+
+    const writing =
+        extractModule(
+            text,
+            [
+                "writing test",
+                "writing task 1",
+                "writing task 2",
+                "academic writing",
+                "general training writing"
+            ]
+        );
+
+    const speaking =
+        extractModule(
+            text,
+            [
+                "speaking test",
+                "speaking part 1",
+                "speaking part 2",
+                "speaking part 3"
+            ]
+        );
+
+    importedBook.listening = listening;
+    importedBook.reading = reading;
+    importedBook.writing = writing;
+    importedBook.speaking = speaking;
+
+    document.getElementById("listeningCount").textContent =
+        listening.length > 100 ? "Detected" : "Check";
+
+    document.getElementById("readingCount").textContent =
+        reading.length > 100 ? "Detected" : "Check";
+
+    document.getElementById("writingCount").textContent =
+        writing.length > 100 ? "Detected" : "Check";
+
+    document.getElementById("speakingCount").textContent =
+        speaking.length > 100 ? "Detected" : "Check";
+
+}
+
+
+function extractModule(text,keywords){
+
+    let positions = [];
+
+    const lower =
+        text.toLowerCase();
+
+    keywords.forEach(keyword => {
+
+        let index = 0;
+
+        while(true){
+
+            index =
+                lower.indexOf(
+                    keyword.toLowerCase(),
+                    index
+                );
+
+            if(index === -1){
+                break;
+            }
+
+            positions.push(index);
+
+            index += keyword.length;
+
+        }
+
+    });
+
+    if(!positions.length){
+        return "";
     }
 
-    result.innerHTML = "Saving four modules to Supabase...";
-    bar.style.width = "80%";
+    positions.sort((a,b)=>a-b);
 
-    const bookName = file.name.replace(/\.pdf$/i,"");
-    const saved = [];
+    const start =
+        Math.max(
+            0,
+            positions[0] - 1000
+        );
 
-    for(const [module, content] of nonEmpty){
-      const payload = {
-        title: `${bookName} — ${capitalize(module)}`,
-        module,
-        description: `Imported automatically from ${bookName}.`,
-        content,
-        published: true
-      };
+    const end =
+        Math.min(
+            text.length,
+            positions[positions.length-1] + 15000
+        );
 
-      await supabaseFetch("/rest/v1/lessons",{
-        method:"POST",
-        headers:{"Prefer":"return=minimal"},
-        body:JSON.stringify(payload)
-      });
-      saved.push(module);
+    return text.substring(start,end);
+
+}
+
+
+/* ============================
+   BOOK DETECTION
+============================ */
+
+function detectBookName(text){
+
+    const match =
+        text.match(
+            /Cambridge\s+IELTS\s+\d+/i
+        );
+
+    if(match){
+        return match[0];
     }
 
-    bar.style.width = "100%";
-    result.innerHTML = `✅ Successfully imported: <strong>${saved.map(capitalize).join(", ")}</strong><br><span style="color:#667085">The four lessons are published and can now be shown on the main website.</span>`;
-    loadStats();
-    loadAllLessons();
+    return "";
 
-  }catch(error){
-    console.error(error);
-    result.innerHTML = `❌ <strong>Import failed</strong><br><span style="color:#dc3545">${escapeHTML(error.message)}</span>`;
-    bar.style.width = "0%";
-  }finally{
-    btn.disabled = false;
-    btn.textContent = "Upload & Auto-Split";
-  }
 }
 
-function splitCambridgePages(pages){
-  const groups = {listening:"",reading:"",writing:"",speaking:""};
-  let current = null;
 
-  for(const p of pages){
-    const t = p.text;
-    const lower = t.toLowerCase();
+function detectBookNumber(text){
 
-    // Strong headings/labels used by common IELTS preparation books.
-    if(/\b(listening\s+test|listening\s+section|listening\s+practice)\b/i.test(t) && !/reading/i.test(t.slice(0,120))) current="listening";
-    else if(/\b(reading\s+test|reading\s+passage|reading\s+section|academic\s+reading)\b/i.test(t)) current="reading";
-    else if(/\b(writing\s+test|writing\s+task\s*1|writing\s+task\s*2|academic\s+writing)\b/i.test(t)) current="writing";
-    else if(/\b(speaking\s+test|speaking\s+part\s*[123]|speaking\s+questions)\b/i.test(t)) current="speaking";
+    const match =
+        text.match(
+            /Cambridge\s+IELTS\s+(\d+)/i
+        );
 
-    // Also recognize table-of-contents style pages.
-    if(!current){
-      if(/^\s*listening\b/i.test(t)) current="listening";
-      else if(/^\s*reading\b/i.test(t)) current="reading";
-      else if(/^\s*writing\b/i.test(t)) current="writing";
-      else if(/^\s*speaking\b/i.test(t)) current="speaking";
+    if(match){
+        return match[1];
     }
 
-    if(current) groups[current] += `\n\n[PDF Page ${p.page}]\n${t}`;
-  }
+    return "";
 
-  return groups;
-}
-
-function capitalize(value){
-  return value.charAt(0).toUpperCase()+value.slice(1);
-}
-
-/* =====================================
-   MOBILE SIDEBAR
-===================================== */
-
-function toggleSidebar(){
-
-  document.getElementById("sidebar")
-    .classList.toggle("open");
 }
 
 
-/* =====================================
-   ESCAPE HTML
-===================================== */
+/* ============================
+   PREVIEW
+============================ */
 
-function escapeHTML(value){
+function showPreview(){
 
-  return String(value || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+    document.getElementById("previewPanel").style.display="block";
+
+    document.getElementById("textPreview").textContent =
+        extractedText || "No extracted text.";
+
+    document
+        .getElementById("previewPanel")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
 }
 
 
-/* =====================================
-   LOGOUT
-===================================== */
+/* ============================
+   PUBLISH
+============================ */
 
-function logout(){
+async function publishBook(){
 
-  localStorage.removeItem("adminLoggedIn");
+    if(!extractedText){
 
-  alert("Logged out.");
+        showError(
+            "Please upload a PDF first."
+        );
 
-  location.reload();
+        return;
+
+    }
+
+    const bookName =
+        document.getElementById("bookName").value.trim();
+
+    const bookNumber =
+        document.getElementById("bookNumber").value.trim();
+
+    if(!bookName){
+
+        showError(
+            "Please enter the book name."
+        );
+
+        return;
+
+    }
+
+    if(!supabaseClient){
+
+        showError(
+            "Supabase is not connected. Add your Supabase URL and publishable key in Settings."
+        );
+
+        return;
+
+    }
+
+    try{
+
+        setProgress(
+            85,
+            "Publishing content to database..."
+        );
+
+        const records = [
+
+            {
+                title:`${bookName} - Listening`,
+                module:"Listening",
+                book_number:bookNumber,
+                content:importedBook.listening,
+                published:true
+            },
+
+            {
+                title:`${bookName} - Reading`,
+                module:"Reading",
+                book_number:bookNumber,
+                content:importedBook.reading,
+                published:true
+            },
+
+            {
+                title:`${bookName} - Writing`,
+                module:"Writing",
+                book_number:bookNumber,
+                content:importedBook.writing,
+                published:true
+            },
+
+            {
+                title:`${bookName} - Speaking`,
+                module:"Speaking",
+                book_number:bookNumber,
+                content:importedBook.speaking,
+                published:true
+            }
+
+        ];
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from("lessons")
+            .insert(records);
+
+        if(error){
+            throw error;
+        }
+
+        setProgress(
+            100,
+            "Published successfully!"
+        );
+
+        showSuccess(
+            "Cambridge book successfully published to the main website."
+        );
+
+        await loadDashboard();
+        await loadLessons();
+
+    }catch(error){
+
+        console.error(error);
+
+        showError(
+            "Publishing failed: " + error.message
+        );
+
+    }
+
 }
 
 
-/* =====================================
-   START
-===================================== */
+/* ============================
+   VOCABULARY
+============================ */
 
-loadStats();
+async function addVocabulary(){
 
-loadAllLessons();
+    const word =
+        document.getElementById("vocabWord")
+        .value.trim();
+
+    const meaning =
+        document.getElementById("vocabMeaning")
+        .value.trim();
+
+    const example =
+        document.getElementById("vocabExample")
+        .value.trim();
+
+    if(!word || !meaning){
+
+        showError(
+            "Word and meaning are required."
+        );
+
+        return;
+
+    }
+
+    if(!supabaseClient){
+
+        showError(
+            "Supabase is not connected."
+        );
+
+        return;
+
+    }
+
+    try{
+
+        const {
+            error
+        } =
+        await supabaseClient
+            .from("vocabulary")
+            .insert([
+                {
+                    word,
+                    meaning,
+                    example,
+                    published:true
+                }
+            ]);
+
+        if(error){
+            throw error;
+        }
+
+        document.getElementById("vocabWord").value="";
+        document.getElementById("vocabMeaning").value="";
+        document.getElementById("vocabExample").value="";
+
+        showSuccess(
+            "Vocabulary added successfully."
+        );
+
+        loadDashboard();
+
+    }catch(error){
+
+        console.error(error);
+
+        showError(
+            "Vocabulary save failed: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* ============================
+   LOAD LESSONS
+============================ */
+
+async function loadLessons(){
+
+    if(!supabaseClient){
+        return;
+    }
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from("lessons")
+            .select("*")
+            .order("created_at",{
+                ascending:false
+            });
+
+        if(error){
+            throw error;
+        }
+
+        const table =
+            document.getElementById("lessonTable");
+
+        table.innerHTML="";
+
+        if(!data || !data.length){
+
+            table.innerHTML =
+                `<tr>
+                    <td colspan="4">
+                        No lessons found.
+                    </td>
+                </tr>`;
+
+            return;
+        }
+
+        data.forEach(lesson => {
+
+            table.innerHTML +=
+                `<tr>
+                    <td>${escapeHTML(lesson.title || "")}</td>
+                    <td>${escapeHTML(lesson.module || "")}</td>
+                    <td>${escapeHTML(lesson.book_number || "")}</td>
+                    <td class="${
+                        lesson.published
+                        ? "status-published"
+                        : "status-draft"
+                    }">
+                        ${
+                            lesson.published
+                            ? "Published"
+                            : "Draft"
+                        }
+                    </td>
+                </tr>`;
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ============================
+   DASHBOARD
+============================ */
+
+async function loadDashboard(){
+
+    if(!supabaseClient){
+        return;
+    }
+
+    try{
+
+        const lessons =
+            await supabaseClient
+                .from("lessons")
+                .select("id,published");
+
+        if(!lessons.error){
+
+            document.getElementById("totalLessons")
+                .textContent =
+                lessons.data.length;
+
+            document.getElementById("publishedLessons")
+                .textContent =
+                lessons.data.filter(
+                    x => x.published
+                ).length;
+
+        }
+
+
+        const vocabulary =
+            await supabaseClient
+                .from("vocabulary")
+                .select("id");
+
+        if(!vocabulary.error){
+
+            document.getElementById("totalVocabulary")
+                .textContent =
+                vocabulary.data.length;
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ============================
+   HELPERS
+============================ */
+
+function setProgress(value,message){
+
+    document.getElementById("progressBar")
+        .style.width =
+        value + "%";
+
+    document.getElementById("progressStatus")
+        .textContent =
+        message;
+
+}
+
+
+function showSuccess(message){
+
+    const box =
+        document.getElementById("alertSuccess");
+
+    box.textContent =
+        message;
+
+    box.style.display="block";
+
+    document.getElementById("alertError")
+        .style.display="none";
+
+}
+
+
+function showError(message){
+
+    const box =
+        document.getElementById("alertError");
+
+    box.textContent =
+        message;
+
+    box.style.display="block";
+
+    document.getElementById("alertSuccess")
+        .style.display="none";
+
+}
+
+
+function escapeHTML(text){
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* ============================
+   INITIAL LOAD
+============================ */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        loadDashboard();
+        loadLessons();
+
+    }
+);
 
 </script>
 

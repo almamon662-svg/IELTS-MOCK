@@ -11,97 +11,80 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
- --bg:#f4f6fb;--card:#fff;--dark:#10182c;--dark2:#18233d;
- --primary:#5367f5;--primary2:#7658f5;--text:#182033;--muted:#788196;
- --border:#e6e9f0;--green:#159447;--orange:#e58a00;--red:#d93434;
-}
+:root{--bg:#f4f6fb;--card:#fff;--dark:#10182c;--dark2:#18233d;--primary:#5367f5;--primary2:#7658f5;--text:#182033;--muted:#788196;--border:#e6e9f0;--green:#159447;--orange:#e58a00;--red:#d93434}
 body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
 button,input,textarea,select{font:inherit}button{cursor:pointer}
 .header{height:70px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:50}
 .brand{font-size:21px;font-weight:900}.brand span{color:var(--primary)}
 .header-right{display:flex;align-items:center;gap:12px}.admin-pill{padding:8px 14px;background:#eef0ff;color:var(--primary);border-radius:30px;font-size:12px;font-weight:800}
-.layout{display:flex;min-height:calc(100vh - 70px)}.sidebar{width:255px;background:var(--dark);color:white;padding:22px 14px;flex-shrink:0}
+.layout{display:flex;min-height:calc(100vh - 70px)}.sidebar{width:255px;background:var(--dark);color:#fff;padding:22px 14px;flex-shrink:0}
 .sidebar-title{color:#79849c;font-size:10px;font-weight:800;letter-spacing:1.5px;padding:12px;text-transform:uppercase}
 .nav{width:100%;border:0;background:transparent;color:#bac3d5;text-align:left;padding:13px 14px;border-radius:10px;margin:3px 0;font-size:13px;font-weight:600}
 .nav:hover,.nav.active{background:var(--dark2);color:#fff}
 .main{flex:1;padding:30px;max-width:1600px;overflow:hidden}.page{display:none}.page.active{display:block}
 .page-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:25px;gap:20px}
 .page-title{font-size:29px;font-weight:900;margin-bottom:6px}.page-subtitle{color:var(--muted);font-size:13px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:17px;margin-bottom:22px}
-.stat{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px}.stat-label{color:var(--muted);font-size:12px;font-weight:700}
-.stat-value{font-size:28px;font-weight:900;margin-top:9px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:17px;margin-bottom:22px}.stat{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px}
+.stat-label{color:var(--muted);font-size:12px;font-weight:700}.stat-value{font-size:28px;font-weight:900;margin-top:9px}
 .card{background:#fff;border:1px solid var(--border);border-radius:17px;padding:23px;margin-bottom:20px}
 .card-title{font-size:17px;font-weight:800;margin-bottom:5px}.card-sub{color:var(--muted);font-size:12px;margin-bottom:20px}
-.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.quick{border:1px solid var(--border);border-radius:14px;padding:20px;background:#fafbff;transition:.2s;cursor:pointer}
-.quick:hover{transform:translateY(-2px);border-color:#cbd2ff}.quick-icon{font-size:27px;margin-bottom:12px}
-.quick h3{font-size:14px;margin-bottom:5px}.quick p{color:var(--muted);font-size:11px}
-.module-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.module-tab{border:1px solid var(--border);background:#fff;padding:10px 15px;border-radius:9px;font-size:12px;font-weight:700}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.quick{border:1px solid var(--border);border-radius:14px;padding:20px;background:#fafbff;transition:.2s;cursor:pointer}
+.quick:hover{transform:translateY(-2px);border-color:#cbd2ff}.quick-icon{font-size:27px;margin-bottom:12px}.quick h3{font-size:14px;margin-bottom:5px}.quick p{color:var(--muted);font-size:11px}
+.module-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.module-tab{border:1px solid var(--border);background:#fff;padding:10px 15px;border-radius:9px;font-size:12px;font-weight:700}
 .module-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-.upload{border:2px dashed #cbd2e1;border-radius:17px;background:#fafbff;padding:50px 25px;text-align:center;transition:.2s}
-.upload:hover{border-color:var(--primary);background:#f7f8ff}.upload-icon{font-size:46px;margin-bottom:12px}
-.upload h2{font-size:19px;margin-bottom:7px}.upload p{color:var(--muted);font-size:12px}.file-input{display:none}
-.progress{margin-top:20px;display:none}.progress-line{height:9px;background:#e9ecf3;border-radius:20px;overflow:hidden}
-.progress-bar{width:0;height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:.2s}
+.upload{border:2px dashed #cbd2e1;border-radius:17px;background:#fafbff;padding:50px 25px;text-align:center;transition:.2s}.upload:hover{border-color:var(--primary);background:#f7f8ff}
+.upload-icon{font-size:46px;margin-bottom:12px}.upload h2{font-size:19px;margin-bottom:7px}.upload p{color:var(--muted);font-size:12px}.file-input{display:none}
+.progress{margin-top:20px;display:none}.progress-line{height:9px;background:#e9ecf3;border-radius:20px;overflow:hidden}.progress-bar{width:0;height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:.2s}
 .progress-text{margin-top:8px;color:var(--muted);font-size:11px}.import-result{display:none;margin-top:20px}
 .detect-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.detect{border:1px solid var(--border);border-radius:14px;padding:18px;background:#fafbff}
 .detect-name{font-size:13px;font-weight:800}.detect-count{color:var(--primary);font-size:25px;font-weight:900;margin-top:9px}
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.field{margin-bottom:16px}
-.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.field{margin-bottom:16px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}
 input,textarea,select{width:100%;border:1px solid #dfe3ec;background:#fff;border-radius:9px;padding:11px 12px;outline:none;font-size:12px}
 textarea{min-height:130px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:var(--primary)}
-.btn{border:0;border-radius:9px;padding:11px 16px;font-size:12px;font-weight:800}
-.primary{background:var(--primary);color:#fff}.primary:hover{background:#4355d6}
+.btn{border:0;border-radius:9px;padding:11px 16px;font-size:12px;font-weight:800}.primary{background:var(--primary);color:#fff}.primary:hover{background:#4355d6}
 .secondary{background:#eef0ff;color:var(--primary)}.success{background:#eaf8ef;color:#168442}.danger{background:#ffeded;color:var(--red)}.dark{background:#172038;color:#fff}
-.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:800px}th,td{padding:13px 11px;border-bottom:1px solid #edf0f4;font-size:12px;text-align:left}
-th{color:#687287;background:#fafbfc}.badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:800}
-.badge-published{background:#eaf8ef;color:#15813e}.badge-draft{background:#fff4dd;color:#c47700}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:800px}
+th,td{padding:13px 11px;border-bottom:1px solid #edf0f4;font-size:12px;text-align:left}th{color:#687287;background:#fafbfc}
+.badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:800}.badge-published{background:#eaf8ef;color:#15813e}.badge-draft{background:#fff4dd;color:#c47700}
 .question-card{border:1px solid var(--border);border-radius:14px;padding:17px;margin-bottom:12px;background:#fff}
-.question-top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:12px}
-.q-number{font-size:13px;font-weight:900}.q-type{color:var(--muted);font-size:10px}.q-text{font-size:13px;line-height:1.6;margin-bottom:12px;white-space:pre-wrap}
+.question-top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:12px}.q-number{font-size:13px;font-weight:900}.q-type{color:var(--muted);font-size:10px}.q-text{font-size:13px;line-height:1.6;margin-bottom:12px;white-space:pre-wrap}
 .question-actions{display:flex;gap:7px;flex-wrap:wrap}.empty{text-align:center;padding:45px;color:var(--muted);font-size:13px}
-.alert{display:none;padding:12px 14px;border-radius:10px;margin-bottom:17px;font-size:12px;font-weight:700}
-.alert.success{background:#eaf8ef;color:#176d37}.alert.error{background:#ffeded;color:#a92727}
-.modal{display:none;position:fixed;inset:0;background:rgba(10,15,30,.65);z-index:200;align-items:center;justify-content:center;padding:20px}
-.modal.show{display:flex}.modal-box{background:#fff;width:min(800px,100%);max-height:90vh;overflow:auto;border-radius:17px;padding:25px}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.close{border:0;background:#f0f2f6;width:34px;height:34px;border-radius:50%}
-.preview{background:#111827;color:#e8edf7;border-radius:12px;padding:17px;max-height:400px;overflow:auto;white-space:pre-wrap;font-size:11px;line-height:1.7}
-.type-info{padding:11px 13px;background:#f7f8ff;border:1px solid #e1e5ff;border-radius:10px;color:#5e6680;font-size:11px;margin-top:-4px;margin-bottom:16px}
-.count-pill{display:inline-block;margin-left:7px;background:#eef0ff;color:var(--primary);padding:3px 7px;border-radius:20px;font-size:10px;font-weight:800}
+.alert{display:none;padding:12px 14px;border-radius:10px;margin-bottom:17px;font-size:12px;font-weight:700}.alert.success{background:#eaf8ef;color:#176d37}.alert.error{background:#ffeded;color:#a92727}
+.modal{display:none;position:fixed;inset:0;background:rgba(10,15,30,.65);z-index:200;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}
+.modal-box{background:#fff;width:min(900px,100%);max-height:90vh;overflow:auto;border-radius:17px;padding:25px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.close{border:0;background:#f0f2f6;width:34px;height:34px;border-radius:50%}.preview{background:#111827;color:#e8edf7;border-radius:12px;padding:17px;max-height:500px;overflow:auto;white-space:pre-wrap;font-size:11px;line-height:1.7}
+.type-hint{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5}.pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.mini-pill{font-size:10px;padding:5px 8px;border-radius:15px;background:#f0f2f7;color:#596277}
 @media(max-width:1100px){.grid4,.quick-grid,.detect-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:750px){.layout{display:block}.sidebar{width:100%;display:flex;overflow:auto;padding:8px;gap:5px}.sidebar-title{display:none}.nav{white-space:nowrap;width:auto}.main{padding:18px}.grid4,.quick-grid,.detect-grid,.form-grid{grid-template-columns:1fr}.header{padding:0 15px}}
 </style>
 </head>
-
 <body>
+
 <header class="header">
- <div class="brand">IELTS<span>ZONE</span> Admin</div>
- <div class="header-right"><div class="admin-pill">CONTENT MANAGEMENT SYSTEM</div></div>
+  <div class="brand">IELTS<span>ZONE</span> Admin</div>
+  <div class="header-right"><div class="admin-pill">CONTENT MANAGEMENT SYSTEM</div></div>
 </header>
 
 <div class="layout">
 <aside class="sidebar">
- <div class="sidebar-title">Main</div>
- <button class="nav active" onclick="openPage('dashboard',this)">🏠 Dashboard</button>
- <button class="nav" onclick="openPage('books',this)">📚 Books</button>
+  <div class="sidebar-title">Main</div>
+  <button class="nav active" onclick="openPage('dashboard',this)">🏠 Dashboard</button>
+  <button class="nav" onclick="openPage('books',this)">📚 Books</button>
 
- <div class="sidebar-title">IELTS Modules</div>
- <button class="nav" onclick="openModule('Listening',this)">🎧 Listening</button>
- <button class="nav" onclick="openModule('Reading',this)">📖 Reading</button>
- <button class="nav" onclick="openModule('Writing',this)">✍️ Writing</button>
- <button class="nav" onclick="openModule('Speaking',this)">🗣️ Speaking</button>
+  <div class="sidebar-title">IELTS Modules</div>
+  <button class="nav" onclick="openModule('Listening',this)">🎧 Listening</button>
+  <button class="nav" onclick="openModule('Reading',this)">📖 Reading</button>
+  <button class="nav" onclick="openModule('Writing',this)">✍️ Writing</button>
+  <button class="nav" onclick="openModule('Speaking',this)">🗣️ Speaking</button>
 
- <div class="sidebar-title">Testing</div>
- <button class="nav" onclick="openPage('mock',this)">🧪 Mock Tests</button>
- <button class="nav" onclick="openPage('practice',this)">🎯 Practice</button>
- <button class="nav" onclick="openPage('results',this)">📊 Results</button>
- <button class="nav" onclick="openPage('vocabulary',this)">📝 Vocabulary</button>
+  <div class="sidebar-title">Testing</div>
+  <button class="nav" onclick="openPage('mock',this)">🧪 Mock Tests</button>
+  <button class="nav" onclick="openPage('practice',this)">🎯 Practice</button>
+  <button class="nav" onclick="openPage('results',this)">📊 Results</button>
+  <button class="nav" onclick="openPage('vocabulary',this)">📝 Vocabulary</button>
 
- <div class="sidebar-title">System</div>
- <button class="nav" onclick="openPage('settings',this)">⚙ Settings</button>
+  <div class="sidebar-title">System</div>
+  <button class="nav" onclick="openPage('settings',this)">⚙ Settings</button>
 </aside>
 
 <main class="main">
@@ -109,148 +92,153 @@ th{color:#687287;background:#fafbfc}.badge{display:inline-block;padding:5px 9px;
 <div id="alertError" class="alert error"></div>
 
 <section id="dashboard" class="page active">
- <div class="page-head">
-  <div><h1 class="page-title">Dashboard</h1><p class="page-subtitle">Complete IELTS content management system</p></div>
-  <button class="btn primary" onclick="openPage('import')">+ Import Cambridge Book</button>
- </div>
- <div class="grid4">
-  <div class="stat"><div class="stat-label">BOOKS</div><div class="stat-value" id="statBooks">0</div></div>
-  <div class="stat"><div class="stat-label">QUESTIONS</div><div class="stat-value" id="statQuestions">0</div></div>
-  <div class="stat"><div class="stat-label">PUBLISHED</div><div class="stat-value" id="statPublished">0</div></div>
-  <div class="stat"><div class="stat-label">VOCABULARY</div><div class="stat-value" id="statVocabulary">0</div></div>
- </div>
- <div class="card">
-  <div class="card-title">IELTS Modules</div><div class="card-sub">Each module has its own question management interface and question-type filters.</div>
-  <div class="quick-grid">
-   <div class="quick" onclick="openModule('Listening')"><div class="quick-icon">🎧</div><h3>Listening</h3><p>Sections, audio, questions & answers</p></div>
-   <div class="quick" onclick="openModule('Reading')"><div class="quick-icon">📖</div><h3>Reading</h3><p>Passages and question types</p></div>
-   <div class="quick" onclick="openModule('Writing')"><div class="quick-icon">✍️</div><h3>Writing</h3><p>Task 1, Task 2 and model answers</p></div>
-   <div class="quick" onclick="openModule('Speaking')"><div class="quick-icon">🗣️</div><h3>Speaking</h3><p>Part 1, Part 2 and Part 3</p></div>
+  <div class="page-head">
+    <div><h1 class="page-title">Dashboard</h1><p class="page-subtitle">Complete IELTS content management system</p></div>
+    <button class="btn primary" onclick="openPage('import')">+ Import Cambridge Book</button>
   </div>
- </div>
- <div class="card"><div class="card-title">Automatic Book Import</div><div class="card-sub">Upload one complete book. The system analyses the content and separates it into the appropriate IELTS modules.</div><button class="btn dark" onclick="openPage('import')">Open Cambridge Import</button></div>
+  <div class="grid4">
+    <div class="stat"><div class="stat-label">BOOKS</div><div class="stat-value" id="statBooks">0</div></div>
+    <div class="stat"><div class="stat-label">QUESTIONS</div><div class="stat-value" id="statQuestions">0</div></div>
+    <div class="stat"><div class="stat-label">PUBLISHED</div><div class="stat-value" id="statPublished">0</div></div>
+    <div class="stat"><div class="stat-label">VOCABULARY</div><div class="stat-value" id="statVocabulary">0</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">IELTS Modules</div><div class="card-sub">Each module has its own question management interface and question types.</div>
+    <div class="quick-grid">
+      <div class="quick" onclick="openModule('Listening')"><div class="quick-icon">🎧</div><h3>Listening</h3><p>Sections, audio, questions & answers</p></div>
+      <div class="quick" onclick="openModule('Reading')"><div class="quick-icon">📖</div><h3>Reading</h3><p>Passages and question types</p></div>
+      <div class="quick" onclick="openModule('Writing')"><div class="quick-icon">✍️</div><h3>Writing</h3><p>Task 1, Task 2 and model answers</p></div>
+      <div class="quick" onclick="openModule('Speaking')"><div class="quick-icon">🗣️</div><h3>Speaking</h3><p>Part 1, Part 2 and Part 3</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Automatic Book Import</div>
+    <div class="card-sub">Upload a complete scanned or text PDF. OCR and the Cambridge question-format parser will organise the questions.</div>
+    <button class="btn dark" onclick="openPage('import')">Open Cambridge Import</button>
+  </div>
 </section>
 
 <section id="books" class="page">
- <div class="page-head"><div><h1 class="page-title">Cambridge Books</h1><p class="page-subtitle">Manage imported IELTS books.</p></div><button class="btn primary" onclick="openPage('import')">+ Import Book</button></div>
- <div class="card"><div class="table-wrap"><table><thead><tr><th>Book</th><th>Number</th><th>Created</th><th>Action</th></tr></thead><tbody id="booksTable"></tbody></table></div></div>
+  <div class="page-head"><div><h1 class="page-title">Cambridge Books</h1><p class="page-subtitle">Manage imported IELTS books.</p></div><button class="btn primary" onclick="openPage('import')">+ Import Book</button></div>
+  <div class="card"><div class="table-wrap"><table><thead><tr><th>Book</th><th>Number</th><th>Created</th><th>Action</th></tr></thead><tbody id="booksTable"></tbody></table></div></div>
 </section>
 
 <section id="import" class="page">
- <div class="page-head"><div><h1 class="page-title">Automatic Cambridge Import</h1><p class="page-subtitle">Upload one complete PDF and organise its content automatically.</p></div></div>
- <div class="card">
-  <div class="upload" onclick="document.getElementById('pdfFile').click()">
-   <div class="upload-icon">📚</div><h2>Upload Cambridge IELTS Book</h2>
-   <p>Text PDF and scanned/image PDF supported</p><p style="margin-top:6px">PDF.js extracts text and OCR is used when necessary.</p>
+  <div class="page-head"><div><h1 class="page-title">Automatic Cambridge Import</h1><p class="page-subtitle">Upload a complete PDF and organise its content automatically.</p></div></div>
+  <div class="card">
+    <div class="upload" onclick="document.getElementById('pdfFile').click()">
+      <div class="upload-icon">📚</div><h2>Upload Cambridge IELTS Book</h2>
+      <p>Text PDF and scanned/image PDF supported</p>
+      <p style="margin-top:6px">Scanned books are processed with OCR. This can take several minutes.</p>
+    </div>
+    <input id="pdfFile" class="file-input" type="file" accept="application/pdf" onchange="processPDF(event)">
+    <div class="progress" id="importProgress"><div class="progress-line"><div class="progress-bar" id="progressBar"></div></div><div class="progress-text" id="progressText">Preparing...</div></div>
   </div>
-  <input id="pdfFile" class="file-input" type="file" accept="application/pdf" onchange="processPDF(event)">
-  <div class="progress" id="importProgress"><div class="progress-line"><div class="progress-bar" id="progressBar"></div></div><div class="progress-text" id="progressText">Preparing...</div></div>
- </div>
- <div class="card" id="importInfo" style="display:none">
-  <div class="card-title">Book Information</div>
-  <div class="form-grid">
-   <div class="field"><label>Book Title</label><input id="importBookTitle" placeholder="Cambridge IELTS 22"></div>
-   <div class="field"><label>Book Number</label><input id="importBookNumber" placeholder="22"></div>
+  <div class="card" id="importInfo" style="display:none">
+    <div class="card-title">Book Information</div>
+    <div class="form-grid">
+      <div class="field"><label>Book Title</label><input id="importBookTitle" placeholder="Cambridge IELTS 17"></div>
+      <div class="field"><label>Book Number</label><input id="importBookNumber" placeholder="17"></div>
+    </div>
   </div>
- </div>
- <div class="card" id="detectedCard" style="display:none">
-  <div class="card-title">Detected Content</div><div class="card-sub">Review the detected content before publishing.</div>
-  <div class="detect-grid">
-   <div class="detect"><div class="detect-name">🎧 Listening</div><div class="detect-count" id="detectListening">0</div></div>
-   <div class="detect"><div class="detect-name">📖 Reading</div><div class="detect-count" id="detectReading">0</div></div>
-   <div class="detect"><div class="detect-name">✍️ Writing</div><div class="detect-count" id="detectWriting">0</div></div>
-   <div class="detect"><div class="detect-name">🗣️ Speaking</div><div class="detect-count" id="detectSpeaking">0</div></div>
+  <div class="card" id="detectedCard" style="display:none">
+    <div class="card-title">Detected Content</div><div class="card-sub">Questions are detected from Cambridge instructions such as “Choose the correct letter”, “Complete the notes”, “Match”, and “True/False/Not Given”.</div>
+    <div class="detect-grid">
+      <div class="detect"><div class="detect-name">🎧 Listening</div><div class="detect-count" id="detectListening">0</div></div>
+      <div class="detect"><div class="detect-name">📖 Reading</div><div class="detect-count" id="detectReading">0</div></div>
+      <div class="detect"><div class="detect-name">✍️ Writing</div><div class="detect-count" id="detectWriting">0</div></div>
+      <div class="detect"><div class="detect-name">🗣️ Speaking</div><div class="detect-count" id="detectSpeaking">0</div></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn secondary" onclick="showImportedText()">View Extracted Text</button>
+      <button class="btn success" onclick="createBookAndModules()">Publish & Create Modules</button>
+    </div>
   </div>
-  <div class="btn-row"><button class="btn secondary" onclick="showImportedText()">View Extracted Text</button><button class="btn success" onclick="createBookAndModules()">Publish & Create Modules</button></div>
- </div>
 </section>
 
 <section id="modulePage" class="page">
- <div class="page-head">
-  <div><h1 class="page-title" id="moduleTitle">Listening</h1><p class="page-subtitle" id="moduleSubtitle">Manage module questions.</p></div>
-  <button class="btn primary" onclick="openQuestionEditor()">+ Add Question</button>
- </div>
-
- <div class="module-tabs">
-  <button class="module-tab" data-module="Listening" onclick="filterModule('Listening',this)">🎧 Listening</button>
-  <button class="module-tab" data-module="Reading" onclick="filterModule('Reading',this)">📖 Reading</button>
-  <button class="module-tab" data-module="Writing" onclick="filterModule('Writing',this)">✍️ Writing</button>
-  <button class="module-tab" data-module="Speaking" onclick="filterModule('Speaking',this)">🗣️ Speaking</button>
- </div>
-
- <div class="card">
-  <div class="form-grid">
-   <div class="field"><label>Book Filter</label><select id="moduleBookFilter" onchange="loadModuleQuestions()"><option value="">All Books</option></select></div>
-   <div class="field"><label>Question Type</label><select id="moduleTypeFilter" onchange="loadModuleQuestions()"></select></div>
+  <div class="page-head">
+    <div><h1 class="page-title" id="moduleTitle">Listening</h1><p class="page-subtitle" id="moduleSubtitle">Manage module questions and content.</p></div>
+    <button class="btn primary" onclick="openQuestionEditor()">+ Add Question</button>
   </div>
-  <div id="typeDescription" class="type-info">Choose a question type to see only that type.</div>
- </div>
- <div id="questionsContainer"></div>
+  <div class="module-tabs">
+    <button class="module-tab" data-module="Listening" onclick="filterModule('Listening',this)">🎧 Listening</button>
+    <button class="module-tab" data-module="Reading" onclick="filterModule('Reading',this)">📖 Reading</button>
+    <button class="module-tab" data-module="Writing" onclick="filterModule('Writing',this)">✍️ Writing</button>
+    <button class="module-tab" data-module="Speaking" onclick="filterModule('Speaking',this)">🗣️ Speaking</button>
+  </div>
+  <div class="card">
+    <div class="form-grid">
+      <div class="field"><label>Book Filter</label><select id="moduleBookFilter" onchange="loadModuleQuestions()"><option value="">All Books</option></select></div>
+      <div class="field">
+        <label>Question Type</label>
+        <select id="moduleTypeFilter" onchange="loadModuleQuestions()"></select>
+        <div class="type-hint" id="typeHint"></div>
+      </div>
+    </div>
+  </div>
+  <div id="questionsContainer"></div>
 </section>
 
 <section id="mock" class="page">
- <div class="page-head"><div><h1 class="page-title">Mock Test Builder</h1><p class="page-subtitle">Create tests from your question bank.</p></div></div>
- <div class="card">
-  <div class="form-grid">
-   <div class="field"><label>Test Title</label><input id="testTitle" placeholder="Cambridge IELTS 22 - Listening Test 1"></div>
-   <div class="field"><label>Module</label><select id="testModule"><option>Listening</option><option>Reading</option><option>Writing</option><option>Speaking</option></select></div>
+  <div class="page-head"><div><h1 class="page-title">Mock Test Builder</h1><p class="page-subtitle">Create tests from your question bank.</p></div></div>
+  <div class="card">
+    <div class="form-grid">
+      <div class="field"><label>Test Title</label><input id="testTitle" placeholder="Cambridge IELTS 17 - Listening Test 1"></div>
+      <div class="field"><label>Module</label><select id="testModule"><option>Listening</option><option>Reading</option><option>Writing</option><option>Speaking</option></select></div>
+    </div>
+    <div class="field"><label>Duration (minutes)</label><input id="testDuration" type="number" value="60"></div>
+    <button class="btn primary" onclick="createMockTest()">Create Mock Test</button>
   </div>
-  <div class="field"><label>Duration (minutes)</label><input id="testDuration" type="number" value="60"></div>
-  <button class="btn primary" onclick="createMockTest()">Create Mock Test</button>
- </div>
- <div class="card"><div class="card-title">Existing Mock Tests</div><div id="mockList"></div></div>
+  <div class="card"><div class="card-title">Existing Mock Tests</div><div id="mockList"></div></div>
 </section>
 
 <section id="practice" class="page">
- <div class="page-head"><div><h1 class="page-title">Practice</h1><p class="page-subtitle">Configure question-based practice sessions.</p></div></div>
- <div class="card"><div class="card-title">Practice Engine</div><div class="card-sub">Published questions from the four IELTS modules can be used by the student-facing practice engine.</div>
-  <div class="quick-grid">
-   <div class="quick" onclick="openModule('Listening')"><div class="quick-icon">🎧</div><h3>Listening Practice</h3><p>Published Listening questions</p></div>
-   <div class="quick" onclick="openModule('Reading')"><div class="quick-icon">📖</div><h3>Reading Practice</h3><p>Published Reading questions</p></div>
-   <div class="quick" onclick="openModule('Writing')"><div class="quick-icon">✍️</div><h3>Writing Practice</h3><p>Writing tasks</p></div>
-   <div class="quick" onclick="openModule('Speaking')"><div class="quick-icon">🗣️</div><h3>Speaking Practice</h3><p>Speaking questions</p></div>
+  <div class="page-head"><div><h1 class="page-title">Practice</h1><p class="page-subtitle">Configure question-based practice sessions.</p></div></div>
+  <div class="card"><div class="card-title">Practice Engine</div><div class="card-sub">Published questions from the four IELTS modules can be used by the student-facing practice engine.</div>
+    <div class="quick-grid">
+      <div class="quick" onclick="openModule('Listening')"><div class="quick-icon">🎧</div><h3>Listening Practice</h3><p>Published Listening questions</p></div>
+      <div class="quick" onclick="openModule('Reading')"><div class="quick-icon">📖</div><h3>Reading Practice</h3><p>Published Reading questions</p></div>
+      <div class="quick" onclick="openModule('Writing')"><div class="quick-icon">✍️</div><h3>Writing Practice</h3><p>Writing tasks</p></div>
+      <div class="quick" onclick="openModule('Speaking')"><div class="quick-icon">🗣️</div><h3>Speaking Practice</h3><p>Speaking questions</p></div>
+    </div>
   </div>
- </div>
 </section>
 
 <section id="results" class="page">
- <div class="page-head"><div><h1 class="page-title">Student Results</h1><p class="page-subtitle">Mock test performance.</p></div></div>
- <div class="card"><div class="table-wrap"><table><thead><tr><th>Test</th><th>Score</th><th>Total</th><th>Band</th><th>Completed</th></tr></thead><tbody id="resultsTable"></tbody></table></div></div>
+  <div class="page-head"><div><h1 class="page-title">Student Results</h1><p class="page-subtitle">Mock test performance.</p></div></div>
+  <div class="card"><div class="table-wrap"><table><thead><tr><th>Test</th><th>Score</th><th>Total</th><th>Band</th><th>Completed</th></tr></thead><tbody id="resultsTable"></tbody></table></div></div>
 </section>
 
 <section id="vocabulary" class="page">
- <div class="page-head"><div><h1 class="page-title">Vocabulary</h1><p class="page-subtitle">Manage IELTS vocabulary.</p></div></div>
- <div class="card">
-  <div class="form-grid">
-   <div class="field"><label>Word</label><input id="vocabWord"></div>
-   <div class="field"><label>Pronunciation</label><input id="vocabPronunciation"></div>
+  <div class="page-head"><div><h1 class="page-title">Vocabulary</h1><p class="page-subtitle">Manage IELTS vocabulary.</p></div></div>
+  <div class="card">
+    <div class="form-grid"><div class="field"><label>Word</label><input id="vocabWord"></div><div class="field"><label>Pronunciation</label><input id="vocabPronunciation"></div></div>
+    <div class="field"><label>Meaning</label><input id="vocabMeaning"></div>
+    <div class="field"><label>Example Sentence</label><textarea id="vocabExample"></textarea></div>
+    <button class="btn primary" onclick="addVocabulary()">Add Vocabulary</button>
   </div>
-  <div class="field"><label>Meaning</label><input id="vocabMeaning"></div>
-  <div class="field"><label>Example Sentence</label><textarea id="vocabExample"></textarea></div>
-  <button class="btn primary" onclick="addVocabulary()">Add Vocabulary</button>
- </div>
 </section>
 
 <section id="settings" class="page">
- <div class="page-head"><div><h1 class="page-title">Settings</h1><p class="page-subtitle">Supabase connection.</p></div></div>
- <div class="card">
-  <div class="field"><label>Supabase URL</label><input id="supabaseUrl"></div>
-  <div class="field"><label>Supabase Publishable Key</label><input id="supabaseKey"></div>
-  <button class="btn primary" onclick="saveSettings()">Save Connection</button>
- </div>
+  <div class="page-head"><div><h1 class="page-title">Settings</h1><p class="page-subtitle">Supabase connection.</p></div></div>
+  <div class="card">
+    <div class="field"><label>Supabase URL</label><input id="supabaseUrl"></div>
+    <div class="field"><label>Supabase Publishable Key</label><input id="supabaseKey"></div>
+    <button class="btn primary" onclick="saveSettings()">Save Connection</button>
+  </div>
 </section>
 </main>
 </div>
 
 <div class="modal" id="questionModal">
- <div class="modal-box">
-  <div class="modal-head"><div><h2 id="questionModalTitle">Add Question</h2></div><button class="close" onclick="closeQuestionEditor()">×</button></div>
+<div class="modal-box">
+  <div class="modal-head"><h2 id="questionModalTitle">Add Question</h2><button class="close" onclick="closeQuestionEditor()">×</button></div>
   <input type="hidden" id="editQuestionId">
   <div class="form-grid">
-   <div class="field"><label>Question Number</label><input id="questionNumber" type="number"></div>
-   <div class="field"><label>Question Type</label><select id="questionType"></select></div>
+    <div class="field"><label>Question Number</label><input id="questionNumber" type="number"></div>
+    <div class="field"><label>Question Type</label><select id="questionType"></select><div class="type-hint">The list changes automatically for the selected IELTS module.</div></div>
   </div>
-  <div class="type-info" id="editorTypeInfo"></div>
   <div class="field"><label>Question</label><textarea id="questionText"></textarea></div>
   <div class="field"><label>Passage / Context</label><textarea id="questionPassage"></textarea></div>
   <div class="field"><label>Options (JSON)</label><textarea id="questionOptions" placeholder='["A","B","C","D"]'></textarea></div>
@@ -258,21 +246,24 @@ th{color:#687287;background:#fafbfc}.badge{display:inline-block;padding:5px 9px;
   <div class="field"><label>Explanation / Feedback</label><textarea id="questionExplanation"></textarea></div>
   <div class="field"><label>Audio URL (Listening)</label><input id="questionAudio"></div>
   <div class="btn-row">
-   <button class="btn primary" onclick="saveQuestion()">Save Question</button>
-   <button class="btn success" onclick="saveQuestion(true)">Save & Publish</button>
-   <button class="btn danger" onclick="closeQuestionEditor()">Cancel</button>
+    <button class="btn primary" onclick="saveQuestion()">Save Question</button>
+    <button class="btn success" onclick="saveQuestion(true)">Save & Publish</button>
+    <button class="btn danger" onclick="closeQuestionEditor()">Cancel</button>
   </div>
- </div>
+</div>
 </div>
 
 <div class="modal" id="textModal">
- <div class="modal-box">
+<div class="modal-box">
   <div class="modal-head"><h2>Extracted PDF Text</h2><button class="close" onclick="closeTextPreview()">×</button></div>
   <div class="preview" id="fullTextPreview"></div>
- </div>
+</div>
 </div>
 
 <script>
+/* =========================
+   CONFIG
+========================= */
 let db=null;
 let extractedText="";
 let currentModule="Listening";
@@ -281,146 +272,93 @@ let importedBookData={title:"",number:"",listening:"",reading:"",writing:"",spea
 const DEFAULT_URL="https://emdhibdfjtgygtuffzkc.supabase.co";
 const DEFAULT_KEY="sb_publishable_wjDEfOiEPB7Asyn2bOLNgQ_xx-Ohwpf";
 
-/* =========================================================
-   MODULE-SPECIFIC QUESTION TYPES
-   ========================================================= */
 const MODULE_TYPES={
  Listening:[
-  ["","All Types","All Listening question types"],
-  ["Form Completion","Form Completion","Complete missing information in a form."],
-  ["Note Completion","Note Completion","Complete notes using words from the recording."],
-  ["Table Completion","Table Completion","Complete missing information in a table."],
-  ["Flow-chart Completion","Flow-chart Completion","Complete stages or steps in a process."],
-  ["Summary Completion","Summary Completion","Complete a summary from the recording."],
-  ["Sentence Completion","Sentence Completion","Complete sentences using information from the recording."],
-  ["Multiple Choice","Multiple Choice","Choose the correct answer."],
-  ["Matching","Matching","Match items, speakers, statements or information."],
-  ["Plan / Map / Diagram Labelling","Plan / Map / Diagram Labelling","Label locations or parts of a visual."],
-  ["Short Answer","Short Answer","Answer briefly using information from the recording."]
+  "Multiple Choice","Form Completion","Note Completion","Table Completion",
+  "Sentence Completion","Summary Completion","Matching","Map / Plan / Diagram Labelling",
+  "Short Answer","Other"
  ],
  Reading:[
-  ["","All Types","All Reading question types"],
-  ["Multiple Choice","Multiple Choice","Choose the correct answer."],
-  ["True False Not Given","True False Not Given","Decide whether a statement is True, False or Not Given."],
-  ["Yes No Not Given","Yes No Not Given","Decide whether the writer agrees, disagrees or gives no information."],
-  ["Matching Headings","Matching Headings","Match headings to paragraphs."],
-  ["Matching Information","Matching Information","Match information to the correct paragraph."],
-  ["Matching Features","Matching Features","Match statements or features with the correct option."],
-  ["Matching","Matching","Match items, information or sentence halves."],
-  ["Sentence Completion","Sentence Completion","Complete sentences from the passage."],
-  ["Summary Completion","Summary Completion","Complete a summary from the passage."],
-  ["Note Completion","Note Completion","Complete notes from the passage."],
-  ["Table Completion","Table Completion","Complete missing information in a table."],
-  ["Flow-chart Completion","Flow-chart Completion","Complete stages or steps in a process."],
-  ["Diagram Label Completion","Diagram Label Completion","Label a diagram using information from the passage."],
-  ["Short Answer","Short Answer","Answer questions briefly from the passage."]
+  "Multiple Choice","True / False / Not Given","Yes / No / Not Given",
+  "Matching Headings","Matching Information","Matching Features","Matching Sentence Endings",
+  "Sentence Completion","Summary Completion","Note Completion","Table Completion",
+  "Flow-chart Completion","Diagram Labelling","Short Answer","Other"
  ],
- Writing:[
-  ["","All Types","All Writing task types"],
-  ["Task 1","Task 1","IELTS Writing Task 1."],
-  ["Task 2","Task 2","IELTS Writing Task 2."]
- ],
- Speaking:[
-  ["","All Types","All Speaking question types"],
-  ["Part 1","Part 1","Speaking Part 1 questions."],
-  ["Part 2","Part 2","Speaking Part 2 cue card."],
-  ["Part 3","Part 3","Speaking Part 3 discussion questions."]
- ]
+ Writing:["Task 1","Task 2","Other"],
+ Speaking:["Part 1","Part 2","Part 3","Other"]
 };
 
-function getModuleTypeNames(module){
- return MODULE_TYPES[module].map(x=>x[0]).filter(Boolean);
-}
-function populateTypeSelect(id,module,selected=""){
- const select=document.getElementById(id);
- if(!select)return;
- select.innerHTML="";
- MODULE_TYPES[module].forEach(item=>{
-  const opt=document.createElement("option");
-  opt.value=item[0]; opt.textContent=item[1];
-  select.appendChild(opt);
- });
- const valid=[...select.options].some(o=>o.value===selected);
- select.value=valid?selected:"";
-}
-function updateTypeDescription(){
- const type=document.getElementById("moduleTypeFilter")?.value||"";
- const item=MODULE_TYPES[currentModule].find(x=>x[0]===type);
- document.getElementById("typeDescription").textContent=
-  item ? item[2] : "Choose a question type to see only that type.";
-}
-function updateEditorTypeInfo(){
- const type=document.getElementById("questionType")?.value||"";
- const item=MODULE_TYPES[currentModule].find(x=>x[0]===type);
- document.getElementById("editorTypeInfo").textContent=
-  item ? item[2] : "Select the question type that matches this question.";
-}
-
-document.addEventListener("change",e=>{
- if(e.target.id==="questionType")updateEditorTypeInfo();
- if(e.target.id==="moduleTypeFilter")updateTypeDescription();
-});
-
-/* =========================================================
-   SUPABASE
-   ========================================================= */
 function initSupabase(){
  const url=localStorage.getItem("SUPABASE_URL")||DEFAULT_URL;
  const key=localStorage.getItem("SUPABASE_KEY")||DEFAULT_KEY;
  document.getElementById("supabaseUrl").value=url;
  document.getElementById("supabaseKey").value=key;
- try{
-  db=window.supabase.createClient(url,key);
-  loadDashboard();
- }catch(e){showError(e.message);}
+ try{db=window.supabase.createClient(url,key);loadDashboard();}
+ catch(e){showError(e.message);}
 }
+
 function saveSettings(){
  const url=document.getElementById("supabaseUrl").value.trim();
  const key=document.getElementById("supabaseKey").value.trim();
  if(!url||!key){showError("Supabase URL and key are required.");return;}
- localStorage.setItem("SUPABASE_URL",url);
- localStorage.setItem("SUPABASE_KEY",key);
- initSupabase(); showSuccess("Supabase connection saved.");
+ localStorage.setItem("SUPABASE_URL",url);localStorage.setItem("SUPABASE_KEY",key);
+ initSupabase();showSuccess("Supabase connection saved.");
 }
 
-/* =========================================================
+/* =========================
    NAVIGATION
-   ========================================================= */
+========================= */
 function openPage(id,button){
  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- const page=document.getElementById(id); if(page)page.classList.add("active");
+ const page=document.getElementById(id);if(page)page.classList.add("active");
  document.querySelectorAll(".nav").forEach(b=>b.classList.remove("active"));
  if(button)button.classList.add("active");
  if(id==="dashboard")loadDashboard();
  if(id==="books")loadBooks();
  if(id==="mock")loadMockTests();
  if(id==="results")loadResults();
+ if(id==="modulePage")refreshTypeUI();
 }
-async function openModule(module,button){
+
+function openModule(module,button){
  currentModule=module;
  openPage("modulePage",button);
  document.getElementById("moduleTitle").textContent=module;
  document.getElementById("moduleSubtitle").textContent="Manage "+module+" questions and content.";
- document.querySelectorAll(".module-tab").forEach(x=>x.classList.toggle("active",x.dataset.module===module));
- populateTypeSelect("moduleTypeFilter",module,"");
- updateTypeDescription();
- await loadBookFilter();
- await loadModuleQuestions();
-}
-async function filterModule(module,button){
- currentModule=module;
- document.getElementById("moduleTitle").textContent=module;
- document.getElementById("moduleSubtitle").textContent="Manage "+module+" questions and content.";
- document.querySelectorAll(".module-tab").forEach(x=>x.classList.toggle("active",x.dataset.module===module));
- populateTypeSelect("moduleTypeFilter",module,"");
- updateTypeDescription();
- await loadBookFilter();
- await loadModuleQuestions();
+ refreshTypeUI();
+ loadBookFilter();
+ loadModuleQuestions();
 }
 
-/* =========================================================
+function refreshTypeUI(){
+ const typeSelect=document.getElementById("moduleTypeFilter");
+ const editorSelect=document.getElementById("questionType");
+ if(!typeSelect||!editorSelect)return;
+ const types=MODULE_TYPES[currentModule]||MODULE_TYPES.Listening;
+ const oldFilter=typeSelect.value;
+ typeSelect.innerHTML='<option value="">All '+currentModule+' Types</option>';
+ types.forEach(t=>typeSelect.innerHTML+=`<option value="${esc(t)}">${esc(t)}</option>`);
+ if(types.includes(oldFilter))typeSelect.value=oldFilter;
+
+ const oldEditor=editorSelect.value;
+ editorSelect.innerHTML="";
+ types.forEach(t=>editorSelect.innerHTML+=`<option value="${esc(t)}">${esc(t)}</option>`);
+ if(types.includes(oldEditor))editorSelect.value=oldEditor;
+
+ document.getElementById("typeHint").textContent=getTypeHint(currentModule);
+ document.querySelectorAll(".module-tab").forEach(x=>x.classList.toggle("active",x.dataset.module===currentModule));
+}
+
+function getTypeHint(module){
+ if(module==="Listening")return "Cambridge Listening types: completion, multiple choice, matching, map/plan/diagram labelling and short answer.";
+ if(module==="Reading")return "Cambridge Reading types: headings, information/features, MCQ, T/F/NG, Y/N/NG, completion and short answer.";
+ if(module==="Writing")return "Writing is organised into Task 1 and Task 2.";
+ return "Speaking is organised into Part 1, Part 2 and Part 3.";
+}
+
+/* =========================
    DASHBOARD
-   ========================================================= */
+========================= */
 async function loadDashboard(){
  if(!db)return;
  try{
@@ -436,145 +374,253 @@ async function loadDashboard(){
  }catch(e){console.error(e);}
 }
 
-/* =========================================================
-   PDF IMPORT
-   ========================================================= */
+/* =========================
+   PDF + OCR
+========================= */
 async function processPDF(event){
- const file=event.target.files[0]; if(!file)return;
+ const file=event.target.files[0];if(!file)return;
  if(file.type!=="application/pdf"){showError("Please select a PDF file.");return;}
  document.getElementById("importProgress").style.display="block";
- setProgress(3,"Opening PDF...");
+ setProgress(1,"Opening PDF...");
  try{
   const buffer=await file.arrayBuffer();
   const pdf=await pdfjsLib.getDocument({data:buffer}).promise;
   let full="";
   for(let i=1;i<=pdf.numPages;i++){
-   const percent=Math.round((i/pdf.numPages)*75);
-   setProgress(percent,"Reading page "+i+" of "+pdf.numPages+"...");
    const page=await pdf.getPage(i);
+   setProgress(Math.round((i/pdf.numPages)*75),"Reading page "+i+" of "+pdf.numPages+"...");
    const content=await page.getTextContent();
-   let text=content.items.map(x=>x.str).join(" ");
-   if(text.trim().length<40){setProgress(percent,"OCR scanning page "+i+"...");text=await runOCR(page);}
+   let text=content.items.map(x=>x.str).join(" ").trim();
+
+   if(text.length<80){
+    setProgress(Math.round((i/pdf.numPages)*75),"OCR scanning page "+i+" of "+pdf.numPages+"...");
+    text=await runOCR(page);
+   }
    full+="\n\n===== PAGE "+i+" =====\n\n"+text;
   }
+
   extractedText=full.trim();
-  setProgress(82,"Detecting IELTS modules...");
+  setProgress(82,"Detecting Cambridge structure...");
   importedBookData.title=detectBookTitle(extractedText)||"Cambridge IELTS Book";
   importedBookData.number=detectBookNumber(extractedText)||"";
-  ["listening","reading","writing","speaking"].forEach(name=>{
-   importedBookData[name]=extractSection(extractedText,name);
-  });
+  importedBookData.listening=extractModuleContent(extractedText,"Listening");
+  importedBookData.reading=extractModuleContent(extractedText,"Reading");
+  importedBookData.writing=extractModuleContent(extractedText,"Writing");
+  importedBookData.speaking=extractModuleContent(extractedText,"Speaking");
+
   document.getElementById("importBookTitle").value=importedBookData.title;
   document.getElementById("importBookNumber").value=importedBookData.number;
   document.getElementById("importInfo").style.display="block";
   document.getElementById("detectedCard").style.display="block";
-  document.getElementById("detectListening").textContent=countQuestions(importedBookData.listening);
-  document.getElementById("detectReading").textContent=countQuestions(importedBookData.reading);
-  document.getElementById("detectWriting").textContent=countQuestions(importedBookData.writing);
-  document.getElementById("detectSpeaking").textContent=countQuestions(importedBookData.speaking);
+
+  document.getElementById("detectListening").textContent=countParsedQuestions(importedBookData.listening,"Listening");
+  document.getElementById("detectReading").textContent=countParsedQuestions(importedBookData.reading,"Reading");
+  document.getElementById("detectWriting").textContent=countParsedQuestions(importedBookData.writing,"Writing");
+  document.getElementById("detectSpeaking").textContent=countParsedQuestions(importedBookData.speaking,"Speaking");
+
   setProgress(100,"Analysis completed. Ready to publish.");
-  showSuccess("PDF processed successfully. Review the detected content.");
+  showSuccess("PDF processed. The scanned pages were read with OCR and Cambridge question types were detected.");
  }catch(e){console.error(e);showError("PDF processing failed: "+e.message);setProgress(0,"Import failed.");}
 }
+
 async function runOCR(page){
  try{
-  const viewport=page.getViewport({scale:1.5});
+  const viewport=page.getViewport({scale:1.7});
   const canvas=document.createElement("canvas");
-  canvas.width=viewport.width;canvas.height=viewport.height;
-  const context=canvas.getContext("2d");
-  await page.render({canvasContext:context,viewport}).promise;
-  const result=await Tesseract.recognize(canvas,"eng",{logger:data=>{
-   if(data.status==="recognizing text")console.log("OCR",Math.round(data.progress*100)+"%");
+  canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
+  await page.render({canvasContext:canvas.getContext("2d"),viewport}).promise;
+  const result=await Tesseract.recognize(canvas,"eng",{logger:d=>{
+   if(d.status==="recognizing text")console.log("OCR",Math.round(d.progress*100)+"%");
   }});
   return result.data.text||"";
  }catch(e){console.error(e);return "";}
 }
-function extractSection(text,name){
- const lower=text.toLowerCase();
- const patterns={
-  listening:["listening test","listening"],
-  reading:["reading test","reading passage","reading"],
-  writing:["writing test","writing task 1","writing task 2"],
-  speaking:["speaking test","speaking part 1","speaking part 2","speaking part 3"]
- };
- let positions=[];
- for(const keyword of patterns[name]){
-  let pos=0;
-  while(true){
-   pos=lower.indexOf(keyword,pos);if(pos===-1)break;
-   positions.push(pos);pos+=keyword.length;
-  }
- }
- if(!positions.length)return "";
- positions.sort((a,b)=>a-b);
- const start=Math.max(0,positions[0]-1500);
- const end=Math.min(text.length,positions[positions.length-1]+30000);
- return text.substring(start,end);
-}
-function countQuestions(text){
- if(!text)return 0;
- const matches=text.match(/\b(?:question|questions)\s*\d+/gi);
- if(matches)return new Set(matches.map(x=>x.match(/\d+/)[0])).size;
- const nums=text.match(/\b(?:[1-9]|[1-8][0-9]|9[0-9])\b/g);
- return nums?Math.min(new Set(nums).size,40):0;
-}
+
 function detectBookTitle(text){
- const match=text.match(/Cambridge\s+IELTS\s+(?:Academic|General\s+Training\s+)?\d+/i);
- return match?match[0]:"";
+ const m=text.match(/Cambridge\s+IELTS\s+(?:Academic|General\s+Training\s+)?(?:\d{1,2})/i);
+ return m?m[0].replace(/\s+/g," ").trim():"";
 }
 function detectBookNumber(text){
- const match=text.match(/Cambridge\s+IELTS\s+(?:Academic|General\s+Training\s+)?(\d+)/i);
- return match?match[1]:"";
+ const m=text.match(/Cambridge\s+IELTS\s+(?:Academic|General\s+Training\s+)?(\d{1,2})/i);
+ return m?m[1]:"";
 }
 
-/* =========================================================
-   SMART QUESTION TYPE DETECTION
-   ========================================================= */
-function detectQuestionType(text,module){
- const s=(text||"").toLowerCase();
- if(module==="Writing"){
-  if(/task\s*1|letter|report|graph|chart|diagram|map|process/.test(s))return "Task 1";
-  if(/task\s*2|essay|discuss both|agree or disagree|advantages|disadvantages/.test(s))return "Task 2";
- }
- if(module==="Speaking"){
-  if(/part\s*3/.test(s))return "Part 3";
-  if(/part\s*2|cue card|you should say/.test(s))return "Part 2";
-  if(/part\s*1/.test(s))return "Part 1";
+/*
+  This PDF is scanned. The old parser searched for:
+  "1. question text"
+  but Cambridge OCR commonly produces:
+  "21"
+  "22"
+  "23"
+  followed by the question text and answer choices.
+  The new parser therefore detects QUESTION RANGES and type
+  instructions first, then assigns individual numbers.
+*/
+function extractModuleContent(text,module){
+ const lines=normaliseOCRLines(text);
+ if(module==="Listening"){
+  return lines.filter(x=>/listening|part\s+[1-4]\s+questions?/i.test(x)||/questions?\s+\d+\s*[-–]\s*\d+/i.test(x)).length?lines.join("\n"):"";
  }
  if(module==="Reading"){
-  if(/true\s*\/?\s*false\s*\/?\s*not\s*given|true false not given/.test(s))return "True False Not Given";
-  if(/yes\s*\/?\s*no\s*\/?\s*not\s*given|yes no not given/.test(s))return "Yes No Not Given";
-  if(/matching headings/.test(s))return "Matching Headings";
-  if(/matching information/.test(s))return "Matching Information";
-  if(/matching features/.test(s))return "Matching Features";
-  if(/sentence completion/.test(s))return "Sentence Completion";
-  if(/summary completion/.test(s))return "Summary Completion";
-  if(/note completion/.test(s))return "Note Completion";
-  if(/table completion/.test(s))return "Table Completion";
-  if(/flow.?chart completion/.test(s))return "Flow-chart Completion";
-  if(/diagram label/.test(s))return "Diagram Label Completion";
-  if(/multiple choice/.test(s))return "Multiple Choice";
-  if(/short answer/.test(s))return "Short Answer";
-  if(/matching/.test(s))return "Matching";
+  return lines.filter(x=>/reading passage|reading test|questions?\s+\d+\s*[-–]\s*\d+/i.test(x)).length?lines.join("\n"):"";
  }
- if(module==="Listening"){
-  if(/form completion/.test(s))return "Form Completion";
-  if(/note completion/.test(s))return "Note Completion";
-  if(/table completion/.test(s))return "Table Completion";
-  if(/flow.?chart completion/.test(s))return "Flow-chart Completion";
-  if(/summary completion/.test(s))return "Summary Completion";
-  if(/sentence completion/.test(s))return "Sentence Completion";
-  if(/plan|map|diagram/.test(s)&&/label/.test(s))return "Plan / Map / Diagram Labelling";
-  if(/multiple choice/.test(s))return "Multiple Choice";
-  if(/short answer/.test(s))return "Short Answer";
-  if(/matching/.test(s))return "Matching";
+ if(module==="Writing"){
+  return lines.filter(x=>/writing task|task\s+[12]|you should spend/i.test(x)).length?lines.join("\n"):"";
  }
+ if(module==="Speaking"){
+  return lines.filter(x=>/speaking|part\s+[123]/i.test(x)).length?lines.join("\n"):"";
+ }
+ return "";
+}
+
+function normaliseOCRLines(text){
+ return text.replace(/\r/g,"\n").split("\n").map(s=>s.replace(/\u00a0/g," ").replace(/[ \t]+/g," ").trim()).filter(Boolean);
+}
+
+function getQuestionRanges(text){
+ const ranges=[];
+ const re=/Questions?\s+(\d{1,2})(?:\s*(?:and|&)\s*(\d{1,2})|\s*[-–]\s*(\d{1,2}))?/gi;
+ let m;
+ while((m=re.exec(text))){
+  let start=Number(m[1]),end=start;
+  if(m[2])end=Number(m[2]);
+  if(m[3])end=Number(m[3]);
+  if(end>=start&&end-start<50)ranges.push({start,end,index:m.index,header:m[0]});
+ }
+ return ranges;
+}
+
+function classifyQuestionType(block,module){
+ const b=block.toLowerCase().replace(/\s+/g," ");
+ if(module==="Writing"){
+  if(/task\s*1/.test(b))return "Task 1";
+  if(/task\s*2/.test(b))return "Task 2";
+ }
+ if(module==="Speaking"){
+  if(/part\s*1/.test(b))return "Part 1";
+  if(/part\s*2/.test(b))return "Part 2";
+  if(/part\s*3/.test(b))return "Part 3";
+ }
+ if(/true\s*\/?\s*false\s*\/?\s*not\s*given|true\s+false\s+not\s+given/.test(b))return "True / False / Not Given";
+ if(/yes\s*\/?\s*no\s*\/?\s*not\s*given|yes\s+no\s+not\s+given/.test(b))return "Yes / No / Not Given";
+ if(/matching headings/.test(b))return "Matching Headings";
+ if(/match(?:ing)? (?:the )?information/.test(b))return "Matching Information";
+ if(/match(?:ing)? (?:the )?features|match each statement with/.test(b))return "Matching Features";
+ if(/sentence endings|match.*sentence/.test(b))return "Matching Sentence Endings";
+ if(/choose (?:the )?correct letter/.test(b))return "Multiple Choice";
+ if(/choose (?:two|three|four|five|six|seven) letters/.test(b))return "Multiple Choice";
+ if(/complete the notes/.test(b))return "Note Completion";
+ if(/complete the table/.test(b))return "Table Completion";
+ if(/complete the flow-chart|complete the flow chart/.test(b))return "Flow-chart Completion";
+ if(/complete the sentences?/.test(b))return "Sentence Completion";
+ if(/complete the summary|complete .*summary/.test(b))return "Summary Completion";
+ if(/label the map|map\/plan|map \/ plan|plan\/map|diagram/.test(b))return "Map / Plan / Diagram Labelling";
+ if(/write .*answer|short answer|no more than .* words/.test(b))return "Short Answer";
+ if(/match/.test(b))return "Matching";
  return "Other";
 }
 
-/* =========================================================
+function parseQuestions(text,moduleId,moduleName){
+ if(!text)return [];
+ const ranges=getQuestionRanges(text);
+ const records=[];
+ const used=new Set();
+
+ /*
+  First pass: range-based extraction. For each Questions X-Y block,
+  assign the detected type to each number in that range.
+ */
+ for(let r=0;r<ranges.length;r++){
+  const cur=ranges[r];
+  const next=ranges[r+1];
+  const endIndex=next?next.index:Math.min(text.length,cur.index+7000);
+  const block=text.slice(cur.index,endIndex);
+  const type=classifyQuestionType(block,moduleName);
+
+  for(let n=cur.start;n<=cur.end;n++){
+   if(used.has(n))continue;
+   const qText=extractIndividualQuestion(block,n,cur.start,cur.end);
+   records.push({
+    module_id:moduleId,
+    question_number:n,
+    question_type:type,
+    question_text:qText||("Question "+n),
+    passage_text:"",
+    options:null,
+    correct_answer:"",
+    explanation:"",
+    audio_url:"",
+    published:false
+   });
+   used.add(n);
+  }
+ }
+
+ /*
+  Second pass: standalone numbered OCR lines. This catches pages where
+  "21", "22", etc. appear on separate lines.
+ */
+ if(!records.length){
+  const lines=normaliseOCRLines(text);
+  for(let i=0;i<lines.length;i++){
+   const m=lines[i].match(/^(\d{1,2})[\.\):\-]?$/);
+   if(!m)continue;
+   const n=Number(m[1]);
+   if(n<1||n>80||used.has(n))continue;
+   let chunk="";
+   for(let j=i+1;j<Math.min(i+7,lines.length);j++){
+    if(/^\d{1,2}[\.\):\-]?$/.test(lines[j]))break;
+    if(/^questions?\s+\d+/i.test(lines[j]))break;
+    chunk+=(chunk?" ":"")+lines[j];
+   }
+   const type=classifyQuestionType(lines.slice(Math.max(0,i-8),Math.min(lines.length,i+8)).join(" "),moduleName);
+   if(chunk.length>3){
+    records.push({module_id:moduleId,question_number:n,question_type:type,question_text:chunk,passage_text:"",options:null,correct_answer:"",explanation:"",audio_url:"",published:false});
+    used.add(n);
+   }
+  }
+ }
+ return dedupeQuestionRecords(records).slice(0,200);
+}
+
+function extractIndividualQuestion(block,n,start,end){
+ const lines=normaliseOCRLines(block);
+ const idx=lines.findIndex(x=>new RegExp("^"+n+"(?:\\s|$|[\\.:\\)])").test(x)||x===String(n));
+ if(idx<0)return "";
+ let out="";
+ for(let i=idx;i<Math.min(idx+6,lines.length);i++){
+  const line=lines[i];
+  if(i>idx&&/^\d{1,2}(?:\s|$|[\.:\\)])/.test(line))break;
+  if(/^(?:A|B|C|D|E|F|G|H)[\s\._]/.test(line))break;
+  if(/^questions?\s+/i.test(line))continue;
+  if(line!==String(n))out+=(out?" ":"")+line;
+ }
+ return out.replace(/\s+/g," ").trim();
+}
+
+function dedupeQuestionRecords(records){
+ const map=new Map();
+ records.forEach(q=>{
+  const key=q.module_id+"-"+q.question_number;
+  if(!map.has(key)||map.get(key).question_text==="Question "+q.question_number)map.set(key,q);
+ });
+ return Array.from(map.values()).sort((a,b)=>a.question_number-b.question_number);
+}
+
+function countParsedQuestions(text,module){
+ return parseQuestionsPreview(text,module).length;
+}
+function parseQuestionsPreview(text,module){
+ if(!text)return [];
+ const ranges=getQuestionRanges(text);
+ const set=new Set();
+ ranges.forEach(r=>{for(let n=r.start;n<=r.end;n++)set.add(n);});
+ return Array.from(set);
+}
+
+/* =========================
    PUBLISH BOOK + MODULES
-   ========================================================= */
+========================= */
 async function createBookAndModules(){
  if(!db){showError("Supabase is not connected.");return;}
  if(!extractedText){showError("Please upload a PDF first.");return;}
@@ -585,7 +631,7 @@ async function createBookAndModules(){
  try{
   setProgress(86,"Creating book...");
   const bookResult=await db.from("books").insert({
-   title:title,book_number:number?parseInt(number):null,
+   title,book_number:number?parseInt(number):null,
    pdf_name:document.getElementById("pdfFile").files[0]?.name||null
   }).select().single();
   if(bookResult.error)throw bookResult.error;
@@ -607,60 +653,27 @@ async function createBookAndModules(){
    }
   }
   setProgress(100,"Book imported successfully.");
-  showSuccess("Book created with four separate modules and module-specific question types.");
-  loadDashboard();
+  showSuccess("Book created. Questions were organised by module and question type.");
+  await loadDashboard();
   setTimeout(()=>openModule("Listening"),700);
- }catch(e){console.error(e);showError("Publishing failed: "+e.message);}
-}
-
-/* =========================================================
-   SMART QUESTION PARSER
-   ========================================================= */
-function parseQuestions(text,moduleId,moduleName){
- if(!text)return [];
- const lines=text.split(/\n+/).map(x=>x.trim()).filter(Boolean);
- const records=[];let current=null;
-
- for(const line of lines){
-  const match=line.match(/^(?:Question\s*)?(\d{1,2})[\.\):\-]\s*(.+)$/i);
-  if(match){
-   if(current)records.push(current);
-   current={
-    module_id:moduleId,
-    question_number:parseInt(match[1]),
-    question_type:detectQuestionType(match[2],moduleName),
-    question_text:match[2],
-    passage_text:"",
-    options:null,
-    correct_answer:"",
-    explanation:"",
-    published:false
-   };
-  }else if(current){
-   current.question_text+=" "+line;
-   const newType=detectQuestionType(current.question_text,moduleName);
-   if(newType!=="Other")current.question_type=newType;
-  }
+ }catch(e){
+  console.error(e);
+  showError("Publishing failed: "+e.message);
  }
- if(current)records.push(current);
-
- const seen=new Set();
- return records.filter(x=>{
-  const key=x.question_number+"|"+x.question_text.slice(0,120);
-  if(!x.question_text||x.question_text.length<3||seen.has(key))return false;
-  seen.add(key);return true;
- }).slice(0,200);
 }
 
-/* =========================================================
+/* =========================
    TEXT PREVIEW
-   ========================================================= */
-function showImportedText(){document.getElementById("fullTextPreview").textContent=extractedText||"No text extracted.";document.getElementById("textModal").classList.add("show");}
+========================= */
+function showImportedText(){
+ document.getElementById("fullTextPreview").textContent=extractedText||"No text extracted.";
+ document.getElementById("textModal").classList.add("show");
+}
 function closeTextPreview(){document.getElementById("textModal").classList.remove("show");}
 
-/* =========================================================
+/* =========================
    BOOKS
-   ========================================================= */
+========================= */
 async function loadBooks(){
  if(!db)return;
  const result=await db.from("books").select("*").order("created_at",{ascending:false});
@@ -671,29 +684,26 @@ async function loadBooks(){
   table.innerHTML+=`<tr><td><strong>${esc(book.title)}</strong></td><td>${esc(book.book_number||"-")}</td><td>${formatDate(book.created_at)}</td><td><button class="btn secondary" onclick="openBookModules('${book.id}')">Open Modules</button></td></tr>`;
  });
 }
+
 async function openBookModules(bookId){
  if(!db)return;
- const result=await db.from("modules").select("*").eq("book_id",bookId);
+ const result=await db.from("modules").select("*").eq("book_id",bookId).order("module_name");
  if(result.error){showError(result.error.message);return;}
  if(!result.data?.length){showError("No modules found for this book.");return;}
  openModule(result.data[0].module_name);
 }
 
-/* =========================================================
-   MODULE QUESTIONS
-   IMPORTANT: book filter + question type are now combined
-   in the SAME query instead of overwriting each other.
-   ========================================================= */
+/* =========================
+   FILTERS — FIXED
+========================= */
 async function loadBookFilter(){
  if(!db)return;
  const result=await db.from("books").select("id,title").order("created_at",{ascending:false});
  const select=document.getElementById("moduleBookFilter");
- const previous=select.value;
+ const old=select.value;
  select.innerHTML='<option value="">All Books</option>';
- result.data?.forEach(book=>{
-  const opt=document.createElement("option");opt.value=book.id;opt.textContent=book.title;select.appendChild(opt);
- });
- if([...select.options].some(o=>o.value===previous))select.value=previous;
+ result.data?.forEach(book=>select.innerHTML+=`<option value="${esc(book.id)}">${esc(book.title)}</option>`);
+ if(result.data?.some(b=>b.id===old))select.value=old;
 }
 
 async function loadModuleQuestions(){
@@ -705,36 +715,39 @@ async function loadModuleQuestions(){
   const bookId=document.getElementById("moduleBookFilter").value;
   const type=document.getElementById("moduleTypeFilter").value;
 
-  /* Get only modules belonging to the selected module name. */
-  let moduleQuery=db.from("modules").select("id,book_id").eq("module_name",currentModule);
+  /*
+   IMPORTANT:
+   Do not run a second query after applying the filters.
+   The old version rebuilt the query after book filtering, which
+   silently removed the question-type filter.
+  */
+  let moduleQuery=db.from("modules").select("id").eq("module_name",currentModule);
   if(bookId)moduleQuery=moduleQuery.eq("book_id",bookId);
-
   const moduleResult=await moduleQuery;
   if(moduleResult.error)throw moduleResult.error;
 
   const moduleIds=moduleResult.data?.map(x=>x.id)||[];
   if(!moduleIds.length){
-   container.innerHTML=`<div class="card"><div class="empty">No ${currentModule} module found for the selected filter.</div></div>`;
+   container.innerHTML=`<div class="card"><div class="empty">No ${esc(currentModule)} module found for this selection.</div></div>`;
    return;
   }
 
-  /* BOTH filters are applied here. */
   let query=db.from("questions").select("*").in("module_id",moduleIds).order("question_number",{ascending:true});
   if(type)query=query.eq("question_type",type);
 
   const result=await query;
   if(result.error)throw result.error;
-  renderQuestions(result.data||[],type);
+  renderQuestions(result.data||[]);
  }catch(e){
   console.error(e);
   container.innerHTML=`<div class="card"><div class="empty">${esc(e.message)}</div></div>`;
  }
 }
 
-function renderQuestions(data,type=""){
+function renderQuestions(data){
  const container=document.getElementById("questionsContainer");
  if(!data.length){
-  container.innerHTML=`<div class="card"><div class="empty">No ${type?esc(type)+" ":""}questions found in ${esc(currentModule)}.</div></div>`;
+  container.innerHTML='<div class="card"><div class="empty">No questions found for this module and question type.</div></div>';
   return;
  }
  container.innerHTML="";
@@ -742,15 +755,12 @@ function renderQuestions(data,type=""){
   container.innerHTML+=`
    <div class="question-card">
     <div class="question-top">
-     <div>
-      <div class="q-number">Question ${q.question_number||"-"} <span class="count-pill">${esc(q.question_type||"Other")}</span></div>
-      <div class="q-type">${esc(currentModule)}</div>
-     </div>
+     <div><div class="q-number">Question ${q.question_number||"-"}</div><div class="q-type">${esc(q.question_type||"Other")}</div></div>
      <span class="badge ${q.published?"badge-published":"badge-draft"}">${q.published?"PUBLISHED":"DRAFT"}</span>
     </div>
     <div class="q-text">${esc(q.question_text||"")}</div>
     <div class="question-actions">
-     <button class="btn secondary" onclick='editQuestion(${JSON.stringify(q).replace(/'/g,"&#39;")})'>Edit</button>
+     <button class="btn secondary" onclick='editQuestion(${JSON.stringify(q)})'>Edit</button>
      <button class="btn ${q.published?"danger":"success"}" onclick="togglePublish('${q.id}',${!q.published})">${q.published?"Unpublish":"Publish"}</button>
      <button class="btn danger" onclick="deleteQuestion('${q.id}')">Delete</button>
     </div>
@@ -758,16 +768,21 @@ function renderQuestions(data,type=""){
  });
 }
 
-/* =========================================================
+/* =========================
    QUESTION EDITOR
-   ========================================================= */
+========================= */
 function openQuestionEditor(question=null){
+ refreshTypeUI();
  document.getElementById("questionModal").classList.add("show");
- populateTypeSelect("questionType",currentModule,question?.question_type||"");
+
  if(question){
-  document.getElementById("questionModalTitle").textContent="Edit "+currentModule+" Question";
+  document.getElementById("questionModalTitle").textContent="Edit Question";
   document.getElementById("editQuestionId").value=question.id;
   document.getElementById("questionNumber").value=question.question_number||"";
+  if(!(MODULE_TYPES[currentModule]||[]).includes(question.question_type)){
+   const s=document.getElementById("questionType");
+   s.innerHTML+=`<option value="${esc(question.question_type)}">${esc(question.question_type)}</option>`;
+  }
   document.getElementById("questionType").value=question.question_type||"Other";
   document.getElementById("questionText").value=question.question_text||"";
   document.getElementById("questionPassage").value=question.passage_text||"";
@@ -779,6 +794,7 @@ function openQuestionEditor(question=null){
   document.getElementById("questionModalTitle").textContent="Add "+currentModule+" Question";
   document.getElementById("editQuestionId").value="";
   document.getElementById("questionNumber").value="";
+  document.getElementById("questionType").value=(MODULE_TYPES[currentModule]||["Other"])[0];
   document.getElementById("questionText").value="";
   document.getElementById("questionPassage").value="";
   document.getElementById("questionOptions").value="";
@@ -786,7 +802,6 @@ function openQuestionEditor(question=null){
   document.getElementById("questionExplanation").value="";
   document.getElementById("questionAudio").value="";
  }
- updateEditorTypeInfo();
 }
 function editQuestion(q){openQuestionEditor(q);}
 function closeQuestionEditor(){document.getElementById("questionModal").classList.remove("show");}
@@ -802,33 +817,26 @@ async function saveQuestion(publish=false){
  const explanation=document.getElementById("questionExplanation").value.trim();
  const audio=document.getElementById("questionAudio").value.trim();
  let options=null;
- const rawOptions=document.getElementById("questionOptions").value.trim();
- if(rawOptions){
-  try{options=JSON.parse(rawOptions);}catch(e){showError("Options must contain valid JSON.");return;}
- }
+ const raw=document.getElementById("questionOptions").value.trim();
+
+ if(raw){try{options=JSON.parse(raw);}catch(e){showError("Options must contain valid JSON.");return;}}
  if(!text){showError("Question text is required.");return;}
 
  try{
   let moduleId=null;
   if(!id){
-   /* Prefer selected book if one is selected. */
-   let moduleQuery=db.from("modules").select("id").eq("module_name",currentModule);
-   const selectedBook=document.getElementById("moduleBookFilter").value;
-   if(selectedBook)moduleQuery=moduleQuery.eq("book_id",selectedBook);
-   const moduleResult=await moduleQuery.limit(1).single();
-   if(moduleResult.error)throw moduleResult.error;
-   moduleId=moduleResult.data.id;
+   let mq=db.from("modules").select("id").eq("module_name",currentModule).limit(1);
+   const bookId=document.getElementById("moduleBookFilter").value;
+   if(bookId)mq=mq.eq("book_id",bookId);
+   const mr=await mq.single();
+   if(mr.error)throw mr.error;
+   moduleId=mr.data.id;
   }
+
   const payload={
    question_number:Number.isFinite(number)?number:null,
-   question_type:type||"Other",
-   question_text:text,
-   passage_text:passage,
-   options:options,
-   correct_answer:correct,
-   explanation:explanation,
-   audio_url:audio,
-   published:publish
+   question_type:type,question_text:text,passage_text:passage,
+   options,correct_answer:correct,explanation,audio_url:audio,published:publish
   };
   let result;
   if(id)result=await db.from("questions").update(payload).eq("id",id);
@@ -836,7 +844,7 @@ async function saveQuestion(publish=false){
   if(result.error)throw result.error;
   closeQuestionEditor();
   showSuccess(publish?"Question saved and published.":"Question saved successfully.");
-  await loadModuleQuestions();loadDashboard();
+  loadModuleQuestions();loadDashboard();
  }catch(e){console.error(e);showError("Question save failed: "+e.message);}
 }
 
@@ -854,16 +862,16 @@ async function deleteQuestion(id){
  showSuccess("Question deleted.");loadModuleQuestions();loadDashboard();
 }
 
-/* =========================================================
-   MOCK TESTS
-   ========================================================= */
+/* =========================
+   MOCK / RESULTS / VOCAB
+========================= */
 async function createMockTest(){
  if(!db){showError("Supabase is not connected.");return;}
  const title=document.getElementById("testTitle").value.trim();
  const module=document.getElementById("testModule").value;
  const duration=parseInt(document.getElementById("testDuration").value);
  if(!title){showError("Test title is required.");return;}
- const result=await db.from("practice_tests").insert({title:title,module_name:module,duration_minutes:duration||60,published:false});
+ const result=await db.from("practice_tests").insert({title,module_name:module,duration_minutes:duration||60,published:false});
  if(result.error){showError(result.error.message);return;}
  document.getElementById("testTitle").value="";showSuccess("Mock test created.");loadMockTests();
 }
@@ -873,26 +881,16 @@ async function loadMockTests(){
  const box=document.getElementById("mockList");box.innerHTML="";
  if(result.error){box.innerHTML=`<div class="empty">${esc(result.error.message)}</div>`;return;}
  if(!result.data?.length){box.innerHTML='<div class="empty">No mock tests created yet.</div>';return;}
- result.data.forEach(test=>{
-  box.innerHTML+=`<div class="question-card"><div class="question-top"><div><div class="q-number">${esc(test.title)}</div><div class="q-type">${esc(test.module_name||"")} · ${test.duration_minutes||0} minutes</div></div><span class="badge ${test.published?"badge-published":"badge-draft"}">${test.published?"PUBLISHED":"DRAFT"}</span></div></div>`;
- });
+ result.data.forEach(test=>box.innerHTML+=`<div class="question-card"><div class="question-top"><div><div class="q-number">${esc(test.title)}</div><div class="q-type">${esc(test.module_name||"")} · ${test.duration_minutes||0} minutes</div></div><span class="badge ${test.published?"badge-published":"badge-draft"}">${test.published?"PUBLISHED":"DRAFT"}</span></div></div>`);
 }
-
-/* =========================================================
-   RESULTS
-   ========================================================= */
 async function loadResults(){
  if(!db)return;
  const result=await db.from("test_results").select("*").order("completed_at",{ascending:false});
  const table=document.getElementById("resultsTable");table.innerHTML="";
  if(result.error){table.innerHTML=`<tr><td colspan="5">${esc(result.error.message)}</td></tr>`;return;}
  if(!result.data?.length){table.innerHTML='<tr><td colspan="5">No results yet.</td></tr>';return;}
- result.data.forEach(x=>{table.innerHTML+=`<tr><td>${esc(x.test_id||"-")}</td><td>${x.score||0}</td><td>${x.total_marks||0}</td><td>${x.band_score||"-"}</td><td>${formatDate(x.completed_at)}</td></tr>`;});
+ result.data.forEach(x=>table.innerHTML+=`<tr><td>${esc(x.test_id||"-")}</td><td>${x.score||0}</td><td>${x.total_marks||0}</td><td>${x.band_score||"-"}</td><td>${formatDate(x.completed_at)}</td></tr>`);
 }
-
-/* =========================================================
-   VOCABULARY
-   ========================================================= */
 async function addVocabulary(){
  if(!db){showError("Supabase is not connected.");return;}
  const word=document.getElementById("vocabWord").value.trim();
@@ -906,20 +904,22 @@ async function addVocabulary(){
  showSuccess("Vocabulary added successfully.");loadDashboard();
 }
 
-/* =========================================================
+/* =========================
    HELPERS
-   ========================================================= */
+========================= */
+function filterModule(module,button){
+ currentModule=module;
+ document.getElementById("moduleTitle").textContent=module;
+ document.getElementById("moduleSubtitle").textContent="Manage "+module+" questions and content.";
+ refreshTypeUI();loadBookFilter();loadModuleQuestions();
+}
 function setProgress(value,text){document.getElementById("progressBar").style.width=value+"%";document.getElementById("progressText").textContent=text;}
 function showSuccess(message){const box=document.getElementById("alertSuccess");box.textContent=message;box.style.display="block";document.getElementById("alertError").style.display="none";setTimeout(()=>box.style.display="none",5000);}
 function showError(message){const box=document.getElementById("alertError");box.textContent=message;box.style.display="block";document.getElementById("alertSuccess").style.display="none";}
 function esc(value){return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
 function formatDate(value){if(!value)return "-";try{return new Date(value).toLocaleDateString();}catch(e){return "-";}}
 
-window.addEventListener("load",()=>{
- initSupabase();
- populateTypeSelect("moduleTypeFilter","Listening","");
- updateTypeDescription();
-});
+window.addEventListener("load",()=>{refreshTypeUI();initSupabase();});
 </script>
 </body>
 </html>

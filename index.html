@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1346,402 +1346,219 @@ Learn • Practice • Improve
 
 
 <script>
+/* =====================================================
+   IELTS ZONE - MAIN WEBSITE FUNCTIONALITY
+   Supabase published lessons + Vocabulary + Mock feedback
+===================================================== */
 
-/* ==========================================
-   SUPABASE
-========================================== */
-
-const SUPABASE_URL =
-"https://emdhibdfjtgygtuffzkc.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_wjDEfOiEPB7Asyn2bOLNgQ_xx-Ohwpf";
-
-
-/* ==========================================
-   MOBILE MENU
-========================================== */
-
-const menuButton =
-document.getElementById("menuButton");
-
-const navLinks =
-document.getElementById("navLinks");
-
-menuButton.addEventListener("click",function(){
-
-    navLinks.classList.toggle("active");
-
-});
-
-
-/* ==========================================
-   MODULE INFORMATION
-========================================== */
+const SUPABASE_URL = "https://emdhibdfjtgygtuffzkc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_wjDEfOiEPB7Asyn2bOLNgQ_xx-Ohwpf";
 
 const moduleInfo = {
-
-    vocabulary:{
-        title:"IELTS Vocabulary",
-        label:"VOCABULARY",
-        description:
-        "Learn useful IELTS words, meanings, examples and synonyms."
-    },
-
-    listening:{
-        title:"IELTS Listening",
-        label:"LISTENING",
-        description:
-        "Improve your listening skills with IELTS-focused lessons."
-    },
-
-    reading:{
-        title:"IELTS Reading",
-        label:"READING",
-        description:
-        "Practice reading passages and develop effective strategies."
-    },
-
-    writing:{
-        title:"IELTS Writing",
-        label:"WRITING",
-        description:
-        "Improve your Task 1 and Task 2 writing skills."
-    },
-
-    speaking:{
-        title:"IELTS Speaking",
-        label:"SPEAKING",
-        description:
-        "Practice Part 1, Part 2 and Part 3 speaking topics."
-    },
-
-    mock:{
-        title:"IELTS Mock Tests",
-        label:"MOCK TESTS",
-        description:
-        "Test your IELTS skills with realistic practice tests."
-    },
-
-    grammar:{
-        title:"IELTS Grammar",
-        label:"GRAMMAR",
-        description:
-        "Improve your grammar with practical IELTS exercises."
-    }
-
+  vocabulary:{title:"IELTS Vocabulary",label:"VOCABULARY",description:"Learn useful IELTS words, meanings, examples and synonyms."},
+  listening:{title:"IELTS Listening",label:"LISTENING",description:"Improve your listening skills with IELTS-focused lessons."},
+  reading:{title:"IELTS Reading",label:"READING",description:"Practice reading passages and develop effective strategies."},
+  writing:{title:"IELTS Writing",label:"WRITING",description:"Improve your Task 1 and Task 2 writing skills."},
+  speaking:{title:"IELTS Speaking",label:"SPEAKING",description:"Practice Part 1, Part 2 and Part 3 speaking topics."},
+  grammar:{title:"IELTS Grammar",label:"GRAMMAR",description:"Improve your grammar with practical IELTS exercises."},
+  mock:{title:"IELTS Mock Tests",label:"MOCK TESTS",description:"Take a quick IELTS-style test and receive instant feedback."}
 };
 
-
-/* ==========================================
-   OPEN MODULE
-========================================== */
-
-async function openModule(module){
-
-    const info =
-        moduleInfo[module];
-
-    if(!info) return;
-
-
-    document
-        .getElementById("modules")
-        .style.display="none";
-
-
-    document
-        .getElementById("contentView")
-        .classList.add("active");
-
-
-    document
-        .getElementById("moduleLabel")
-        .textContent=info.label;
-
-
-    document
-        .getElementById("moduleTitle")
-        .textContent=info.title;
-
-
-    document
-        .getElementById("moduleDescription")
-        .textContent=info.description;
-
-
-    const container =
-        document.getElementById("lessonContainer");
-
-
-    container.innerHTML=`
-        <div class="empty">
-            <div class="empty-icon">⏳</div>
-            <p>Loading lessons...</p>
-        </div>
-    `;
-
-
-    document
-        .getElementById("contentView")
-        .scrollIntoView({
-            behavior:"smooth"
-        });
-
-
-    if(module==="vocabulary"){
-
-        await loadVocabulary();
-
-    }else{
-
-        showComingSoon(module);
-
-    }
-
-}
-
-
-/* ==========================================
-   CLOSE MODULE
-========================================== */
-
-function closeModule(){
-
-    document
-        .getElementById("contentView")
-        .classList.remove("active");
-
-
-    document
-        .getElementById("modules")
-        .style.display="block";
-
-
-    document
-        .getElementById("modules")
-        .scrollIntoView({
-            behavior:"smooth"
-        });
-
-}
-
-
-/* ==========================================
-   LOAD VOCABULARY
-========================================== */
-
-async function loadVocabulary(){
-
-    const container =
-        document.getElementById("lessonContainer");
-
-
-    try{
-
-        const response =
-            await fetch(
-
-                SUPABASE_URL +
-                "/rest/v1/vocabulary" +
-                "?select=*" +
-                "&published=eq.true" +
-                "&order=created_at.desc",
-
-                {
-                    method:"GET",
-
-                    headers:{
-                        "apikey":SUPABASE_KEY,
-                        "Content-Type":
-                        "application/json"
-                    }
-                }
-
-            );
-
-
-        if(!response.ok){
-
-            throw new Error(
-                "Unable to load vocabulary"
-            );
-
-        }
-
-
-        const words =
-            await response.json();
-
-
-        if(!words.length){
-
-            container.innerHTML=`
-                <div class="empty">
-
-                    <div class="empty-icon">
-                        📚
-                    </div>
-
-                    <h3>
-                        No published vocabulary yet
-                    </h3>
-
-                    <p>
-                        New vocabulary lessons will appear here
-                        after the admin publishes them.
-                    </p>
-
-                </div>
-            `;
-
-            return;
-
-        }
-
-
-        container.innerHTML="";
-
-
-        words.forEach(function(word){
-
-            const card =
-                document.createElement("div");
-
-            card.className="lesson-card";
-
-
-            card.innerHTML=`
-
-                <h3>
-                    ${escapeHTML(word.word)}
-                </h3>
-
-                <p>
-                    <strong>Meaning:</strong>
-                    ${escapeHTML(word.meaning)}
-                </p>
-
-                ${
-                    word.example
-                    ?
-                    `
-                    <div class="lesson-example">
-                        <strong>Example:</strong><br>
-                        ${escapeHTML(word.example)}
-                    </div>
-                    `
-                    :
-                    ""
-                }
-
-                ${
-                    word.synonyms
-                    ?
-                    `
-                    <p style="
-                        margin-top:12px;
-                        color:#3157d5;
-                        font-size:13px;
-                    ">
-                        <strong>Synonyms:</strong>
-                        ${escapeHTML(word.synonyms)}
-                    </p>
-                    `
-                    :
-                    ""
-                }
-
-            `;
-
-
-            container.appendChild(card);
-
-        });
-
-
-    }catch(error){
-
-        console.error(error);
-
-
-        container.innerHTML=`
-            <div class="empty">
-
-                <div class="empty-icon">
-                    ⚠️
-                </div>
-
-                <h3>
-                    Unable to load vocabulary
-                </h3>
-
-                <p>
-                    Please try again later.
-                </p>
-
-            </div>
-        `;
-
-    }
-
-}
-
-
-/* ==========================================
-   OTHER MODULES
-========================================== */
-
-function showComingSoon(module){
-
-    const container =
-        document.getElementById("lessonContainer");
-
-    const info =
-        moduleInfo[module];
-
-
-    container.innerHTML=`
-
-        <div class="empty">
-
-            <div class="empty-icon">
-                🚀
-            </div>
-
-            <h3>
-                ${info.title} is coming soon
-            </h3>
-
-            <p>
-                Lessons for this module will appear here
-                when they are published by the admin.
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-
-/* ==========================================
-   SECURITY
-========================================== */
+const menuButton=document.getElementById("menuButton");
+const navLinks=document.getElementById("navLinks");
+if(menuButton) menuButton.addEventListener("click",()=>navLinks.classList.toggle("active"));
+
+document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click",()=>navLinks.classList.remove("active")));
 
 function escapeHTML(value){
-
-    return String(value || "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
+  return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");
 }
 
+async function supabaseFetch(path, options={}){
+  const response=await fetch(SUPABASE_URL+path,{
+    ...options,
+    headers:{
+      apikey:SUPABASE_KEY,
+      Authorization:"Bearer "+SUPABASE_KEY,
+      "Content-Type":"application/json",
+      ...(options.headers||{})
+    }
+  });
+  if(!response.ok){
+    const text=await response.text();
+    throw new Error(text||"Supabase request failed");
+  }
+  return response.status===204?null:response.json();
+}
+
+async function openModule(module){
+  const info=moduleInfo[module];
+  if(!info)return;
+  const modules=document.getElementById("modules");
+  const view=document.getElementById("contentView");
+  modules.style.display="none";
+  view.classList.add("active");
+  document.getElementById("moduleLabel").textContent=info.label;
+  document.getElementById("moduleTitle").textContent=info.title;
+  document.getElementById("moduleDescription").textContent=info.description;
+  const container=document.getElementById("lessonContainer");
+  container.innerHTML='<div class="empty"><div class="empty-icon">⏳</div><p>Loading...</p></div>';
+  view.scrollIntoView({behavior:"smooth"});
+
+  if(module==="mock"){
+    renderMockTest();
+    return;
+  }
+  if(module==="vocabulary"){
+    await loadVocabulary();
+  }else{
+    await loadLessons(module);
+  }
+}
+
+function closeModule(){
+  document.getElementById("contentView").classList.remove("active");
+  document.getElementById("modules").style.display="block";
+  document.getElementById("modules").scrollIntoView({behavior:"smooth"});
+}
+
+async function loadVocabulary(){
+  const container=document.getElementById("lessonContainer");
+  try{
+    const words=await supabaseFetch("/rest/v1/vocabulary?select=*&published=eq.true&order=created_at.desc");
+    if(!words.length){
+      container.innerHTML=`<div class="empty"><div class="empty-icon">📚</div><h3>No published vocabulary yet</h3><p>New vocabulary will appear here after the admin publishes it.</p></div>`;
+      return;
+    }
+    container.innerHTML=words.map(word=>`
+      <article class="lesson-card">
+        <h3>${escapeHTML(word.word)}</h3>
+        <p><strong>Meaning:</strong> ${escapeHTML(word.meaning)}</p>
+        ${word.example?`<div class="lesson-example"><strong>Example:</strong><br>${escapeHTML(word.example)}</div>`:""}
+        ${word.synonyms?`<p style="margin-top:12px;color:#3157d5;font-size:13px"><strong>Synonyms:</strong> ${escapeHTML(word.synonyms)}</p>`:""}
+      </article>`).join("");
+  }catch(error){
+    console.error(error);
+    container.innerHTML=`<div class="empty"><div class="empty-icon">⚠️</div><h3>Unable to load vocabulary</h3><p>Check your Supabase URL, key and table permissions.</p></div>`;
+  }
+}
+
+async function loadLessons(module){
+  const container=document.getElementById("lessonContainer");
+  try{
+    const lessons=await supabaseFetch("/rest/v1/lessons?select=*&module=eq."+encodeURIComponent(module)+"&published=eq.true&order=created_at.desc");
+    if(!lessons.length){
+      container.innerHTML=`<div class="empty"><div class="empty-icon">📘</div><h3>No published ${escapeHTML(module)} lessons yet</h3><p>Once an admin publishes a lesson, it will appear here automatically.</p></div>`;
+      return;
+    }
+    container.innerHTML=lessons.map(lesson=>`
+      <article class="lesson-card">
+        <div style="font-size:11px;font-weight:800;color:#3157d5;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">${escapeHTML(module)}</div>
+        <h3>${escapeHTML(lesson.title)}</h3>
+        ${lesson.description?`<p style="margin:8px 0 14px;color:#5d6678">${escapeHTML(lesson.description)}</p>`:""}
+        <div class="lesson-content" style="white-space:pre-wrap;line-height:1.8">${escapeHTML(lesson.content)}</div>
+      </article>`).join("");
+  }catch(error){
+    console.error(error);
+    container.innerHTML=`<div class="empty"><div class="empty-icon">⚠️</div><h3>Unable to load ${escapeHTML(module)} lessons</h3><p>${escapeHTML(error.message)}</p></div>`;
+  }
+}
+
+/* =====================================================
+   INSTANT MOCK TEST + FEEDBACK
+===================================================== */
+const mockQuestions=[
+  {q:"Choose the correct sentence:",options:["She go to school every day.","She goes to school every day.","She going to school every day."],answer:1,skill:"Grammar"},
+  {q:"Which word is closest in meaning to 'significant'?",options:["Important","Tiny","Unusual"],answer:0,skill:"Vocabulary"},
+  {q:"IELTS Reading: A paragraph mainly explains one central idea. What should you identify first?",options:["The page number","The main idea","Every single word"],answer:1,skill:"Reading"},
+  {q:"Which opening is most suitable for an IELTS Writing Task 2 opinion essay?",options:["I am going to talk about this.","This essay will discuss the issue and explain my position.","Hey, let's talk about it."],answer:1,skill:"Writing"},
+  {q:"Which is a useful Speaking strategy?",options:["Give only one-word answers.","Memorize every answer exactly.","Extend answers with reasons and examples."],answer:2,skill:"Speaking"}
+];
+
+function renderMockTest(){
+  const c=document.getElementById("lessonContainer");
+  c.innerHTML=`
+    <div class="lesson-card" style="grid-column:1/-1">
+      <div style="font-size:12px;font-weight:800;color:#3157d5;letter-spacing:1px;margin-bottom:8px">QUICK IELTS MOCK</div>
+      <h3 style="font-size:25px;margin-bottom:8px">5-Question Practice Test</h3>
+      <p style="color:#5d6678;margin-bottom:22px">Answer all questions and get your score and skill-based feedback immediately.</p>
+      <form id="mockForm">
+        ${mockQuestions.map((item,i)=>`<div style="padding:20px 0;border-top:1px solid #e6eaf2">
+          <p style="font-weight:800;margin-bottom:12px">${i+1}. ${escapeHTML(item.q)}</p>
+          ${item.options.map((op,j)=>`<label style="display:block;padding:10px 12px;margin:7px 0;border:1px solid #e6eaf2;border-radius:10px;cursor:pointer"><input required type="radio" name="q${i}" value="${j}" style="margin-right:8px">${escapeHTML(op)}</label>`).join("")}
+        </div>`).join("")}
+        <button class="btn btn-primary" type="submit">Submit & Get Feedback →</button>
+      </form>
+      <div id="mockResult" style="margin-top:20px"></div>
+    </div>`;
+  document.getElementById("mockForm").addEventListener("submit",finishMock);
+}
+
+function finishMock(e){
+  e.preventDefault();
+  const form=new FormData(e.target);
+  let correct=0;
+  const skill={Listening:0,Reading:0,Writing:0,Speaking:0,Grammar:0,Vocabulary:0};
+  mockQuestions.forEach((item,i)=>{
+    const selected=Number(form.get("q"+i));
+    if(selected===item.answer){correct++;skill[item.skill]++;}
+  });
+  const percent=Math.round(correct/mockQuestions.length*100);
+  const band=percent>=90?8.5:percent>=80?7.5:percent>=70?6.5:percent>=60?5.5:percent>=40?5:4;
+  const weak=Object.entries(skill).filter(([,v])=>v===0).map(([k])=>k);
+  const feedback=correct===5?"Excellent work. Your answers show strong accuracy across the tested areas.":correct>=3?"Good start. Review the missed areas and keep practicing.":"Keep practicing. Focus on the feedback areas before taking another test.";
+  document.getElementById("mockResult").innerHTML=`
+    <div style="padding:24px;border-radius:16px;background:#f7f9ff;border:1px solid #dfe6ff">
+      <h3 style="font-size:28px;color:#3157d5">${correct}/5 Correct · Estimated Band ${band}</h3>
+      <p style="margin:8px 0 14px">${feedback}</p>
+      <p><strong>Needs more practice:</strong> ${weak.length?weak.join(", "):"No major weak area in this quick test."}</p>
+      <p style="margin-top:8px;color:#5d6678">Accuracy: ${percent}%</p>
+      <button class="btn btn-outline" style="margin-top:16px" onclick="renderMockTest()">Try Again</button>
+    </div>`;
+  document.getElementById("mockResult").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+/* =====================================================
+   SIMPLE IELTS ASSISTANT
+   Front-end assistant; connect a secure backend later
+   if you want a real LLM-powered assistant.
+===================================================== */
+function createAssistant(){
+  if(document.getElementById("ieltsAssistant"))return;
+  const box=document.createElement("div");
+  box.id="ieltsAssistant";
+  box.innerHTML=`
+    <button id="aiToggle" aria-label="Open IELTS Assistant">AI</button>
+    <div id="aiPanel" style="display:none">
+      <div class="ai-head"><strong>IELTS Assistant</strong><button id="aiClose">×</button></div>
+      <div id="aiMessages"><div class="ai-msg bot">Hi! I can help with IELTS vocabulary, grammar, writing, speaking and study tips.</div></div>
+      <div class="ai-input"><input id="aiInput" placeholder="Ask an IELTS question..."><button id="aiSend">Send</button></div>
+    </div>`;
+  document.body.appendChild(box);
+  const style=document.createElement("style");
+  style.textContent=`#ieltsAssistant{position:fixed;right:22px;bottom:22px;z-index:3000;font-family:Arial,sans-serif}#aiToggle{width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(135deg,#3157d5,#6c63ff);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 12px 30px rgba(49,87,213,.3)}#aiPanel{width:340px;height:460px;background:#fff;border:1px solid #e6eaf2;border-radius:18px;box-shadow:0 20px 60px rgba(20,30,60,.2);overflow:hidden;margin-bottom:12px}.ai-head{height:54px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;background:#3157d5;color:#fff}.ai-head button{border:0;background:none;color:#fff;font-size:22px;cursor:pointer}.ai-msg{margin:10px;padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.5}.ai-msg.bot{background:#f1f4ff}.ai-msg.user{background:#3157d5;color:#fff;margin-left:45px}.ai-input{display:flex;gap:7px;padding:10px;border-top:1px solid #e6eaf2}.ai-input input{flex:1;border:1px solid #dfe4ee;border-radius:9px;padding:10px;outline:none}.ai-input button{border:0;border-radius:9px;padding:0 13px;background:#3157d5;color:#fff}.ai-input{position:absolute;bottom:0;width:100%;background:#fff}.ai-head{position:relative}.ai-msg{max-width:85%}#aiMessages{height:395px;overflow:auto;padding-top:5px}`;
+  document.head.appendChild(style);
+  document.getElementById("aiToggle").onclick=()=>{const p=document.getElementById("aiPanel");p.style.display=p.style.display==="none"?"block":"none"};
+  document.getElementById("aiClose").onclick=()=>document.getElementById("aiPanel").style.display="none";
+  const send=()=>{const input=document.getElementById("aiInput");const text=input.value.trim();if(!text)return;addAiMessage(text,"user");input.value="";setTimeout(()=>addAiMessage(aiReply(text),"bot"),250)};
+  document.getElementById("aiSend").onclick=send;
+  document.getElementById("aiInput").addEventListener("keydown",e=>{if(e.key==="Enter")send()});
+}
+function addAiMessage(text,type){const m=document.getElementById("aiMessages");const d=document.createElement("div");d.className="ai-msg "+type;d.textContent=text;m.appendChild(d);m.scrollTop=m.scrollHeight;}
+function aiReply(text){
+  const q=text.toLowerCase();
+  if(q.includes("vocabulary")||q.includes("word"))return"For IELTS vocabulary, learn words in context: meaning, collocations, an example sentence and a synonym. Then use the word in your own sentence.";
+  if(q.includes("writing"))return"For Writing, focus on Task Response, Coherence and Cohesion, Lexical Resource, and Grammar. Start with a clear position and organize each paragraph around one main idea.";
+  if(q.includes("speaking"))return"For Speaking, avoid memorized answers. Give a direct answer, then add a reason, example or personal detail to extend your response naturally.";
+  if(q.includes("grammar"))return"A good IELTS grammar routine is: identify one mistake, understand the rule, write five correct examples, then use the structure in a short paragraph.";
+  if(q.includes("reading"))return"For Reading, first understand the question type and locate keywords or paraphrases in the passage. Avoid spending too long on one question.";
+  if(q.includes("listening"))return"For Listening, predict the type of answer before the audio reaches the gap and watch for paraphrases and corrections.";
+  if(q.includes("band"))return"Your target band should guide your practice. If you tell me your target band and weakest skill, I can suggest a focused study routine.";
+  return"I can help with IELTS Reading, Listening, Writing, Speaking, Grammar and Vocabulary. Try asking: 'How can I improve my speaking?'";
+}
+
+createAssistant();
 </script>
 
 </body>
 </html>
-```

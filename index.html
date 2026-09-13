@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Mock Test</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #173f8a;
+            color: white;
+            padding: 22px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        .timer {
+            background: white;
+            color: #173f8a;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 45px 20px 25px;
+        }
+
+        .hero h2 {
+            font-size: 34px;
+            color: #173f8a;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #666;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto 60px;
+            padding: 0 20px;
+        }
+
+        .passage {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .passage h3 {
+            color: #173f8a;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .question {
+            background: white;
+            padding: 25px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .question h4 {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        label:hover {
+            background: #eef3ff;
+        }
+
+        input {
+            margin-right: 8px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #173f8a;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #0f2e68;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            padding: 35px;
+            margin-top: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        #result h2 {
+            color: #173f8a;
+            margin-bottom: 15px;
+        }
+
+        .score {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px;
+        }
+
+        .band {
+            font-size: 42px;
+            font-weight: bold;
+            color: #173f8a;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #173f8a;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>IELTS MOCK</h1>
+    <div class="timer" id="timer">15:00</div>
+</header>
+
+<section class="hero">
+    <h2>IELTS Reading Mock Test</h2>
+    <p>Academic Reading • 10 Questions • Automatic Result</p>
+</section>
+
+<div class="container">
+
+    <div class="passage">
+        <h3>The Importance of Sleep</h3>
+
+        <p>
+            Sleep is an essential part of human life. Scientists have found
+            that getting enough sleep can improve memory, concentration and
+            overall health. Most adults need between seven and nine hours
+            of sleep every night.
+        </p>
+
+        <br>
+
+        <p>
+            In modern society, however, many people do not get enough sleep.
+            Long working hours, excessive use of mobile phones and stress
+            are some of the common reasons for sleep deprivation.
+        </p>
+
+        <br>
+
+        <p>
+            Lack of sleep can affect both physical and mental performance.
+            People who regularly sleep too little may have difficulty
+            concentrating and may also become more vulnerable to illness.
+        </p>
+
+        <br>
+
+        <p>
+            Researchers therefore recommend maintaining a regular sleeping
+            schedule. Avoiding electronic devices before bedtime and creating
+            a quiet sleeping environment can also help people sleep better.
+        </p>
+    </div>
+
+
+    <!-- Question 1 -->
+    <div class="question">
+        <h4>1. How many hours of sleep do most adults need?</h4>
+
+        <label>
+            <input type="radio" name="q1" value="A">
+            A. Five to six hours
+        </label>
+
+        <label>
+            <input type="radio" name="q1" value="B">
+            B. Seven to nine hours
+        </label>
+
+        <label>
+            <input type="radio" name="q1" value="C">
+            C. Ten to twelve hours
+        </label>
+
+        <label>
+            <input type="radio" name="q1" value="D">
+            D. Four to five hours
+        </label>
+    </div>
+
+
+    <!-- Question 2 -->
+    <div class="question">
+        <h4>2. Which of the following can improve memory?</h4>
+
+        <label>
+            <input type="radio" name="q2" value="A">
+            A. More stress
+        </label>
+
+        <label>
+            <input type="radio" name="q2" value="B">
+            B. Less exercise
+        </label>
+
+        <label>
+            <input type="radio" name="q2" value="C">
+            C. Enough sleep
+        </label>
+
+        <label>
+            <input type="radio" name="q2" value="D">
+            D. Longer working hours
+        </label>
+    </div>
+
+
+    <!-- Question 3 -->
+    <div class="question">
+        <h4>3. What is one reason people do not get enough sleep?</h4>
+
+        <label>
+            <input type="radio" name="q3" value="A">
+            A. Too much free time
+        </label>
+
+        <label>
+            <input type="radio" name="q3" value="B">
+            B. Stress
+        </label>
+
+        <label>
+            <input type="radio" name="q3" value="C">
+            C. Quiet environments
+        </label>
+
+        <label>
+            <input type="radio" name="q3" value="D">
+            D. Regular schedules
+        </label>
+    </div>
+
+
+    <!-- Question 4 -->
+    <div class="question">
+        <h4>4. Lack of sleep can affect mental performance.</h4>
+
+        <label>
+            <input type="radio" name="q4" value="A">
+            A. True
+        </label>
+
+        <label>
+            <input type="radio" name="q4" value="B">
+            B. False
+        </label>
+
+        <label>
+            <input type="radio" name="q4" value="C">
+            C. Not Given
+        </label>
+    </div>
+
+
+    <!-- Question 5 -->
+    <div class="question">
+        <h4>5. People who sleep too little may become more vulnerable to illness.</h4>
+
+        <label>
+            <input type="radio" name="q5" value="A">
+            A. True
+        </label>
+
+        <label>
+            <input type="radio" name="q5" value="B">
+            B. False
+        </label>
+
+        <label>
+            <input type="radio" name="q5" value="C">
+            C. Not Given
+        </label>
+    </div>
+
+
+    <!-- Question 6 -->
+    <div class="question">
+        <h4>6. What do researchers recommend?</h4>
+
+        <label>
+            <input type="radio" name="q6" value="A">
+            A. Sleeping at different times every day
+        </label>
+
+        <label>
+            <input type="radio" name="q6" value="B">
+            B. Maintaining a regular sleeping schedule
+        </label>
+
+        <label>
+            <input type="radio" name="q6" value="C">
+            C. Working longer hours
+        </label>
+
+        <label>
+            <input type="radio" name="q6" value="D">
+            D. Using electronic devices before sleep
+        </label>
+    </div>
+
+
+    <!-- Question 7 -->
+    <div class="question">
+        <h4>7. What should people avoid before bedtime?</h4>
+
+        <label>
+            <input type="radio" name="q7" value="A">
+            A. Electronic devices
+        </label>
+
+        <label>
+            <input type="radio" name="q7" value="B">
+            B. Quiet environments
+        </label>
+
+        <label>
+            <input type="radio" name="q7" value="C">
+            C. Regular schedules
+        </label>
+
+        <label>
+            <input type="radio" name="q7" value="D">
+            D. Sleeping
+        </label>
+    </div>
+
+
+    <!-- Question 8 -->
+    <div class="question">
+        <h4>8. Which problem is mentioned in the passage?</h4>
+
+        <label>
+            <input type="radio" name="q8" value="A">
+            A. Poor concentration
+        </label>
+
+        <label>
+            <input type="radio" name="q8" value="B">
+            B. Better memory
+        </label>
+
+        <label>
+            <input type="radio" name="q8" value="C">
+            C. More energy
+        </label>
+
+        <label>
+            <input type="radio" name="q8" value="D">
+            D. Better health
+        </label>
+    </div>
+
+
+    <!-- Question 9 -->
+    <div class="question">
+        <h4>9. Sleep is described as an essential part of human life.</h4>
+
+        <label>
+            <input type="radio" name="q9" value="A">
+            A. True
+        </label>
+
+        <label>
+            <input type="radio" name="q9" value="B">
+            B. False
+        </label>
+
+        <label>
+            <input type="radio" name="q9" value="C">
+            C. Not Given
+        </label>
+    </div>
+
+
+    <!-- Question 10 -->
+    <div class="question">
+        <h4>10. A quiet sleeping environment can help people sleep better.</h4>
+
+        <label>
+            <input type="radio" name="q10" value="A">
+            A. True
+        </label>
+
+        <label>
+            <input type="radio" name="q10" value="B">
+            B. False
+        </label>
+
+        <label>
+            <input type="radio" name="q10" value="C">
+            C. Not Given
+        </label>
+    </div>
+
+
+    <button class="submit-btn" onclick="submitTest()">
+        Submit Test
+    </button>
+
+
+    <div id="result">
+        <h2>Your Result</h2>
+
+        <div class="score" id="score"></div>
+
+        <p>Estimated IELTS Reading Band</p>
+
+        <div class="band" id="band"></div>
+
+        <br>
+
+        <p id="message"></p>
+    </div>
+
+</div>
+
+
+<footer>
+    IELTS MOCK © 2026
+</footer>
+
+
+<script>
+
+    let time = 15 * 60;
+
+    const timer = setInterval(function() {
+
+        let minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        document.getElementById("timer").innerText =
+            minutes + ":" + seconds;
+
+        time--;
+
+        if (time < 0) {
+            clearInterval(timer);
+            alert("Time is over!");
+            submitTest();
+        }
+
+    }, 1000);
+
+
+    function submitTest() {
+
+        clearInterval(timer);
+
+        const answers = {
+            q1: "B",
+            q2: "C",
+            q3: "B",
+            q4: "A",
+            q5: "A",
+            q6: "B",
+            q7: "A",
+            q8: "A",
+            q9: "A",
+            q10: "A"
+        };
+
+        let score = 0;
+
+        for (let q in answers) {
+
+            let selected =
+                document.querySelector(
+                    'input[name="' + q + '"]:checked'
+                );
+
+            if (selected && selected.value === answers[q]) {
+                score++;
+            }
+        }
+
+
+        let band;
+
+        if (score >= 9) {
+            band = "8.0";
+        } else if (score >= 8) {
+            band = "7.5";
+        } else if (score >= 7) {
+            band = "7.0";
+        } else if (score >= 6) {
+            band = "6.5";
+        } else if (score >= 5) {
+            band = "6.0";
+        } else if (score >= 4) {
+            band = "5.5";
+        } else if (score >= 3) {
+            band = "5.0";
+        } else {
+            band = "Below 5.0";
+        }
+
+
+        document.getElementById("score").innerText =
+            score + " / 10";
+
+        document.getElementById("band").innerText =
+            band;
+
+        if (score >= 7) {
+            document.getElementById("message").innerText =
+                "Good performance. Keep practising!";
+        } else {
+            document.getElementById("message").innerText =
+                "Keep practising and work on your weaknesses.";
+        }
+
+        document.getElementById("result").style.display = "block";
+
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth"
+        });
+    }
+
+</script>
+
+</body>
+</html>

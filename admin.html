@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>IELTSZONE Admin CMS</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -12,2144 +11,624 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-
 :root{
- --bg:#f4f6fb;
- --card:#fff;
- --dark:#10182c;
- --dark2:#18233d;
- --primary:#5367f5;
- --primary2:#7658f5;
- --text:#182033;
- --muted:#788196;
- --border:#e6e9f0;
- --green:#159447;
- --orange:#e58a00;
- --red:#d93434;
-}
-
-body{
- font-family:Inter,Arial,sans-serif;
- background:var(--bg);
- color:var(--text);
-}
-
-button,input,textarea,select{
- font:inherit;
-}
-
-button{cursor:pointer}
-
-.header{
- height:70px;
- background:#fff;
- border-bottom:1px solid var(--border);
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 28px;
- position:sticky;
- top:0;
- z-index:50;
-}
-
-.brand{
- font-size:21px;
- font-weight:900;
-}
-
-.brand span{
- color:var(--primary);
-}
-
-.header-right{
- display:flex;
- align-items:center;
- gap:12px;
-}
-
-.admin-pill{
- padding:8px 14px;
- background:#eef0ff;
- color:var(--primary);
- border-radius:30px;
- font-size:12px;
- font-weight:800;
-}
-
-.layout{
- display:flex;
- min-height:calc(100vh - 70px);
-}
-
-.sidebar{
- width:255px;
- background:var(--dark);
- color:white;
- padding:22px 14px;
- flex-shrink:0;
-}
-
-.sidebar-title{
- color:#79849c;
- font-size:10px;
- font-weight:800;
- letter-spacing:1.5px;
- padding:12px;
- text-transform:uppercase;
-}
-
-.nav{
- width:100%;
- border:0;
- background:transparent;
- color:#bac3d5;
- text-align:left;
- padding:13px 14px;
- border-radius:10px;
- margin:3px 0;
- font-size:13px;
- font-weight:600;
-}
-
-.nav:hover,
-.nav.active{
- background:var(--dark2);
- color:#fff;
-}
-
-.main{
- flex:1;
- padding:30px;
- max-width:1600px;
- overflow:hidden;
-}
-
-.page{display:none}
-.page.active{display:block}
-
-.page-head{
- display:flex;
- justify-content:space-between;
- align-items:flex-start;
- margin-bottom:25px;
- gap:20px;
-}
-
-.page-title{
- font-size:29px;
- font-weight:900;
- margin-bottom:6px;
-}
-
-.page-subtitle{
- color:var(--muted);
- font-size:13px;
-}
-
-.grid4{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:17px;
- margin-bottom:22px;
-}
-
-.stat{
- background:#fff;
- border:1px solid var(--border);
- border-radius:16px;
- padding:22px;
-}
-
-.stat-label{
- color:var(--muted);
- font-size:12px;
- font-weight:700;
-}
-
-.stat-value{
- font-size:28px;
- font-weight:900;
- margin-top:9px;
-}
-
-.card{
- background:#fff;
- border:1px solid var(--border);
- border-radius:17px;
- padding:23px;
- margin-bottom:20px;
-}
-
-.card-title{
- font-size:17px;
- font-weight:800;
- margin-bottom:5px;
-}
-
-.card-sub{
- color:var(--muted);
- font-size:12px;
- margin-bottom:20px;
-}
-
-.quick-grid{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:14px;
-}
-
-.quick{
- border:1px solid var(--border);
- border-radius:14px;
- padding:20px;
- background:#fafbff;
- transition:.2s;
- cursor:pointer;
-}
-
-.quick:hover{
- transform:translateY(-2px);
- border-color:#cbd2ff;
-}
-
-.quick-icon{
- font-size:27px;
- margin-bottom:12px;
-}
-
-.quick h3{
- font-size:14px;
- margin-bottom:5px;
-}
-
-.quick p{
- color:var(--muted);
- font-size:11px;
-}
-
-.module-tabs{
- display:flex;
- gap:8px;
- flex-wrap:wrap;
- margin-bottom:20px;
-}
-
-.module-tab{
- border:1px solid var(--border);
- background:#fff;
- padding:10px 15px;
- border-radius:9px;
- font-size:12px;
- font-weight:700;
-}
-
-.module-tab.active{
- background:var(--primary);
- color:#fff;
- border-color:var(--primary);
-}
-
-.upload{
- border:2px dashed #cbd2e1;
- border-radius:17px;
- background:#fafbff;
- padding:50px 25px;
- text-align:center;
- transition:.2s;
-}
-
-.upload:hover{
- border-color:var(--primary);
- background:#f7f8ff;
-}
-
-.upload-icon{
- font-size:46px;
- margin-bottom:12px;
-}
-
-.upload h2{
- font-size:19px;
- margin-bottom:7px;
-}
-
-.upload p{
- color:var(--muted);
- font-size:12px;
-}
-
-.file-input{display:none}
-
-.progress{
- margin-top:20px;
- display:none;
-}
-
-.progress-line{
- height:9px;
- background:#e9ecf3;
- border-radius:20px;
- overflow:hidden;
-}
-
-.progress-bar{
- width:0;
- height:100%;
- background:linear-gradient(90deg,var(--primary),var(--primary2));
- transition:.2s;
-}
-
-.progress-text{
- margin-top:8px;
- color:var(--muted);
- font-size:11px;
-}
-
-.import-result{
- display:none;
- margin-top:20px;
-}
-
-.detect-grid{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:14px;
-}
-
-.detect{
- border:1px solid var(--border);
- border-radius:14px;
- padding:18px;
- background:#fafbff;
-}
-
-.detect-name{
- font-size:13px;
- font-weight:800;
-}
-
-.detect-count{
- color:var(--primary);
- font-size:25px;
- font-weight:900;
- margin-top:9px;
-}
-
-.form-grid{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:16px;
-}
-
-.field{
- margin-bottom:16px;
-}
-
-.field label{
- display:block;
- font-size:12px;
- font-weight:800;
- margin-bottom:7px;
-}
-
-input,textarea,select{
- width:100%;
- border:1px solid #dfe3ec;
- background:#fff;
- border-radius:9px;
- padding:11px 12px;
- outline:none;
- font-size:12px;
-}
-
-textarea{
- min-height:130px;
- resize:vertical;
-}
-
-input:focus,textarea:focus,select:focus{
- border-color:var(--primary);
-}
-
-.btn{
- border:0;
- border-radius:9px;
- padding:11px 16px;
- font-size:12px;
- font-weight:800;
-}
-
-.primary{
- background:var(--primary);
- color:#fff;
-}
-
-.primary:hover{
- background:#4355d6;
-}
-
-.secondary{
- background:#eef0ff;
- color:var(--primary);
-}
-
-.success{
- background:#eaf8ef;
- color:#168442;
-}
-
-.danger{
- background:#ffeded;
- color:var(--red);
-}
-
-.dark{
- background:#172038;
- color:#fff;
-}
-
-.btn-row{
- display:flex;
- gap:9px;
- flex-wrap:wrap;
- margin-top:12px;
-}
-
-.table-wrap{
- overflow:auto;
-}
-
-table{
- width:100%;
- border-collapse:collapse;
- min-width:800px;
-}
-
-th,td{
- padding:13px 11px;
- border-bottom:1px solid #edf0f4;
- font-size:12px;
- text-align:left;
-}
-
-th{
- color:#687287;
- background:#fafbfc;
-}
-
-.badge{
- display:inline-block;
- padding:5px 9px;
- border-radius:20px;
- font-size:10px;
- font-weight:800;
-}
-
-.badge-published{
- background:#eaf8ef;
- color:#15813e;
-}
-
-.badge-draft{
- background:#fff4dd;
- color:#c47700;
-}
-
-.question-card{
- border:1px solid var(--border);
- border-radius:14px;
- padding:17px;
- margin-bottom:12px;
- background:#fff;
-}
-
-.question-top{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:15px;
- margin-bottom:12px;
-}
-
-.q-number{
- font-size:13px;
- font-weight:900;
-}
-
-.q-type{
- color:var(--muted);
- font-size:10px;
-}
-
-.q-text{
- font-size:13px;
- line-height:1.6;
- margin-bottom:12px;
- white-space:pre-wrap;
-}
-
-.question-actions{
- display:flex;
- gap:7px;
- flex-wrap:wrap;
-}
-
-.empty{
- text-align:center;
- padding:45px;
- color:var(--muted);
- font-size:13px;
-}
-
-.alert{
- display:none;
- padding:12px 14px;
- border-radius:10px;
- margin-bottom:17px;
- font-size:12px;
- font-weight:700;
-}
-
-.alert.success{
- background:#eaf8ef;
- color:#176d37;
-}
-
-.alert.error{
- background:#ffeded;
- color:#a92727;
-}
-
-.modal{
- display:none;
- position:fixed;
- inset:0;
- background:rgba(10,15,30,.65);
- z-index:200;
- align-items:center;
- justify-content:center;
- padding:20px;
-}
-
-.modal.show{
- display:flex;
-}
-
-.modal-box{
- background:#fff;
- width:min(800px,100%);
- max-height:90vh;
- overflow:auto;
- border-radius:17px;
- padding:25px;
-}
-
-.modal-head{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin-bottom:20px;
-}
-
-.close{
- border:0;
- background:#f0f2f6;
- width:34px;
- height:34px;
- border-radius:50%;
-}
-
-.preview{
- background:#111827;
- color:#e8edf7;
- border-radius:12px;
- padding:17px;
- max-height:400px;
- overflow:auto;
- white-space:pre-wrap;
- font-size:11px;
- line-height:1.7;
-}
-
-@media(max-width:1100px){
- .grid4,.quick-grid,.detect-grid{
-  grid-template-columns:repeat(2,1fr);
- }
-}
-
-@media(max-width:750px){
- .layout{display:block}
- .sidebar{
-  width:100%;
-  display:flex;
-  overflow:auto;
-  padding:8px;
-  gap:5px;
- }
- .sidebar-title{display:none}
- .nav{white-space:nowrap;width:auto}
- .main{padding:18px}
- .grid4,.quick-grid,.detect-grid,.form-grid{
-  grid-template-columns:1fr;
- }
- .header{padding:0 15px}
-}
+ --bg:#f4f6fb;--card:#fff;--dark:#10182c;--dark2:#18233d;
+ --primary:#5367f5;--primary2:#7658f5;--text:#182033;--muted:#788196;
+ --border:#e6e9f0;--green:#159447;--orange:#e58a00;--red:#d93434;
+}
+body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.header{height:70px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:50}
+.brand{font-size:21px;font-weight:900}.brand span{color:var(--primary)}
+.header-right{display:flex;align-items:center;gap:12px}.admin-pill{padding:8px 14px;background:#eef0ff;color:var(--primary);border-radius:30px;font-size:12px;font-weight:800}
+.layout{display:flex;min-height:calc(100vh - 70px)}.sidebar{width:255px;background:var(--dark);color:white;padding:22px 14px;flex-shrink:0}
+.sidebar-title{color:#79849c;font-size:10px;font-weight:800;letter-spacing:1.5px;padding:12px;text-transform:uppercase}
+.nav{width:100%;border:0;background:transparent;color:#bac3d5;text-align:left;padding:13px 14px;border-radius:10px;margin:3px 0;font-size:13px;font-weight:600}
+.nav:hover,.nav.active{background:var(--dark2);color:#fff}
+.main{flex:1;padding:30px;max-width:1600px;overflow:hidden}.page{display:none}.page.active{display:block}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:25px;gap:20px}
+.page-title{font-size:29px;font-weight:900;margin-bottom:6px}.page-subtitle{color:var(--muted);font-size:13px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:17px;margin-bottom:22px}
+.stat{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px}.stat-label{color:var(--muted);font-size:12px;font-weight:700}
+.stat-value{font-size:28px;font-weight:900;margin-top:9px}
+.card{background:#fff;border:1px solid var(--border);border-radius:17px;padding:23px;margin-bottom:20px}
+.card-title{font-size:17px;font-weight:800;margin-bottom:5px}.card-sub{color:var(--muted);font-size:12px;margin-bottom:20px}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.quick{border:1px solid var(--border);border-radius:14px;padding:20px;background:#fafbff;transition:.2s;cursor:pointer}
+.quick:hover{transform:translateY(-2px);border-color:#cbd2ff}.quick-icon{font-size:27px;margin-bottom:12px}
+.quick h3{font-size:14px;margin-bottom:5px}.quick p{color:var(--muted);font-size:11px}
+.module-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.module-tab{border:1px solid var(--border);background:#fff;padding:10px 15px;border-radius:9px;font-size:12px;font-weight:700}
+.module-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.upload{border:2px dashed #cbd2e1;border-radius:17px;background:#fafbff;padding:50px 25px;text-align:center;transition:.2s}
+.upload:hover{border-color:var(--primary);background:#f7f8ff}.upload-icon{font-size:46px;margin-bottom:12px}
+.upload h2{font-size:19px;margin-bottom:7px}.upload p{color:var(--muted);font-size:12px}.file-input{display:none}
+.progress{margin-top:20px;display:none}.progress-line{height:9px;background:#e9ecf3;border-radius:20px;overflow:hidden}
+.progress-bar{width:0;height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:.2s}
+.progress-text{margin-top:8px;color:var(--muted);font-size:11px}.import-result{display:none;margin-top:20px}
+.detect-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.detect{border:1px solid var(--border);border-radius:14px;padding:18px;background:#fafbff}
+.detect-name{font-size:13px;font-weight:800}.detect-count{color:var(--primary);font-size:25px;font-weight:900;margin-top:9px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}
+input,textarea,select{width:100%;border:1px solid #dfe3ec;background:#fff;border-radius:9px;padding:11px 12px;outline:none;font-size:12px}
+textarea{min-height:130px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:var(--primary)}
+.btn{border:0;border-radius:9px;padding:11px 16px;font-size:12px;font-weight:800}
+.primary{background:var(--primary);color:#fff}.primary:hover{background:#4355d6}
+.secondary{background:#eef0ff;color:var(--primary)}.success{background:#eaf8ef;color:#168442}.danger{background:#ffeded;color:var(--red)}.dark{background:#172038;color:#fff}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:800px}th,td{padding:13px 11px;border-bottom:1px solid #edf0f4;font-size:12px;text-align:left}
+th{color:#687287;background:#fafbfc}.badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:800}
+.badge-published{background:#eaf8ef;color:#15813e}.badge-draft{background:#fff4dd;color:#c47700}
+.question-card{border:1px solid var(--border);border-radius:14px;padding:17px;margin-bottom:12px;background:#fff}
+.question-top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:12px}
+.q-number{font-size:13px;font-weight:900}.q-type{color:var(--muted);font-size:10px}.q-text{font-size:13px;line-height:1.6;margin-bottom:12px;white-space:pre-wrap}
+.question-actions{display:flex;gap:7px;flex-wrap:wrap}.empty{text-align:center;padding:45px;color:var(--muted);font-size:13px}
+.alert{display:none;padding:12px 14px;border-radius:10px;margin-bottom:17px;font-size:12px;font-weight:700}
+.alert.success{background:#eaf8ef;color:#176d37}.alert.error{background:#ffeded;color:#a92727}
+.modal{display:none;position:fixed;inset:0;background:rgba(10,15,30,.65);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}.modal-box{background:#fff;width:min(800px,100%);max-height:90vh;overflow:auto;border-radius:17px;padding:25px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.close{border:0;background:#f0f2f6;width:34px;height:34px;border-radius:50%}
+.preview{background:#111827;color:#e8edf7;border-radius:12px;padding:17px;max-height:400px;overflow:auto;white-space:pre-wrap;font-size:11px;line-height:1.7}
+.type-info{padding:11px 13px;background:#f7f8ff;border:1px solid #e1e5ff;border-radius:10px;color:#5e6680;font-size:11px;margin-top:-4px;margin-bottom:16px}
+.count-pill{display:inline-block;margin-left:7px;background:#eef0ff;color:var(--primary);padding:3px 7px;border-radius:20px;font-size:10px;font-weight:800}
+@media(max-width:1100px){.grid4,.quick-grid,.detect-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:750px){.layout{display:block}.sidebar{width:100%;display:flex;overflow:auto;padding:8px;gap:5px}.sidebar-title{display:none}.nav{white-space:nowrap;width:auto}.main{padding:18px}.grid4,.quick-grid,.detect-grid,.form-grid{grid-template-columns:1fr}.header{padding:0 15px}}
 </style>
 </head>
 
 <body>
-
 <header class="header">
-
- <div class="brand">
-  IELTS<span>ZONE</span> Admin
- </div>
-
- <div class="header-right">
-  <div class="admin-pill">CONTENT MANAGEMENT SYSTEM</div>
- </div>
-
+ <div class="brand">IELTS<span>ZONE</span> Admin</div>
+ <div class="header-right"><div class="admin-pill">CONTENT MANAGEMENT SYSTEM</div></div>
 </header>
 
 <div class="layout">
-
 <aside class="sidebar">
-
  <div class="sidebar-title">Main</div>
-
- <button class="nav active" onclick="openPage('dashboard',this)">
-  🏠 Dashboard
- </button>
-
- <button class="nav" onclick="openPage('books',this)">
-  📚 Books
- </button>
+ <button class="nav active" onclick="openPage('dashboard',this)">🏠 Dashboard</button>
+ <button class="nav" onclick="openPage('books',this)">📚 Books</button>
 
  <div class="sidebar-title">IELTS Modules</div>
-
- <button class="nav" onclick="openModule('Listening',this)">
-  🎧 Listening
- </button>
-
- <button class="nav" onclick="openModule('Reading',this)">
-  📖 Reading
- </button>
-
- <button class="nav" onclick="openModule('Writing',this)">
-  ✍️ Writing
- </button>
-
- <button class="nav" onclick="openModule('Speaking',this)">
-  🗣️ Speaking
- </button>
+ <button class="nav" onclick="openModule('Listening',this)">🎧 Listening</button>
+ <button class="nav" onclick="openModule('Reading',this)">📖 Reading</button>
+ <button class="nav" onclick="openModule('Writing',this)">✍️ Writing</button>
+ <button class="nav" onclick="openModule('Speaking',this)">🗣️ Speaking</button>
 
  <div class="sidebar-title">Testing</div>
-
- <button class="nav" onclick="openPage('mock',this)">
-  🧪 Mock Tests
- </button>
-
- <button class="nav" onclick="openPage('practice',this)">
-  🎯 Practice
- </button>
-
- <button class="nav" onclick="openPage('results',this)">
-  📊 Results
- </button>
-
- <button class="nav" onclick="openPage('vocabulary',this)">
-  📝 Vocabulary
- </button>
+ <button class="nav" onclick="openPage('mock',this)">🧪 Mock Tests</button>
+ <button class="nav" onclick="openPage('practice',this)">🎯 Practice</button>
+ <button class="nav" onclick="openPage('results',this)">📊 Results</button>
+ <button class="nav" onclick="openPage('vocabulary',this)">📝 Vocabulary</button>
 
  <div class="sidebar-title">System</div>
-
- <button class="nav" onclick="openPage('settings',this)">
-  ⚙ Settings
- </button>
-
+ <button class="nav" onclick="openPage('settings',this)">⚙ Settings</button>
 </aside>
 
 <main class="main">
-
 <div id="alertSuccess" class="alert success"></div>
 <div id="alertError" class="alert error"></div>
 
-<!-- DASHBOARD -->
-
 <section id="dashboard" class="page active">
-
  <div class="page-head">
-  <div>
-   <h1 class="page-title">Dashboard</h1>
-   <p class="page-subtitle">
-    Complete IELTS content management system
-   </p>
-  </div>
-
-  <button class="btn primary" onclick="openPage('import')">
-   + Import Cambridge Book
-  </button>
+  <div><h1 class="page-title">Dashboard</h1><p class="page-subtitle">Complete IELTS content management system</p></div>
+  <button class="btn primary" onclick="openPage('import')">+ Import Cambridge Book</button>
  </div>
-
  <div class="grid4">
-
-  <div class="stat">
-   <div class="stat-label">BOOKS</div>
-   <div class="stat-value" id="statBooks">0</div>
-  </div>
-
-  <div class="stat">
-   <div class="stat-label">QUESTIONS</div>
-   <div class="stat-value" id="statQuestions">0</div>
-  </div>
-
-  <div class="stat">
-   <div class="stat-label">PUBLISHED</div>
-   <div class="stat-value" id="statPublished">0</div>
-  </div>
-
-  <div class="stat">
-   <div class="stat-label">VOCABULARY</div>
-   <div class="stat-value" id="statVocabulary">0</div>
-  </div>
-
+  <div class="stat"><div class="stat-label">BOOKS</div><div class="stat-value" id="statBooks">0</div></div>
+  <div class="stat"><div class="stat-label">QUESTIONS</div><div class="stat-value" id="statQuestions">0</div></div>
+  <div class="stat"><div class="stat-label">PUBLISHED</div><div class="stat-value" id="statPublished">0</div></div>
+  <div class="stat"><div class="stat-label">VOCABULARY</div><div class="stat-value" id="statVocabulary">0</div></div>
  </div>
-
  <div class="card">
-
-  <div class="card-title">IELTS Modules</div>
-  <div class="card-sub">
-   Each module has its own question management interface.
-  </div>
-
+  <div class="card-title">IELTS Modules</div><div class="card-sub">Each module has its own question management interface and question-type filters.</div>
   <div class="quick-grid">
-
-   <div class="quick" onclick="openModule('Listening')">
-    <div class="quick-icon">🎧</div>
-    <h3>Listening</h3>
-    <p>Sections, audio, questions & answers</p>
-   </div>
-
-   <div class="quick" onclick="openModule('Reading')">
-    <div class="quick-icon">📖</div>
-    <h3>Reading</h3>
-    <p>Passages and question types</p>
-   </div>
-
-   <div class="quick" onclick="openModule('Writing')">
-    <div class="quick-icon">✍️</div>
-    <h3>Writing</h3>
-    <p>Task 1, Task 2 and model answers</p>
-   </div>
-
-   <div class="quick" onclick="openModule('Speaking')">
-    <div class="quick-icon">🗣️</div>
-    <h3>Speaking</h3>
-    <p>Part 1, Part 2 and Part 3</p>
-   </div>
-
+   <div class="quick" onclick="openModule('Listening')"><div class="quick-icon">🎧</div><h3>Listening</h3><p>Sections, audio, questions & answers</p></div>
+   <div class="quick" onclick="openModule('Reading')"><div class="quick-icon">📖</div><h3>Reading</h3><p>Passages and question types</p></div>
+   <div class="quick" onclick="openModule('Writing')"><div class="quick-icon">✍️</div><h3>Writing</h3><p>Task 1, Task 2 and model answers</p></div>
+   <div class="quick" onclick="openModule('Speaking')"><div class="quick-icon">🗣️</div><h3>Speaking</h3><p>Part 1, Part 2 and Part 3</p></div>
   </div>
-
  </div>
-
- <div class="card">
-
-  <div class="card-title">Automatic Book Import</div>
-
-  <div class="card-sub">
-   Upload one complete book. The system will analyse the content
-   and place it into the appropriate IELTS module.
-  </div>
-
-  <button class="btn dark" onclick="openPage('import')">
-   Open Cambridge Import
-  </button>
-
- </div>
-
+ <div class="card"><div class="card-title">Automatic Book Import</div><div class="card-sub">Upload one complete book. The system analyses the content and separates it into the appropriate IELTS modules.</div><button class="btn dark" onclick="openPage('import')">Open Cambridge Import</button></div>
 </section>
-
-
-<!-- BOOKS -->
 
 <section id="books" class="page">
-
- <div class="page-head">
-  <div>
-   <h1 class="page-title">Cambridge Books</h1>
-   <p class="page-subtitle">
-    Manage imported IELTS books.
-   </p>
-  </div>
-
-  <button class="btn primary" onclick="openPage('import')">
-   + Import Book
-  </button>
- </div>
-
- <div class="card">
-
-  <div class="table-wrap">
-
-   <table>
-    <thead>
-     <tr>
-      <th>Book</th>
-      <th>Number</th>
-      <th>Created</th>
-      <th>Action</th>
-     </tr>
-    </thead>
-
-    <tbody id="booksTable"></tbody>
-   </table>
-
-  </div>
-
- </div>
-
+ <div class="page-head"><div><h1 class="page-title">Cambridge Books</h1><p class="page-subtitle">Manage imported IELTS books.</p></div><button class="btn primary" onclick="openPage('import')">+ Import Book</button></div>
+ <div class="card"><div class="table-wrap"><table><thead><tr><th>Book</th><th>Number</th><th>Created</th><th>Action</th></tr></thead><tbody id="booksTable"></tbody></table></div></div>
 </section>
-
-
-<!-- IMPORT -->
 
 <section id="import" class="page">
-
- <div class="page-head">
-  <div>
-   <h1 class="page-title">Automatic Cambridge Import</h1>
-   <p class="page-subtitle">
-    Upload one complete PDF and organise its content automatically.
-   </p>
-  </div>
- </div>
-
+ <div class="page-head"><div><h1 class="page-title">Automatic Cambridge Import</h1><p class="page-subtitle">Upload one complete PDF and organise its content automatically.</p></div></div>
  <div class="card">
-
-  <div class="upload"
-       onclick="document.getElementById('pdfFile').click()">
-
-   <div class="upload-icon">📚</div>
-
-   <h2>Upload Cambridge IELTS Book</h2>
-
-   <p>
-    Text PDF and scanned/image PDF supported
-   </p>
-
-   <p style="margin-top:6px">
-    The system will extract text with PDF.js and OCR when necessary.
-   </p>
-
+  <div class="upload" onclick="document.getElementById('pdfFile').click()">
+   <div class="upload-icon">📚</div><h2>Upload Cambridge IELTS Book</h2>
+   <p>Text PDF and scanned/image PDF supported</p><p style="margin-top:6px">PDF.js extracts text and OCR is used when necessary.</p>
   </div>
-
-  <input
-   id="pdfFile"
-   class="file-input"
-   type="file"
-   accept="application/pdf"
-   onchange="processPDF(event)"
-  >
-
-  <div class="progress" id="importProgress">
-
-   <div class="progress-line">
-    <div class="progress-bar" id="progressBar"></div>
-   </div>
-
-   <div class="progress-text" id="progressText">
-    Preparing...
-   </div>
-
-  </div>
-
+  <input id="pdfFile" class="file-input" type="file" accept="application/pdf" onchange="processPDF(event)">
+  <div class="progress" id="importProgress"><div class="progress-line"><div class="progress-bar" id="progressBar"></div></div><div class="progress-text" id="progressText">Preparing...</div></div>
  </div>
-
  <div class="card" id="importInfo" style="display:none">
-
   <div class="card-title">Book Information</div>
-
   <div class="form-grid">
-
-   <div class="field">
-    <label>Book Title</label>
-    <input id="importBookTitle"
-           placeholder="Cambridge IELTS 22">
-   </div>
-
-   <div class="field">
-    <label>Book Number</label>
-    <input id="importBookNumber"
-           placeholder="22">
-   </div>
-
+   <div class="field"><label>Book Title</label><input id="importBookTitle" placeholder="Cambridge IELTS 22"></div>
+   <div class="field"><label>Book Number</label><input id="importBookNumber" placeholder="22"></div>
   </div>
-
  </div>
-
  <div class="card" id="detectedCard" style="display:none">
-
-  <div class="card-title">Detected Content</div>
-
-  <div class="card-sub">
-   Review the detected content before publishing.
-  </div>
-
+  <div class="card-title">Detected Content</div><div class="card-sub">Review the detected content before publishing.</div>
   <div class="detect-grid">
-
-   <div class="detect">
-    <div class="detect-name">🎧 Listening</div>
-    <div class="detect-count" id="detectListening">0</div>
-   </div>
-
-   <div class="detect">
-    <div class="detect-name">📖 Reading</div>
-    <div class="detect-count" id="detectReading">0</div>
-   </div>
-
-   <div class="detect">
-    <div class="detect-name">✍️ Writing</div>
-    <div class="detect-count" id="detectWriting">0</div>
-   </div>
-
-   <div class="detect">
-    <div class="detect-name">🗣️ Speaking</div>
-    <div class="detect-count" id="detectSpeaking">0</div>
-   </div>
-
+   <div class="detect"><div class="detect-name">🎧 Listening</div><div class="detect-count" id="detectListening">0</div></div>
+   <div class="detect"><div class="detect-name">📖 Reading</div><div class="detect-count" id="detectReading">0</div></div>
+   <div class="detect"><div class="detect-name">✍️ Writing</div><div class="detect-count" id="detectWriting">0</div></div>
+   <div class="detect"><div class="detect-name">🗣️ Speaking</div><div class="detect-count" id="detectSpeaking">0</div></div>
   </div>
-
-  <div class="btn-row">
-
-   <button class="btn secondary" onclick="showImportedText()">
-    View Extracted Text
-   </button>
-
-   <button class="btn success" onclick="createBookAndModules()">
-    Publish & Create Modules
-   </button>
-
-  </div>
-
+  <div class="btn-row"><button class="btn secondary" onclick="showImportedText()">View Extracted Text</button><button class="btn success" onclick="createBookAndModules()">Publish & Create Modules</button></div>
  </div>
-
 </section>
 
-
-<!-- MODULE PAGE -->
-
 <section id="modulePage" class="page">
-
  <div class="page-head">
-
-  <div>
-   <h1 class="page-title" id="moduleTitle">Listening</h1>
-   <p class="page-subtitle" id="moduleSubtitle">
-    Manage module questions.
-   </p>
-  </div>
-
-  <button class="btn primary" onclick="openQuestionEditor()">
-   + Add Question
-  </button>
-
+  <div><h1 class="page-title" id="moduleTitle">Listening</h1><p class="page-subtitle" id="moduleSubtitle">Manage module questions.</p></div>
+  <button class="btn primary" onclick="openQuestionEditor()">+ Add Question</button>
  </div>
 
  <div class="module-tabs">
-
-  <button class="module-tab"
-          onclick="filterModule('Listening',this)">
-   🎧 Listening
-  </button>
-
-  <button class="module-tab"
-          onclick="filterModule('Reading',this)">
-   📖 Reading
-  </button>
-
-  <button class="module-tab"
-          onclick="filterModule('Writing',this)">
-   ✍️ Writing
-  </button>
-
-  <button class="module-tab"
-          onclick="filterModule('Speaking',this)">
-   🗣️ Speaking
-  </button>
-
+  <button class="module-tab" data-module="Listening" onclick="filterModule('Listening',this)">🎧 Listening</button>
+  <button class="module-tab" data-module="Reading" onclick="filterModule('Reading',this)">📖 Reading</button>
+  <button class="module-tab" data-module="Writing" onclick="filterModule('Writing',this)">✍️ Writing</button>
+  <button class="module-tab" data-module="Speaking" onclick="filterModule('Speaking',this)">🗣️ Speaking</button>
  </div>
 
  <div class="card">
-
   <div class="form-grid">
-
-   <div class="field">
-    <label>Book Filter</label>
-    <select id="moduleBookFilter"
-            onchange="loadModuleQuestions()">
-     <option value="">All Books</option>
-    </select>
-   </div>
-
-   <div class="field">
-    <label>Question Type</label>
-    <select id="moduleTypeFilter"
-            onchange="loadModuleQuestions()">
-     <option value="">All Types</option>
-     <option>Multiple Choice</option>
-     <option>True False Not Given</option>
-     <option>Matching</option>
-     <option>Sentence Completion</option>
-     <option>Short Answer</option>
-     <option>Other</option>
-    </select>
-   </div>
-
+   <div class="field"><label>Book Filter</label><select id="moduleBookFilter" onchange="loadModuleQuestions()"><option value="">All Books</option></select></div>
+   <div class="field"><label>Question Type</label><select id="moduleTypeFilter" onchange="loadModuleQuestions()"></select></div>
   </div>
-
+  <div id="typeDescription" class="type-info">Choose a question type to see only that type.</div>
  </div>
-
  <div id="questionsContainer"></div>
-
 </section>
-
-
-<!-- MOCK -->
 
 <section id="mock" class="page">
-
- <div class="page-head">
-
-  <div>
-   <h1 class="page-title">Mock Test Builder</h1>
-   <p class="page-subtitle">
-    Create tests from your question bank.
-   </p>
-  </div>
-
- </div>
-
+ <div class="page-head"><div><h1 class="page-title">Mock Test Builder</h1><p class="page-subtitle">Create tests from your question bank.</p></div></div>
  <div class="card">
-
   <div class="form-grid">
-
-   <div class="field">
-    <label>Test Title</label>
-    <input id="testTitle"
-           placeholder="Cambridge IELTS 22 - Listening Test 1">
-   </div>
-
-   <div class="field">
-    <label>Module</label>
-    <select id="testModule">
-     <option>Listening</option>
-     <option>Reading</option>
-     <option>Writing</option>
-     <option>Speaking</option>
-    </select>
-   </div>
-
+   <div class="field"><label>Test Title</label><input id="testTitle" placeholder="Cambridge IELTS 22 - Listening Test 1"></div>
+   <div class="field"><label>Module</label><select id="testModule"><option>Listening</option><option>Reading</option><option>Writing</option><option>Speaking</option></select></div>
   </div>
-
-  <div class="field">
-   <label>Duration (minutes)</label>
-   <input id="testDuration" type="number" value="60">
-  </div>
-
-  <button class="btn primary" onclick="createMockTest()">
-   Create Mock Test
-  </button>
-
+  <div class="field"><label>Duration (minutes)</label><input id="testDuration" type="number" value="60"></div>
+  <button class="btn primary" onclick="createMockTest()">Create Mock Test</button>
  </div>
-
- <div class="card">
-
-  <div class="card-title">Existing Mock Tests</div>
-
-  <div id="mockList"></div>
-
- </div>
-
+ <div class="card"><div class="card-title">Existing Mock Tests</div><div id="mockList"></div></div>
 </section>
-
-
-<!-- PRACTICE -->
 
 <section id="practice" class="page">
-
- <div class="page-head">
-
-  <div>
-   <h1 class="page-title">Practice</h1>
-   <p class="page-subtitle">
-    Configure question-based practice sessions.
-   </p>
-
-  </div>
-
- </div>
-
- <div class="card">
-
-  <div class="card-title">
-   Practice Engine
-  </div>
-
-  <div class="card-sub">
-   Published questions from the four IELTS modules can be used
-   by the student-facing practice engine.
-  </div>
-
+ <div class="page-head"><div><h1 class="page-title">Practice</h1><p class="page-subtitle">Configure question-based practice sessions.</p></div></div>
+ <div class="card"><div class="card-title">Practice Engine</div><div class="card-sub">Published questions from the four IELTS modules can be used by the student-facing practice engine.</div>
   <div class="quick-grid">
-
-   <div class="quick" onclick="openModule('Listening')">
-    <div class="quick-icon">🎧</div>
-    <h3>Listening Practice</h3>
-    <p>Published Listening questions</p>
-   </div>
-
-   <div class="quick" onclick="openModule('Reading')">
-    <div class="quick-icon">📖</div>
-    <h3>Reading Practice</h3>
-    <p>Published Reading questions</p>
-   </div>
-
-   <div class="quick" onclick="openModule('Writing')">
-    <div class="quick-icon">✍️</div>
-    <h3>Writing Practice</h3>
-    <p>Writing tasks</p>
-   </div>
-
-   <div class="quick" onclick="openModule('Speaking')">
-    <div class="quick-icon">🗣️</div>
-    <h3>Speaking Practice</h3>
-    <p>Speaking questions</p>
-   </div>
-
+   <div class="quick" onclick="openModule('Listening')"><div class="quick-icon">🎧</div><h3>Listening Practice</h3><p>Published Listening questions</p></div>
+   <div class="quick" onclick="openModule('Reading')"><div class="quick-icon">📖</div><h3>Reading Practice</h3><p>Published Reading questions</p></div>
+   <div class="quick" onclick="openModule('Writing')"><div class="quick-icon">✍️</div><h3>Writing Practice</h3><p>Writing tasks</p></div>
+   <div class="quick" onclick="openModule('Speaking')"><div class="quick-icon">🗣️</div><h3>Speaking Practice</h3><p>Speaking questions</p></div>
   </div>
-
  </div>
-
 </section>
-
-
-<!-- RESULTS -->
 
 <section id="results" class="page">
-
- <div class="page-head">
-
-  <div>
-   <h1 class="page-title">Student Results</h1>
-   <p class="page-subtitle">
-    Mock test performance.
-   </p>
-
-  </div>
-
- </div>
-
- <div class="card">
-
-  <div class="table-wrap">
-
-   <table>
-
-    <thead>
-     <tr>
-      <th>Test</th>
-      <th>Score</th>
-      <th>Total</th>
-      <th>Band</th>
-      <th>Completed</th>
-     </tr>
-    </thead>
-
-    <tbody id="resultsTable"></tbody>
-
-   </table>
-
-  </div>
-
- </div>
-
+ <div class="page-head"><div><h1 class="page-title">Student Results</h1><p class="page-subtitle">Mock test performance.</p></div></div>
+ <div class="card"><div class="table-wrap"><table><thead><tr><th>Test</th><th>Score</th><th>Total</th><th>Band</th><th>Completed</th></tr></thead><tbody id="resultsTable"></tbody></table></div></div>
 </section>
-
-
-<!-- VOCABULARY -->
 
 <section id="vocabulary" class="page">
-
- <div class="page-head">
-
-  <div>
-   <h1 class="page-title">Vocabulary</h1>
-   <p class="page-subtitle">
-    Manage IELTS vocabulary.
-   </p>
-
-  </div>
-
- </div>
-
+ <div class="page-head"><div><h1 class="page-title">Vocabulary</h1><p class="page-subtitle">Manage IELTS vocabulary.</p></div></div>
  <div class="card">
-
   <div class="form-grid">
-
-   <div class="field">
-    <label>Word</label>
-    <input id="vocabWord">
-   </div>
-
-   <div class="field">
-    <label>Pronunciation</label>
-    <input id="vocabPronunciation">
-   </div>
-
+   <div class="field"><label>Word</label><input id="vocabWord"></div>
+   <div class="field"><label>Pronunciation</label><input id="vocabPronunciation"></div>
   </div>
-
-  <div class="field">
-   <label>Meaning</label>
-   <input id="vocabMeaning">
-  </div>
-
-  <div class="field">
-   <label>Example Sentence</label>
-   <textarea id="vocabExample"></textarea>
-  </div>
-
-  <button class="btn primary" onclick="addVocabulary()">
-   Add Vocabulary
-  </button>
-
+  <div class="field"><label>Meaning</label><input id="vocabMeaning"></div>
+  <div class="field"><label>Example Sentence</label><textarea id="vocabExample"></textarea></div>
+  <button class="btn primary" onclick="addVocabulary()">Add Vocabulary</button>
  </div>
-
 </section>
-
-
-<!-- SETTINGS -->
 
 <section id="settings" class="page">
-
- <div class="page-head">
-
-  <div>
-   <h1 class="page-title">Settings</h1>
-   <p class="page-subtitle">
-    Supabase connection.
-   </p>
-
-  </div>
-
- </div>
-
+ <div class="page-head"><div><h1 class="page-title">Settings</h1><p class="page-subtitle">Supabase connection.</p></div></div>
  <div class="card">
-
-  <div class="field">
-
-   <label>Supabase URL</label>
-
-   <input id="supabaseUrl">
-
-  </div>
-
-  <div class="field">
-
-   <label>Supabase Publishable Key</label>
-
-   <input id="supabaseKey">
-
-  </div>
-
-  <button class="btn primary" onclick="saveSettings()">
-   Save Connection
-  </button>
-
+  <div class="field"><label>Supabase URL</label><input id="supabaseUrl"></div>
+  <div class="field"><label>Supabase Publishable Key</label><input id="supabaseKey"></div>
+  <button class="btn primary" onclick="saveSettings()">Save Connection</button>
  </div>
-
 </section>
-
 </main>
 </div>
 
-
-<!-- QUESTION EDITOR -->
-
 <div class="modal" id="questionModal">
-
  <div class="modal-box">
-
-  <div class="modal-head">
-
-   <div>
-    <h2 id="questionModalTitle">
-     Add Question
-    </h2>
-   </div>
-
-   <button class="close"
-           onclick="closeQuestionEditor()">
-    ×
-   </button>
-
-  </div>
-
+  <div class="modal-head"><div><h2 id="questionModalTitle">Add Question</h2></div><button class="close" onclick="closeQuestionEditor()">×</button></div>
   <input type="hidden" id="editQuestionId">
-
   <div class="form-grid">
-
-   <div class="field">
-    <label>Question Number</label>
-    <input id="questionNumber" type="number">
-   </div>
-
-   <div class="field">
-    <label>Question Type</label>
-
-    <select id="questionType">
-
-     <option>Multiple Choice</option>
-     <option>True False Not Given</option>
-     <option>Matching</option>
-     <option>Sentence Completion</option>
-     <option>Short Answer</option>
-     <option>Other</option>
-
-    </select>
-
-   </div>
-
+   <div class="field"><label>Question Number</label><input id="questionNumber" type="number"></div>
+   <div class="field"><label>Question Type</label><select id="questionType"></select></div>
   </div>
-
-  <div class="field">
-
-   <label>Question</label>
-
-   <textarea id="questionText"></textarea>
-
-  </div>
-
-  <div class="field">
-
-   <label>Passage / Context</label>
-
-   <textarea id="questionPassage"></textarea>
-
-  </div>
-
-  <div class="field">
-
-   <label>Options (JSON)</label>
-
-   <textarea id="questionOptions"
-             placeholder='["A","B","C","D"]'></textarea>
-
-  </div>
-
-  <div class="field">
-
-   <label>Correct Answer</label>
-
-   <input id="correctAnswer">
-
-  </div>
-
-  <div class="field">
-
-   <label>Explanation / Feedback</label>
-
-   <textarea id="questionExplanation"></textarea>
-
-  </div>
-
-  <div class="field">
-
-   <label>Audio URL (Listening)</label>
-
-   <input id="questionAudio">
-
-  </div>
-
+  <div class="type-info" id="editorTypeInfo"></div>
+  <div class="field"><label>Question</label><textarea id="questionText"></textarea></div>
+  <div class="field"><label>Passage / Context</label><textarea id="questionPassage"></textarea></div>
+  <div class="field"><label>Options (JSON)</label><textarea id="questionOptions" placeholder='["A","B","C","D"]'></textarea></div>
+  <div class="field"><label>Correct Answer</label><input id="correctAnswer"></div>
+  <div class="field"><label>Explanation / Feedback</label><textarea id="questionExplanation"></textarea></div>
+  <div class="field"><label>Audio URL (Listening)</label><input id="questionAudio"></div>
   <div class="btn-row">
-
-   <button class="btn primary"
-           onclick="saveQuestion()">
-    Save Question
-   </button>
-
-   <button class="btn success"
-           onclick="saveQuestion(true)">
-    Save & Publish
-   </button>
-
-   <button class="btn danger"
-           onclick="closeQuestionEditor()">
-    Cancel
-   </button>
-
+   <button class="btn primary" onclick="saveQuestion()">Save Question</button>
+   <button class="btn success" onclick="saveQuestion(true)">Save & Publish</button>
+   <button class="btn danger" onclick="closeQuestionEditor()">Cancel</button>
   </div>
-
  </div>
-
 </div>
-
-
-<!-- TEXT PREVIEW -->
 
 <div class="modal" id="textModal">
-
  <div class="modal-box">
-
-  <div class="modal-head">
-
-   <h2>Extracted PDF Text</h2>
-
-   <button class="close"
-           onclick="closeTextPreview()">
-    ×
-   </button>
-
-  </div>
-
-  <div class="preview"
-       id="fullTextPreview"></div>
-
+  <div class="modal-head"><h2>Extracted PDF Text</h2><button class="close" onclick="closeTextPreview()">×</button></div>
+  <div class="preview" id="fullTextPreview"></div>
  </div>
-
 </div>
 
-
 <script>
+let db=null;
+let extractedText="";
+let currentModule="Listening";
+let importedBookData={title:"",number:"",listening:"",reading:"",writing:"",speaking:""};
 
-/* ==========================================
-   CONFIGURATION
-========================================== */
+const DEFAULT_URL="https://emdhibdfjtgygtuffzkc.supabase.co";
+const DEFAULT_KEY="sb_publishable_wjDEfOiEPB7Asyn2bOLNgQ_xx-Ohwpf";
 
-let db = null;
-
-let extractedText = "";
-
-let currentModule = "Listening";
-
-let importedBookData = {
- title:"",
- number:"",
- listening:"",
- reading:"",
- writing:"",
- speaking:""
+/* =========================================================
+   MODULE-SPECIFIC QUESTION TYPES
+   ========================================================= */
+const MODULE_TYPES={
+ Listening:[
+  ["","All Types","All Listening question types"],
+  ["Form Completion","Form Completion","Complete missing information in a form."],
+  ["Note Completion","Note Completion","Complete notes using words from the recording."],
+  ["Table Completion","Table Completion","Complete missing information in a table."],
+  ["Flow-chart Completion","Flow-chart Completion","Complete stages or steps in a process."],
+  ["Summary Completion","Summary Completion","Complete a summary from the recording."],
+  ["Sentence Completion","Sentence Completion","Complete sentences using information from the recording."],
+  ["Multiple Choice","Multiple Choice","Choose the correct answer."],
+  ["Matching","Matching","Match items, speakers, statements or information."],
+  ["Plan / Map / Diagram Labelling","Plan / Map / Diagram Labelling","Label locations or parts of a visual."],
+  ["Short Answer","Short Answer","Answer briefly using information from the recording."]
+ ],
+ Reading:[
+  ["","All Types","All Reading question types"],
+  ["Multiple Choice","Multiple Choice","Choose the correct answer."],
+  ["True False Not Given","True False Not Given","Decide whether a statement is True, False or Not Given."],
+  ["Yes No Not Given","Yes No Not Given","Decide whether the writer agrees, disagrees or gives no information."],
+  ["Matching Headings","Matching Headings","Match headings to paragraphs."],
+  ["Matching Information","Matching Information","Match information to the correct paragraph."],
+  ["Matching Features","Matching Features","Match statements or features with the correct option."],
+  ["Matching","Matching","Match items, information or sentence halves."],
+  ["Sentence Completion","Sentence Completion","Complete sentences from the passage."],
+  ["Summary Completion","Summary Completion","Complete a summary from the passage."],
+  ["Note Completion","Note Completion","Complete notes from the passage."],
+  ["Table Completion","Table Completion","Complete missing information in a table."],
+  ["Flow-chart Completion","Flow-chart Completion","Complete stages or steps in a process."],
+  ["Diagram Label Completion","Diagram Label Completion","Label a diagram using information from the passage."],
+  ["Short Answer","Short Answer","Answer questions briefly from the passage."]
+ ],
+ Writing:[
+  ["","All Types","All Writing task types"],
+  ["Task 1","Task 1","IELTS Writing Task 1."],
+  ["Task 2","Task 2","IELTS Writing Task 2."]
+ ],
+ Speaking:[
+  ["","All Types","All Speaking question types"],
+  ["Part 1","Part 1","Speaking Part 1 questions."],
+  ["Part 2","Part 2","Speaking Part 2 cue card."],
+  ["Part 3","Part 3","Speaking Part 3 discussion questions."]
+ ]
 };
 
-const DEFAULT_URL =
-"https://emdhibdfjtgygtuffzkc.supabase.co";
+function getModuleTypeNames(module){
+ return MODULE_TYPES[module].map(x=>x[0]).filter(Boolean);
+}
+function populateTypeSelect(id,module,selected=""){
+ const select=document.getElementById(id);
+ if(!select)return;
+ select.innerHTML="";
+ MODULE_TYPES[module].forEach(item=>{
+  const opt=document.createElement("option");
+  opt.value=item[0]; opt.textContent=item[1];
+  select.appendChild(opt);
+ });
+ const valid=[...select.options].some(o=>o.value===selected);
+ select.value=valid?selected:"";
+}
+function updateTypeDescription(){
+ const type=document.getElementById("moduleTypeFilter")?.value||"";
+ const item=MODULE_TYPES[currentModule].find(x=>x[0]===type);
+ document.getElementById("typeDescription").textContent=
+  item ? item[2] : "Choose a question type to see only that type.";
+}
+function updateEditorTypeInfo(){
+ const type=document.getElementById("questionType")?.value||"";
+ const item=MODULE_TYPES[currentModule].find(x=>x[0]===type);
+ document.getElementById("editorTypeInfo").textContent=
+  item ? item[2] : "Select the question type that matches this question.";
+}
 
-const DEFAULT_KEY =
-"sb_publishable_wjDEfOiEPB7Asyn2bOLNgQ_xx-Ohwpf";
+document.addEventListener("change",e=>{
+ if(e.target.id==="questionType")updateEditorTypeInfo();
+ if(e.target.id==="moduleTypeFilter")updateTypeDescription();
+});
 
-
-/* ==========================================
+/* =========================================================
    SUPABASE
-========================================== */
-
+   ========================================================= */
 function initSupabase(){
-
- const url =
- localStorage.getItem("SUPABASE_URL") ||
- DEFAULT_URL;
-
- const key =
- localStorage.getItem("SUPABASE_KEY") ||
- DEFAULT_KEY;
-
+ const url=localStorage.getItem("SUPABASE_URL")||DEFAULT_URL;
+ const key=localStorage.getItem("SUPABASE_KEY")||DEFAULT_KEY;
  document.getElementById("supabaseUrl").value=url;
  document.getElementById("supabaseKey").value=key;
-
  try{
-
-  db = window.supabase.createClient(url,key);
-
+  db=window.supabase.createClient(url,key);
   loadDashboard();
-
- }catch(e){
-
-  showError(e.message);
-
- }
-
+ }catch(e){showError(e.message);}
 }
-
-
 function saveSettings(){
-
- const url =
- document.getElementById("supabaseUrl").value.trim();
-
- const key =
- document.getElementById("supabaseKey").value.trim();
-
- if(!url || !key){
-
-  showError("Supabase URL and key are required.");
-
-  return;
-
- }
-
+ const url=document.getElementById("supabaseUrl").value.trim();
+ const key=document.getElementById("supabaseKey").value.trim();
+ if(!url||!key){showError("Supabase URL and key are required.");return;}
  localStorage.setItem("SUPABASE_URL",url);
  localStorage.setItem("SUPABASE_KEY",key);
-
- initSupabase();
-
- showSuccess("Supabase connection saved.");
-
+ initSupabase(); showSuccess("Supabase connection saved.");
 }
 
-
-/* ==========================================
+/* =========================================================
    NAVIGATION
-========================================== */
-
+   ========================================================= */
 function openPage(id,button){
-
- document
- .querySelectorAll(".page")
- .forEach(p=>p.classList.remove("active"));
-
- const page =
- document.getElementById(id);
-
- if(page){
-  page.classList.add("active");
- }
-
- document
- .querySelectorAll(".nav")
- .forEach(b=>b.classList.remove("active"));
-
- if(button){
-  button.classList.add("active");
- }
-
- if(id==="dashboard") loadDashboard();
- if(id==="books") loadBooks();
- if(id==="mock") loadMockTests();
- if(id==="results") loadResults();
-
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ const page=document.getElementById(id); if(page)page.classList.add("active");
+ document.querySelectorAll(".nav").forEach(b=>b.classList.remove("active"));
+ if(button)button.classList.add("active");
+ if(id==="dashboard")loadDashboard();
+ if(id==="books")loadBooks();
+ if(id==="mock")loadMockTests();
+ if(id==="results")loadResults();
 }
-
-
-function openModule(module,button){
-
+async function openModule(module,button){
  currentModule=module;
-
  openPage("modulePage",button);
-
- document.getElementById("moduleTitle")
-  .textContent=module;
-
- document.getElementById("moduleSubtitle")
-  .textContent=
-  "Manage "+module+" questions and content.";
-
- document
- .querySelectorAll(".module-tab")
- .forEach(x=>x.classList.remove("active"));
-
- loadBookFilter();
- loadModuleQuestions();
-
+ document.getElementById("moduleTitle").textContent=module;
+ document.getElementById("moduleSubtitle").textContent="Manage "+module+" questions and content.";
+ document.querySelectorAll(".module-tab").forEach(x=>x.classList.toggle("active",x.dataset.module===module));
+ populateTypeSelect("moduleTypeFilter",module,"");
+ updateTypeDescription();
+ await loadBookFilter();
+ await loadModuleQuestions();
+}
+async function filterModule(module,button){
+ currentModule=module;
+ document.getElementById("moduleTitle").textContent=module;
+ document.getElementById("moduleSubtitle").textContent="Manage "+module+" questions and content.";
+ document.querySelectorAll(".module-tab").forEach(x=>x.classList.toggle("active",x.dataset.module===module));
+ populateTypeSelect("moduleTypeFilter",module,"");
+ updateTypeDescription();
+ await loadBookFilter();
+ await loadModuleQuestions();
 }
 
-
-/* ==========================================
+/* =========================================================
    DASHBOARD
-========================================== */
-
+   ========================================================= */
 async function loadDashboard(){
-
- if(!db) return;
-
+ if(!db)return;
  try{
-
-  const books =
-  await db
-  .from("books")
-  .select("id");
-
-  const questions =
-  await db
-  .from("questions")
-  .select("id,published");
-
-  const vocabulary =
-  await db
-  .from("vocabulary")
-  .select("id");
-
-  document.getElementById("statBooks")
-   .textContent=
-   books.data?.length || 0;
-
-  document.getElementById("statQuestions")
-   .textContent=
-   questions.data?.length || 0;
-
-  document.getElementById("statPublished")
-   .textContent=
-   questions.data?.filter(x=>x.published).length || 0;
-
-  document.getElementById("statVocabulary")
-   .textContent=
-   vocabulary.data?.length || 0;
-
- }catch(e){
-
-  console.error(e);
-
- }
-
+  const [books,questions,vocabulary]=await Promise.all([
+   db.from("books").select("id"),
+   db.from("questions").select("id,published"),
+   db.from("vocabulary").select("id")
+  ]);
+  document.getElementById("statBooks").textContent=books.data?.length||0;
+  document.getElementById("statQuestions").textContent=questions.data?.length||0;
+  document.getElementById("statPublished").textContent=questions.data?.filter(x=>x.published).length||0;
+  document.getElementById("statVocabulary").textContent=vocabulary.data?.length||0;
+ }catch(e){console.error(e);}
 }
 
-
-/* ==========================================
+/* =========================================================
    PDF IMPORT
-========================================== */
-
+   ========================================================= */
 async function processPDF(event){
-
- const file=event.target.files[0];
-
- if(!file) return;
-
- if(file.type!=="application/pdf"){
-
-  showError("Please select a PDF file.");
-
-  return;
-
- }
-
+ const file=event.target.files[0]; if(!file)return;
+ if(file.type!=="application/pdf"){showError("Please select a PDF file.");return;}
  document.getElementById("importProgress").style.display="block";
-
  setProgress(3,"Opening PDF...");
-
  try{
-
   const buffer=await file.arrayBuffer();
-
-  const pdf=
-  await pdfjsLib
-  .getDocument({data:buffer})
-  .promise;
-
+  const pdf=await pdfjsLib.getDocument({data:buffer}).promise;
   let full="";
-
   for(let i=1;i<=pdf.numPages;i++){
-
-   const percent=
-   Math.round((i/pdf.numPages)*75);
-
-   setProgress(
-    percent,
-    "Reading page "+i+" of "+pdf.numPages+"..."
-   );
-
-   const page=
-   await pdf.getPage(i);
-
-   const content=
-   await page.getTextContent();
-
-   let text=
-   content.items
-   .map(x=>x.str)
-   .join(" ");
-
-   /*
-    OCR is used when the PDF page
-    contains little/no selectable text.
-   */
-
-   if(text.trim().length<40){
-
-    setProgress(
-     percent,
-     "OCR scanning page "+i+"..."
-    );
-
-    text=
-    await runOCR(page);
-
-   }
-
-   full+=
-   "\n\n===== PAGE "+
-   i+
-   " =====\n\n"+
-   text;
-
+   const percent=Math.round((i/pdf.numPages)*75);
+   setProgress(percent,"Reading page "+i+" of "+pdf.numPages+"...");
+   const page=await pdf.getPage(i);
+   const content=await page.getTextContent();
+   let text=content.items.map(x=>x.str).join(" ");
+   if(text.trim().length<40){setProgress(percent,"OCR scanning page "+i+"...");text=await runOCR(page);}
+   full+="\n\n===== PAGE "+i+" =====\n\n"+text;
   }
-
   extractedText=full.trim();
-
-  setProgress(
-   82,
-   "Detecting IELTS modules..."
-  );
-
-  const title=
-  detectBookTitle(extractedText);
-
-  const number=
-  detectBookNumber(extractedText);
-
-  importedBookData.title=
-  title || "Cambridge IELTS Book";
-
-  importedBookData.number=
-  number || "";
-
-  importedBookData.listening=
-  extractSection(
-   extractedText,
-   "listening"
-  );
-
-  importedBookData.reading=
-  extractSection(
-   extractedText,
-   "reading"
-  );
-
-  importedBookData.writing=
-  extractSection(
-   extractedText,
-   "writing"
-  );
-
-  importedBookData.speaking=
-  extractSection(
-   extractedText,
-   "speaking"
-  );
-
-  document.getElementById("importBookTitle").value=
-  importedBookData.title;
-
-  document.getElementById("importBookNumber").value=
-  importedBookData.number;
-
+  setProgress(82,"Detecting IELTS modules...");
+  importedBookData.title=detectBookTitle(extractedText)||"Cambridge IELTS Book";
+  importedBookData.number=detectBookNumber(extractedText)||"";
+  ["listening","reading","writing","speaking"].forEach(name=>{
+   importedBookData[name]=extractSection(extractedText,name);
+  });
+  document.getElementById("importBookTitle").value=importedBookData.title;
+  document.getElementById("importBookNumber").value=importedBookData.number;
   document.getElementById("importInfo").style.display="block";
   document.getElementById("detectedCard").style.display="block";
-
-  document.getElementById("detectListening").textContent=
-  countQuestions(importedBookData.listening);
-
-  document.getElementById("detectReading").textContent=
-  countQuestions(importedBookData.reading);
-
-  document.getElementById("detectWriting").textContent=
-  countQuestions(importedBookData.writing);
-
-  document.getElementById("detectSpeaking").textContent=
-  countQuestions(importedBookData.speaking);
-
-  setProgress(
-   100,
-   "Analysis completed. Ready to publish."
-  );
-
-  showSuccess(
-   "PDF processed successfully. Review the detected content."
-  );
-
- }catch(e){
-
-  console.error(e);
-
-  showError(
-   "PDF processing failed: "+e.message
-  );
-
-  setProgress(0,"Import failed.");
-
- }
-
+  document.getElementById("detectListening").textContent=countQuestions(importedBookData.listening);
+  document.getElementById("detectReading").textContent=countQuestions(importedBookData.reading);
+  document.getElementById("detectWriting").textContent=countQuestions(importedBookData.writing);
+  document.getElementById("detectSpeaking").textContent=countQuestions(importedBookData.speaking);
+  setProgress(100,"Analysis completed. Ready to publish.");
+  showSuccess("PDF processed successfully. Review the detected content.");
+ }catch(e){console.error(e);showError("PDF processing failed: "+e.message);setProgress(0,"Import failed.");}
 }
-
-
-/* ==========================================
-   OCR
-========================================== */
-
 async function runOCR(page){
-
  try{
-
-  const viewport=
-  page.getViewport({scale:1.5});
-
-  const canvas=
-  document.createElement("canvas");
-
-  canvas.width=
-  viewport.width;
-
-  canvas.height=
-  viewport.height;
-
-  const context=
-  canvas.getContext("2d");
-
-  await page.render({
-   canvasContext:context,
-   viewport
-  }).promise;
-
-  const result=
-  await Tesseract.recognize(
-   canvas,
-   "eng",
-   {
-    logger:data=>{
-     if(data.status==="recognizing text"){
-      console.log(
-       "OCR",
-       Math.round(data.progress*100)+"%"
-      );
-     }
-    }
-   }
-  );
-
-  return result.data.text || "";
-
- }catch(e){
-
-  console.error(e);
-
-  return "";
-
- }
-
+  const viewport=page.getViewport({scale:1.5});
+  const canvas=document.createElement("canvas");
+  canvas.width=viewport.width;canvas.height=viewport.height;
+  const context=canvas.getContext("2d");
+  await page.render({canvasContext:context,viewport}).promise;
+  const result=await Tesseract.recognize(canvas,"eng",{logger:data=>{
+   if(data.status==="recognizing text")console.log("OCR",Math.round(data.progress*100)+"%");
+  }});
+  return result.data.text||"";
+ }catch(e){console.error(e);return "";}
 }
-
-
-/* ==========================================
-   MODULE EXTRACTION
-========================================== */
-
 function extractSection(text,name){
-
  const lower=text.toLowerCase();
-
  const patterns={
-
-  listening:[
-   "listening test",
-   "listening"
-  ],
-
-  reading:[
-   "reading test",
-   "reading passage",
-   "reading"
-  ],
-
-  writing:[
-   "writing test",
-   "writing task 1",
-   "writing task 2"
-  ],
-
-  speaking:[
-   "speaking test",
-   "speaking part 1",
-   "speaking part 2",
-   "speaking part 3"
-  ]
-
+  listening:["listening test","listening"],
+  reading:["reading test","reading passage","reading"],
+  writing:["writing test","writing task 1","writing task 2"],
+  speaking:["speaking test","speaking part 1","speaking part 2","speaking part 3"]
  };
-
  let positions=[];
-
  for(const keyword of patterns[name]){
-
   let pos=0;
-
   while(true){
-
-   pos=lower.indexOf(keyword,pos);
-
-   if(pos===-1) break;
-
-   positions.push(pos);
-
-   pos+=keyword.length;
-
+   pos=lower.indexOf(keyword,pos);if(pos===-1)break;
+   positions.push(pos);pos+=keyword.length;
   }
-
  }
-
- if(!positions.length) return "";
-
+ if(!positions.length)return "";
  positions.sort((a,b)=>a-b);
-
- const start=
- Math.max(0,positions[0]-1500);
-
- const end=
- Math.min(
-  text.length,
-  positions[positions.length-1]+30000
- );
-
+ const start=Math.max(0,positions[0]-1500);
+ const end=Math.min(text.length,positions[positions.length-1]+30000);
  return text.substring(start,end);
-
 }
-
-
 function countQuestions(text){
-
- if(!text) return 0;
-
- const matches=
- text.match(
-  /\b(?:question|questions)\s*\d+/gi
- );
-
- if(matches) return matches.length;
-
- const nums=
- text.match(
-  /\b(?:[1-9]|[1-8][0-9]|9[0-9])\b/g
- );
-
- return nums ? Math.min(nums.length,40) : 0;
-
+ if(!text)return 0;
+ const matches=text.match(/\b(?:question|questions)\s*\d+/gi);
+ if(matches)return new Set(matches.map(x=>x.match(/\d+/)[0])).size;
+ const nums=text.match(/\b(?:[1-9]|[1-8][0-9]|9[0-9])\b/g);
+ return nums?Math.min(new Set(nums).size,40):0;
 }
-
-
-/* ==========================================
-   BOOK DETECTION
-========================================== */
-
 function detectBookTitle(text){
-
- const match=
- text.match(
-  /Cambridge\s+IELTS\s+(?:Academic|General\s+Training\s+)?\d+/i
- );
-
- if(match) return match[0];
-
- return "";
-
+ const match=text.match(/Cambridge\s+IELTS\s+(?:Academic|General\s+Training\s+)?\d+/i);
+ return match?match[0]:"";
 }
-
-
 function detectBookNumber(text){
-
- const match=
- text.match(
-  /Cambridge\s+IELTS\s+(?:Academic|General\s+Training\s+)?(\d+)/i
- );
-
- return match ? match[1] : "";
-
+ const match=text.match(/Cambridge\s+IELTS\s+(?:Academic|General\s+Training\s+)?(\d+)/i);
+ return match?match[1]:"";
 }
 
+/* =========================================================
+   SMART QUESTION TYPE DETECTION
+   ========================================================= */
+function detectQuestionType(text,module){
+ const s=(text||"").toLowerCase();
+ if(module==="Writing"){
+  if(/task\s*1|letter|report|graph|chart|diagram|map|process/.test(s))return "Task 1";
+  if(/task\s*2|essay|discuss both|agree or disagree|advantages|disadvantages/.test(s))return "Task 2";
+ }
+ if(module==="Speaking"){
+  if(/part\s*3/.test(s))return "Part 3";
+  if(/part\s*2|cue card|you should say/.test(s))return "Part 2";
+  if(/part\s*1/.test(s))return "Part 1";
+ }
+ if(module==="Reading"){
+  if(/true\s*\/?\s*false\s*\/?\s*not\s*given|true false not given/.test(s))return "True False Not Given";
+  if(/yes\s*\/?\s*no\s*\/?\s*not\s*given|yes no not given/.test(s))return "Yes No Not Given";
+  if(/matching headings/.test(s))return "Matching Headings";
+  if(/matching information/.test(s))return "Matching Information";
+  if(/matching features/.test(s))return "Matching Features";
+  if(/sentence completion/.test(s))return "Sentence Completion";
+  if(/summary completion/.test(s))return "Summary Completion";
+  if(/note completion/.test(s))return "Note Completion";
+  if(/table completion/.test(s))return "Table Completion";
+  if(/flow.?chart completion/.test(s))return "Flow-chart Completion";
+  if(/diagram label/.test(s))return "Diagram Label Completion";
+  if(/multiple choice/.test(s))return "Multiple Choice";
+  if(/short answer/.test(s))return "Short Answer";
+  if(/matching/.test(s))return "Matching";
+ }
+ if(module==="Listening"){
+  if(/form completion/.test(s))return "Form Completion";
+  if(/note completion/.test(s))return "Note Completion";
+  if(/table completion/.test(s))return "Table Completion";
+  if(/flow.?chart completion/.test(s))return "Flow-chart Completion";
+  if(/summary completion/.test(s))return "Summary Completion";
+  if(/sentence completion/.test(s))return "Sentence Completion";
+  if(/plan|map|diagram/.test(s)&&/label/.test(s))return "Plan / Map / Diagram Labelling";
+  if(/multiple choice/.test(s))return "Multiple Choice";
+  if(/short answer/.test(s))return "Short Answer";
+  if(/matching/.test(s))return "Matching";
+ }
+ return "Other";
+}
 
-/* ==========================================
-   PUBLISH BOOK
-========================================== */
-
+/* =========================================================
+   PUBLISH BOOK + MODULES
+   ========================================================= */
 async function createBookAndModules(){
-
- if(!db){
-
-  showError("Supabase is not connected.");
-
-  return;
-
- }
-
- if(!extractedText){
-
-  showError("Please upload a PDF first.");
-
-  return;
-
- }
-
- const title=
- document.getElementById("importBookTitle")
- .value.trim();
-
- const number=
- document.getElementById("importBookNumber")
- .value.trim();
-
- if(!title){
-
-  showError("Book title is required.");
-
-  return;
-
- }
+ if(!db){showError("Supabase is not connected.");return;}
+ if(!extractedText){showError("Please upload a PDF first.");return;}
+ const title=document.getElementById("importBookTitle").value.trim();
+ const number=document.getElementById("importBookNumber").value.trim();
+ if(!title){showError("Book title is required.");return;}
 
  try{
-
-  setProgress(
-   86,
-   "Creating book..."
-  );
-
-  const bookResult=
-  await db
-  .from("books")
-  .insert({
-   title:title,
-   book_number:number
-    ? parseInt(number)
-    : null,
-   pdf_name:
-   document.getElementById("pdfFile")
-   .files[0]?.name || null
-  })
-  .select()
-  .single();
-
-  if(bookResult.error)
-   throw bookResult.error;
-
+  setProgress(86,"Creating book...");
+  const bookResult=await db.from("books").insert({
+   title:title,book_number:number?parseInt(number):null,
+   pdf_name:document.getElementById("pdfFile").files[0]?.name||null
+  }).select().single();
+  if(bookResult.error)throw bookResult.error;
   const book=bookResult.data;
 
-  const modules=[
-   "Listening",
-   "Reading",
-   "Writing",
-   "Speaking"
-  ];
+  for(const moduleName of ["Listening","Reading","Writing","Speaking"]){
+   setProgress(88,"Creating "+moduleName+" module...");
+   const content=importedBookData[moduleName.toLowerCase()]||"";
+   const moduleResult=await db.from("modules").insert({
+    book_id:book.id,module_name:moduleName,
+    description:title+" - "+moduleName,published:false
+   }).select().single();
+   if(moduleResult.error)throw moduleResult.error;
 
-  for(const moduleName of modules){
-
-   setProgress(
-    88,
-    "Creating "+moduleName+" module..."
-   );
-
-   const content=
-   importedBookData[
-    moduleName.toLowerCase()
-   ] || "";
-
-   const moduleResult=
-   await db
-   .from("modules")
-   .insert({
-    book_id:book.id,
-    module_name:moduleName,
-    description:
-    title+" - "+moduleName,
-    published:false
-   })
-   .select()
-   .single();
-
-   if(moduleResult.error)
-    throw moduleResult.error;
-
-   /*
-    Automatically create question records
-    from detected numbered questions.
-   */
-
-   const questions=
-   parseQuestions(
-    content,
-    moduleResult.data.id
-   );
-
+   const questions=parseQuestions(content,moduleResult.data.id,moduleName);
    if(questions.length){
-
-    const result=
-    await db
-    .from("questions")
-    .insert(questions);
-
-    if(result.error)
-     throw result.error;
-
+    const result=await db.from("questions").insert(questions);
+    if(result.error)throw result.error;
    }
-
   }
-
-  setProgress(
-   100,
-   "Book imported successfully."
-  );
-
-  showSuccess(
-   "Book created with four separate modules."
-  );
-
+  setProgress(100,"Book imported successfully.");
+  showSuccess("Book created with four separate modules and module-specific question types.");
   loadDashboard();
-
-  setTimeout(()=>{
-   openModule("Listening");
-  },700);
-
- }catch(e){
-
-  console.error(e);
-
-  showError(
-   "Publishing failed: "+e.message
-  );
-
- }
-
+  setTimeout(()=>openModule("Listening"),700);
+ }catch(e){console.error(e);showError("Publishing failed: "+e.message);}
 }
 
-
-/* ==========================================
-   QUESTION PARSER
-========================================== */
-
-function parseQuestions(text,moduleId){
-
- if(!text) return [];
-
- const lines=
- text
- .split(/\n+/)
- .map(x=>x.trim())
- .filter(Boolean);
-
- const records=[];
-
- let current=null;
+/* =========================================================
+   SMART QUESTION PARSER
+   ========================================================= */
+function parseQuestions(text,moduleId,moduleName){
+ if(!text)return [];
+ const lines=text.split(/\n+/).map(x=>x.trim()).filter(Boolean);
+ const records=[];let current=null;
 
  for(const line of lines){
-
-  const match=
-  line.match(
-   /^(?:Question\s*)?(\d{1,2})[\.\):\-]\s*(.+)$/i
-  );
-
+  const match=line.match(/^(?:Question\s*)?(\d{1,2})[\.\):\-]\s*(.+)$/i);
   if(match){
-
-   if(current){
-    records.push(current);
-   }
-
+   if(current)records.push(current);
    current={
     module_id:moduleId,
-    question_number:
-    parseInt(match[1]),
-    question_type:"Other",
+    question_number:parseInt(match[1]),
+    question_type:detectQuestionType(match[2],moduleName),
     question_text:match[2],
     passage_text:"",
     options:null,
@@ -2157,424 +636,147 @@ function parseQuestions(text,moduleId){
     explanation:"",
     published:false
    };
-
   }else if(current){
-
-   current.question_text+=
-   " "+line;
-
+   current.question_text+=" "+line;
+   const newType=detectQuestionType(current.question_text,moduleName);
+   if(newType!=="Other")current.question_type=newType;
   }
-
  }
+ if(current)records.push(current);
 
- if(current){
-  records.push(current);
- }
-
- /*
-  Prevent accidentally importing thousands
-  of unrelated page numbers.
- */
-
- return records
- .filter(x=>
-  x.question_text.length>3
- )
- .slice(0,200);
-
+ const seen=new Set();
+ return records.filter(x=>{
+  const key=x.question_number+"|"+x.question_text.slice(0,120);
+  if(!x.question_text||x.question_text.length<3||seen.has(key))return false;
+  seen.add(key);return true;
+ }).slice(0,200);
 }
 
-
-/* ==========================================
+/* =========================================================
    TEXT PREVIEW
-========================================== */
+   ========================================================= */
+function showImportedText(){document.getElementById("fullTextPreview").textContent=extractedText||"No text extracted.";document.getElementById("textModal").classList.add("show");}
+function closeTextPreview(){document.getElementById("textModal").classList.remove("show");}
 
-function showImportedText(){
-
- document.getElementById("fullTextPreview")
- .textContent=
- extractedText || "No text extracted.";
-
- document.getElementById("textModal")
- .classList.add("show");
-
-}
-
-function closeTextPreview(){
-
- document.getElementById("textModal")
- .classList.remove("show");
-
-}
-
-
-/* ==========================================
+/* =========================================================
    BOOKS
-========================================== */
-
+   ========================================================= */
 async function loadBooks(){
-
- if(!db) return;
-
- const result=
- await db
- .from("books")
- .select("*")
- .order("created_at",{ascending:false});
-
- if(result.error){
-
-  showError(result.error.message);
-
-  return;
-
- }
-
- const table=
- document.getElementById("booksTable");
-
- table.innerHTML="";
-
- if(!result.data?.length){
-
-  table.innerHTML=
-  `<tr><td colspan="4">
-   No books imported yet.
-  </td></tr>`;
-
-  return;
-
- }
-
+ if(!db)return;
+ const result=await db.from("books").select("*").order("created_at",{ascending:false});
+ if(result.error){showError(result.error.message);return;}
+ const table=document.getElementById("booksTable");table.innerHTML="";
+ if(!result.data?.length){table.innerHTML='<tr><td colspan="4">No books imported yet.</td></tr>';return;}
  result.data.forEach(book=>{
-
-  table.innerHTML+=`
-   <tr>
-    <td><strong>${esc(book.title)}</strong></td>
-    <td>${esc(book.book_number || "-")}</td>
-    <td>${formatDate(book.created_at)}</td>
-    <td>
-     <button class="btn secondary"
-       onclick="openBookModules('${book.id}')">
-       Open Modules
-     </button>
-    </td>
-   </tr>
-  `;
-
+  table.innerHTML+=`<tr><td><strong>${esc(book.title)}</strong></td><td>${esc(book.book_number||"-")}</td><td>${formatDate(book.created_at)}</td><td><button class="btn secondary" onclick="openBookModules('${book.id}')">Open Modules</button></td></tr>`;
  });
-
 }
-
-
 async function openBookModules(bookId){
-
- if(!db) return;
-
- const result=
- await db
- .from("modules")
- .select("*")
- .eq("book_id",bookId);
-
- if(result.error){
-
-  showError(result.error.message);
-
-  return;
-
- }
-
- if(!result.data?.length){
-
-  showError("No modules found for this book.");
-
-  return;
-
- }
-
+ if(!db)return;
+ const result=await db.from("modules").select("*").eq("book_id",bookId);
+ if(result.error){showError(result.error.message);return;}
+ if(!result.data?.length){showError("No modules found for this book.");return;}
  openModule(result.data[0].module_name);
-
 }
 
-
-/* ==========================================
+/* =========================================================
    MODULE QUESTIONS
-========================================== */
-
+   IMPORTANT: book filter + question type are now combined
+   in the SAME query instead of overwriting each other.
+   ========================================================= */
 async function loadBookFilter(){
-
- if(!db) return;
-
- const result=
- await db
- .from("books")
- .select("id,title")
- .order("created_at",{ascending:false});
-
- const select=
- document.getElementById("moduleBookFilter");
-
- select.innerHTML=
- `<option value="">All Books</option>`;
-
+ if(!db)return;
+ const result=await db.from("books").select("id,title").order("created_at",{ascending:false});
+ const select=document.getElementById("moduleBookFilter");
+ const previous=select.value;
+ select.innerHTML='<option value="">All Books</option>';
  result.data?.forEach(book=>{
-
-  select.innerHTML+=
-  `<option value="${book.id}">
-   ${esc(book.title)}
-  </option>`;
-
+  const opt=document.createElement("option");opt.value=book.id;opt.textContent=book.title;select.appendChild(opt);
  });
-
+ if([...select.options].some(o=>o.value===previous))select.value=previous;
 }
-
 
 async function loadModuleQuestions(){
-
- if(!db) return;
-
- const container=
- document.getElementById("questionsContainer");
-
- container.innerHTML=
- `<div class="card">
-   <div class="empty">Loading questions...</div>
-  </div>`;
+ if(!db)return;
+ const container=document.getElementById("questionsContainer");
+ container.innerHTML='<div class="card"><div class="empty">Loading questions...</div></div>';
 
  try{
+  const bookId=document.getElementById("moduleBookFilter").value;
+  const type=document.getElementById("moduleTypeFilter").value;
 
-  const moduleResult=
-  await db
-  .from("modules")
-  .select("id")
-  .eq("module_name",currentModule);
+  /* Get only modules belonging to the selected module name. */
+  let moduleQuery=db.from("modules").select("id,book_id").eq("module_name",currentModule);
+  if(bookId)moduleQuery=moduleQuery.eq("book_id",bookId);
 
-  if(moduleResult.error)
-   throw moduleResult.error;
+  const moduleResult=await moduleQuery;
+  if(moduleResult.error)throw moduleResult.error;
 
-  const moduleIds=
-  moduleResult.data?.map(x=>x.id) || [];
-
+  const moduleIds=moduleResult.data?.map(x=>x.id)||[];
   if(!moduleIds.length){
-
-   container.innerHTML=
-   `<div class="card">
-     <div class="empty">
-      No ${currentModule} module found.
-     </div>
-    </div>`;
-
+   container.innerHTML=`<div class="card"><div class="empty">No ${currentModule} module found for the selected filter.</div></div>`;
    return;
-
   }
 
-  let query=
-  db
-  .from("questions")
-  .select("*")
-  .in("module_id",moduleIds)
-  .order("question_number",{ascending:true});
-
-  const bookId=
-  document.getElementById("moduleBookFilter").value;
-
-  const type=
-  document.getElementById("moduleTypeFilter").value;
-
-  if(type){
-   query=query.eq("question_type",type);
-  }
-
-  if(bookId){
-
-   const selectedModules=
-   await db
-   .from("modules")
-   .select("id")
-   .eq("book_id",bookId)
-   .eq("module_name",currentModule);
-
-   const ids=
-   selectedModules.data?.map(x=>x.id) || [];
-
-   if(!ids.length){
-
-    container.innerHTML=
-    `<div class="card">
-      <div class="empty">
-       No questions for this book.
-      </div>
-     </div>`;
-
-    return;
-
-   }
-
-   query=
-   db
-   .from("questions")
-   .select("*")
-   .in("module_id",ids)
-   .order("question_number",{ascending:true});
-
-  }
+  /* BOTH filters are applied here. */
+  let query=db.from("questions").select("*").in("module_id",moduleIds).order("question_number",{ascending:true});
+  if(type)query=query.eq("question_type",type);
 
   const result=await query;
-
-  if(result.error)
-   throw result.error;
-
-  renderQuestions(result.data || []);
-
+  if(result.error)throw result.error;
+  renderQuestions(result.data||[],type);
  }catch(e){
-
   console.error(e);
+  container.innerHTML=`<div class="card"><div class="empty">${esc(e.message)}</div></div>`;
+ }
+}
 
-  container.innerHTML=
-  `<div class="card">
-    <div class="empty">
-     ${esc(e.message)}
+function renderQuestions(data,type=""){
+ const container=document.getElementById("questionsContainer");
+ if(!data.length){
+  container.innerHTML=`<div class="card"><div class="empty">No ${type?esc(type)+" ":""}questions found in ${esc(currentModule)}.</div></div>`;
+  return;
+ }
+ container.innerHTML="";
+ data.forEach(q=>{
+  container.innerHTML+=`
+   <div class="question-card">
+    <div class="question-top">
+     <div>
+      <div class="q-number">Question ${q.question_number||"-"} <span class="count-pill">${esc(q.question_type||"Other")}</span></div>
+      <div class="q-type">${esc(currentModule)}</div>
+     </div>
+     <span class="badge ${q.published?"badge-published":"badge-draft"}">${q.published?"PUBLISHED":"DRAFT"}</span>
+    </div>
+    <div class="q-text">${esc(q.question_text||"")}</div>
+    <div class="question-actions">
+     <button class="btn secondary" onclick='editQuestion(${JSON.stringify(q).replace(/'/g,"&#39;")})'>Edit</button>
+     <button class="btn ${q.published?"danger":"success"}" onclick="togglePublish('${q.id}',${!q.published})">${q.published?"Unpublish":"Publish"}</button>
+     <button class="btn danger" onclick="deleteQuestion('${q.id}')">Delete</button>
     </div>
    </div>`;
-
- }
-
-}
-
-
-function renderQuestions(data){
-
- const container=
- document.getElementById("questionsContainer");
-
- if(!data.length){
-
-  container.innerHTML=
-  `<div class="card">
-   <div class="empty">
-    No questions found.
-   </div>
-  </div>`;
-
-  return;
-
- }
-
- container.innerHTML="";
-
- data.forEach(q=>{
-
-  container.innerHTML+=`
-
-   <div class="question-card">
-
-    <div class="question-top">
-
-     <div>
-      <div class="q-number">
-       Question ${q.question_number || "-"}
-      </div>
-
-      <div class="q-type">
-       ${esc(q.question_type || "Other")}
-      </div>
-     </div>
-
-     <span class="badge ${
-      q.published
-      ? "badge-published"
-      : "badge-draft"
-     }">
-      ${q.published ? "PUBLISHED" : "DRAFT"}
-     </span>
-
-    </div>
-
-    <div class="q-text">
-     ${esc(q.question_text || "")}
-    </div>
-
-    <div class="question-actions">
-
-     <button class="btn secondary"
-       onclick='editQuestion(${JSON.stringify(q)})'>
-       Edit
-     </button>
-
-     <button class="btn ${
-      q.published ? "danger" : "success"
-     }"
-       onclick="togglePublish('${q.id}',${!q.published})">
-       ${q.published ? "Unpublish" : "Publish"}
-     </button>
-
-     <button class="btn danger"
-       onclick="deleteQuestion('${q.id}')">
-       Delete
-     </button>
-
-    </div>
-
-   </div>
-
-  `;
-
  });
-
 }
 
-
-/* ==========================================
+/* =========================================================
    QUESTION EDITOR
-========================================== */
-
+   ========================================================= */
 function openQuestionEditor(question=null){
-
- document.getElementById("questionModal")
- .classList.add("show");
-
+ document.getElementById("questionModal").classList.add("show");
+ populateTypeSelect("questionType",currentModule,question?.question_type||"");
  if(question){
-
-  document.getElementById("questionModalTitle")
-   .textContent="Edit Question";
-
-  document.getElementById("editQuestionId")
-   .value=question.id;
-
-  document.getElementById("questionNumber")
-   .value=question.question_number || "";
-
-  document.getElementById("questionType")
-   .value=question.question_type || "Other";
-
-  document.getElementById("questionText")
-   .value=question.question_text || "";
-
-  document.getElementById("questionPassage")
-   .value=question.passage_text || "";
-
-  document.getElementById("questionOptions")
-   .value=
-   question.options
-   ? JSON.stringify(question.options,null,2)
-   : "";
-
-  document.getElementById("correctAnswer")
-   .value=question.correct_answer || "";
-
-  document.getElementById("questionExplanation")
-   .value=question.explanation || "";
-
-  document.getElementById("questionAudio")
-   .value=question.audio_url || "";
-
+  document.getElementById("questionModalTitle").textContent="Edit "+currentModule+" Question";
+  document.getElementById("editQuestionId").value=question.id;
+  document.getElementById("questionNumber").value=question.question_number||"";
+  document.getElementById("questionType").value=question.question_type||"Other";
+  document.getElementById("questionText").value=question.question_text||"";
+  document.getElementById("questionPassage").value=question.passage_text||"";
+  document.getElementById("questionOptions").value=question.options?JSON.stringify(question.options,null,2):"";
+  document.getElementById("correctAnswer").value=question.correct_answer||"";
+  document.getElementById("questionExplanation").value=question.explanation||"";
+  document.getElementById("questionAudio").value=question.audio_url||"";
  }else{
-
-  document.getElementById("questionModalTitle")
-   .textContent=
-   "Add "+currentModule+" Question";
-
+  document.getElementById("questionModalTitle").textContent="Add "+currentModule+" Question";
   document.getElementById("editQuestionId").value="";
   document.getElementById("questionNumber").value="";
   document.getElementById("questionText").value="";
@@ -2583,629 +785,141 @@ function openQuestionEditor(question=null){
   document.getElementById("correctAnswer").value="";
   document.getElementById("questionExplanation").value="";
   document.getElementById("questionAudio").value="";
-
  }
-
+ updateEditorTypeInfo();
 }
-
-
-function editQuestion(q){
-
- openQuestionEditor(q);
-
-}
-
-
-function closeQuestionEditor(){
-
- document.getElementById("questionModal")
- .classList.remove("show");
-
-}
-
+function editQuestion(q){openQuestionEditor(q);}
+function closeQuestionEditor(){document.getElementById("questionModal").classList.remove("show");}
 
 async function saveQuestion(publish=false){
-
- if(!db){
-
-  showError("Supabase is not connected.");
-
-  return;
-
- }
-
- const id=
- document.getElementById("editQuestionId").value;
-
- const number=
- parseInt(
-  document.getElementById("questionNumber").value
- );
-
- const type=
- document.getElementById("questionType").value;
-
- const text=
- document.getElementById("questionText").value.trim();
-
- const passage=
- document.getElementById("questionPassage").value.trim();
-
- const correct=
- document.getElementById("correctAnswer").value.trim();
-
- const explanation=
- document.getElementById("questionExplanation").value.trim();
-
- const audio=
- document.getElementById("questionAudio").value.trim();
-
+ if(!db){showError("Supabase is not connected.");return;}
+ const id=document.getElementById("editQuestionId").value;
+ const number=parseInt(document.getElementById("questionNumber").value);
+ const type=document.getElementById("questionType").value;
+ const text=document.getElementById("questionText").value.trim();
+ const passage=document.getElementById("questionPassage").value.trim();
+ const correct=document.getElementById("correctAnswer").value.trim();
+ const explanation=document.getElementById("questionExplanation").value.trim();
+ const audio=document.getElementById("questionAudio").value.trim();
  let options=null;
-
- const rawOptions=
- document.getElementById("questionOptions")
- .value.trim();
-
+ const rawOptions=document.getElementById("questionOptions").value.trim();
  if(rawOptions){
-
-  try{
-
-   options=JSON.parse(rawOptions);
-
-  }catch(e){
-
-   showError(
-    "Options must contain valid JSON."
-   );
-
-   return;
-
-  }
-
+  try{options=JSON.parse(rawOptions);}catch(e){showError("Options must contain valid JSON.");return;}
  }
-
- if(!text){
-
-  showError("Question text is required.");
-
-  return;
-
- }
+ if(!text){showError("Question text is required.");return;}
 
  try{
-
   let moduleId=null;
-
   if(!id){
-
-   const moduleResult=
-   await db
-   .from("modules")
-   .select("id")
-   .eq("module_name",currentModule)
-   .limit(1)
-   .single();
-
-   if(moduleResult.error)
-    throw moduleResult.error;
-
-   moduleId=
-   moduleResult.data.id;
-
+   /* Prefer selected book if one is selected. */
+   let moduleQuery=db.from("modules").select("id").eq("module_name",currentModule);
+   const selectedBook=document.getElementById("moduleBookFilter").value;
+   if(selectedBook)moduleQuery=moduleQuery.eq("book_id",selectedBook);
+   const moduleResult=await moduleQuery.limit(1).single();
+   if(moduleResult.error)throw moduleResult.error;
+   moduleId=moduleResult.data.id;
   }
-
   const payload={
-
-   question_number:
-   Number.isFinite(number) ? number : null,
-
-   question_type:type,
-
+   question_number:Number.isFinite(number)?number:null,
+   question_type:type||"Other",
    question_text:text,
-
    passage_text:passage,
-
    options:options,
-
    correct_answer:correct,
-
    explanation:explanation,
-
    audio_url:audio,
-
    published:publish
-
   };
-
   let result;
-
-  if(id){
-
-   result=
-   await db
-   .from("questions")
-   .update(payload)
-   .eq("id",id);
-
-  }else{
-
-   payload.module_id=moduleId;
-
-   result=
-   await db
-   .from("questions")
-   .insert(payload);
-
-  }
-
-  if(result.error)
-   throw result.error;
-
+  if(id)result=await db.from("questions").update(payload).eq("id",id);
+  else{payload.module_id=moduleId;result=await db.from("questions").insert(payload);}
+  if(result.error)throw result.error;
   closeQuestionEditor();
-
-  showSuccess(
-   publish
-   ? "Question saved and published."
-   : "Question saved successfully."
-  );
-
-  loadModuleQuestions();
-  loadDashboard();
-
- }catch(e){
-
-  console.error(e);
-
-  showError(
-   "Question save failed: "+e.message
-  );
-
- }
-
+  showSuccess(publish?"Question saved and published.":"Question saved successfully.");
+  await loadModuleQuestions();loadDashboard();
+ }catch(e){console.error(e);showError("Question save failed: "+e.message);}
 }
-
-
-/* ==========================================
-   PUBLISH / DELETE
-========================================== */
 
 async function togglePublish(id,value){
-
- if(!db) return;
-
- const result=
- await db
- .from("questions")
- .update({published:value})
- .eq("id",id);
-
- if(result.error){
-
-  showError(result.error.message);
-
-  return;
-
- }
-
- showSuccess(
-  value
-  ? "Question published."
-  : "Question unpublished."
- );
-
- loadModuleQuestions();
- loadDashboard();
-
+ if(!db)return;
+ const result=await db.from("questions").update({published:value}).eq("id",id);
+ if(result.error){showError(result.error.message);return;}
+ showSuccess(value?"Question published.":"Question unpublished.");
+ loadModuleQuestions();loadDashboard();
 }
-
-
 async function deleteQuestion(id){
-
- if(!confirm(
-  "Delete this question permanently?"
- )) return;
-
- const result=
- await db
- .from("questions")
- .delete()
- .eq("id",id);
-
- if(result.error){
-
-  showError(result.error.message);
-
-  return;
-
- }
-
- showSuccess("Question deleted.");
-
- loadModuleQuestions();
- loadDashboard();
-
+ if(!confirm("Delete this question permanently?"))return;
+ const result=await db.from("questions").delete().eq("id",id);
+ if(result.error){showError(result.error.message);return;}
+ showSuccess("Question deleted.");loadModuleQuestions();loadDashboard();
 }
 
-
-/* ==========================================
+/* =========================================================
    MOCK TESTS
-========================================== */
-
+   ========================================================= */
 async function createMockTest(){
-
- if(!db){
-
-  showError("Supabase is not connected.");
-
-  return;
-
- }
-
- const title=
- document.getElementById("testTitle")
- .value.trim();
-
- const module=
- document.getElementById("testModule")
- .value;
-
- const duration=
- parseInt(
-  document.getElementById("testDuration")
-  .value
- );
-
- if(!title){
-
-  showError("Test title is required.");
-
-  return;
-
- }
-
- const result=
- await db
- .from("practice_tests")
- .insert({
-  title:title,
-  module_name:module,
-  duration_minutes:duration || 60,
-  published:false
- });
-
- if(result.error){
-
-  showError(result.error.message);
-
-  return;
-
- }
-
- document.getElementById("testTitle").value="";
-
- showSuccess("Mock test created.");
-
- loadMockTests();
-
+ if(!db){showError("Supabase is not connected.");return;}
+ const title=document.getElementById("testTitle").value.trim();
+ const module=document.getElementById("testModule").value;
+ const duration=parseInt(document.getElementById("testDuration").value);
+ if(!title){showError("Test title is required.");return;}
+ const result=await db.from("practice_tests").insert({title:title,module_name:module,duration_minutes:duration||60,published:false});
+ if(result.error){showError(result.error.message);return;}
+ document.getElementById("testTitle").value="";showSuccess("Mock test created.");loadMockTests();
 }
-
-
 async function loadMockTests(){
-
- if(!db) return;
-
- const result=
- await db
- .from("practice_tests")
- .select("*")
- .order("created_at",{ascending:false});
-
- const box=
- document.getElementById("mockList");
-
- box.innerHTML="";
-
- if(result.error){
-
-  box.innerHTML=
-  `<div class="empty">
-   ${esc(result.error.message)}
-  </div>`;
-
-  return;
-
- }
-
- if(!result.data?.length){
-
-  box.innerHTML=
-  `<div class="empty">
-   No mock tests created yet.
-  </div>`;
-
-  return;
-
- }
-
+ if(!db)return;
+ const result=await db.from("practice_tests").select("*").order("created_at",{ascending:false});
+ const box=document.getElementById("mockList");box.innerHTML="";
+ if(result.error){box.innerHTML=`<div class="empty">${esc(result.error.message)}</div>`;return;}
+ if(!result.data?.length){box.innerHTML='<div class="empty">No mock tests created yet.</div>';return;}
  result.data.forEach(test=>{
-
-  box.innerHTML+=`
-
-   <div class="question-card">
-
-    <div class="question-top">
-
-     <div>
-      <div class="q-number">
-       ${esc(test.title)}
-      </div>
-
-      <div class="q-type">
-       ${esc(test.module_name || "")}
-       · ${test.duration_minutes || 0} minutes
-      </div>
-     </div>
-
-     <span class="badge ${
-      test.published
-      ? "badge-published"
-      : "badge-draft"
-     }">
-      ${test.published ? "PUBLISHED" : "DRAFT"}
-     </span>
-
-    </div>
-
-   </div>
-
-  `;
-
+  box.innerHTML+=`<div class="question-card"><div class="question-top"><div><div class="q-number">${esc(test.title)}</div><div class="q-type">${esc(test.module_name||"")} · ${test.duration_minutes||0} minutes</div></div><span class="badge ${test.published?"badge-published":"badge-draft"}">${test.published?"PUBLISHED":"DRAFT"}</span></div></div>`;
  });
-
 }
 
-
-/* ==========================================
+/* =========================================================
    RESULTS
-========================================== */
-
+   ========================================================= */
 async function loadResults(){
-
- if(!db) return;
-
- const result=
- await db
- .from("test_results")
- .select("*")
- .order("completed_at",{ascending:false});
-
- const table=
- document.getElementById("resultsTable");
-
- table.innerHTML="";
-
- if(result.error){
-
-  table.innerHTML=
-  `<tr><td colspan="5">
-   ${esc(result.error.message)}
-  </td></tr>`;
-
-  return;
-
- }
-
- if(!result.data?.length){
-
-  table.innerHTML=
-  `<tr><td colspan="5">
-   No results yet.
-  </td></tr>`;
-
-  return;
-
- }
-
- result.data.forEach(x=>{
-
-  table.innerHTML+=`
-
-   <tr>
-    <td>${esc(x.test_id || "-")}</td>
-    <td>${x.score || 0}</td>
-    <td>${x.total_marks || 0}</td>
-    <td>${x.band_score || "-"}</td>
-    <td>${formatDate(x.completed_at)}</td>
-   </tr>
-
-  `;
-
- });
-
+ if(!db)return;
+ const result=await db.from("test_results").select("*").order("completed_at",{ascending:false});
+ const table=document.getElementById("resultsTable");table.innerHTML="";
+ if(result.error){table.innerHTML=`<tr><td colspan="5">${esc(result.error.message)}</td></tr>`;return;}
+ if(!result.data?.length){table.innerHTML='<tr><td colspan="5">No results yet.</td></tr>';return;}
+ result.data.forEach(x=>{table.innerHTML+=`<tr><td>${esc(x.test_id||"-")}</td><td>${x.score||0}</td><td>${x.total_marks||0}</td><td>${x.band_score||"-"}</td><td>${formatDate(x.completed_at)}</td></tr>`;});
 }
 
-
-/* ==========================================
+/* =========================================================
    VOCABULARY
-========================================== */
-
+   ========================================================= */
 async function addVocabulary(){
-
- if(!db){
-
-  showError("Supabase is not connected.");
-
-  return;
-
- }
-
- const word=
- document.getElementById("vocabWord")
- .value.trim();
-
- const pronunciation=
- document.getElementById("vocabPronunciation")
- .value.trim();
-
- const meaning=
- document.getElementById("vocabMeaning")
- .value.trim();
-
- const example=
- document.getElementById("vocabExample")
- .value.trim();
-
- if(!word || !meaning){
-
-  showError(
-   "Word and meaning are required."
-  );
-
-  return;
-
- }
-
- const result=
- await db
- .from("vocabulary")
- .insert({
-  word:word,
-  pronunciation:pronunciation,
-  meaning:meaning,
-  example_sentence:example,
-  published:true
- });
-
- if(result.error){
-
-  showError(result.error.message);
-
-  return;
-
- }
-
- document.getElementById("vocabWord").value="";
- document.getElementById("vocabPronunciation").value="";
- document.getElementById("vocabMeaning").value="";
- document.getElementById("vocabExample").value="";
-
- showSuccess(
-  "Vocabulary added successfully."
- );
-
- loadDashboard();
-
+ if(!db){showError("Supabase is not connected.");return;}
+ const word=document.getElementById("vocabWord").value.trim();
+ const pronunciation=document.getElementById("vocabPronunciation").value.trim();
+ const meaning=document.getElementById("vocabMeaning").value.trim();
+ const example=document.getElementById("vocabExample").value.trim();
+ if(!word||!meaning){showError("Word and meaning are required.");return;}
+ const result=await db.from("vocabulary").insert({word,pronunciation,meaning,example_sentence:example,published:true});
+ if(result.error){showError(result.error.message);return;}
+ ["vocabWord","vocabPronunciation","vocabMeaning","vocabExample"].forEach(id=>document.getElementById(id).value="");
+ showSuccess("Vocabulary added successfully.");loadDashboard();
 }
 
-
-/* ==========================================
+/* =========================================================
    HELPERS
-========================================== */
-
-function filterModule(module,button){
-
- currentModule=module;
-
- document.getElementById("moduleTitle")
- .textContent=module;
-
- document
- .querySelectorAll(".module-tab")
- .forEach(x=>x.classList.remove("active"));
-
- if(button)
-  button.classList.add("active");
-
- loadBookFilter();
- loadModuleQuestions();
-
-}
-
-
-function setProgress(value,text){
-
- document.getElementById("progressBar")
- .style.width=value+"%";
-
- document.getElementById("progressText")
- .textContent=text;
-
-}
-
-
-function showSuccess(message){
-
- const box=
- document.getElementById("alertSuccess");
-
- box.textContent=message;
- box.style.display="block";
-
- document.getElementById("alertError")
- .style.display="none";
-
- setTimeout(()=>{
-  box.style.display="none";
- },5000);
-
-}
-
-
-function showError(message){
-
- const box=
- document.getElementById("alertError");
-
- box.textContent=message;
- box.style.display="block";
-
- document.getElementById("alertSuccess")
- .style.display="none";
-
-}
-
-
-function esc(value){
-
- return String(value ?? "")
- .replace(/&/g,"&amp;")
- .replace(/</g,"&lt;")
- .replace(/>/g,"&gt;")
- .replace(/"/g,"&quot;")
- .replace(/'/g,"&#039;");
-
-}
-
-
-function formatDate(value){
-
- if(!value) return "-";
-
- try{
-
-  return new Date(value)
-  .toLocaleDateString();
-
- }catch(e){
-
-  return "-";
-
- }
-
-}
-
-
-/* ==========================================
-   INITIALIZE
-========================================== */
+   ========================================================= */
+function setProgress(value,text){document.getElementById("progressBar").style.width=value+"%";document.getElementById("progressText").textContent=text;}
+function showSuccess(message){const box=document.getElementById("alertSuccess");box.textContent=message;box.style.display="block";document.getElementById("alertError").style.display="none";setTimeout(()=>box.style.display="none",5000);}
+function showError(message){const box=document.getElementById("alertError");box.textContent=message;box.style.display="block";document.getElementById("alertSuccess").style.display="none";}
+function esc(value){return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+function formatDate(value){if(!value)return "-";try{return new Date(value).toLocaleDateString();}catch(e){return "-";}}
 
 window.addEventListener("load",()=>{
-
  initSupabase();
-
+ populateTypeSelect("moduleTypeFilter","Listening","");
+ updateTypeDescription();
 });
-
 </script>
-
 </body>
 </html>
